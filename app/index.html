@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Traceability door Allora Labs</title>
+<style>
+:root{
+--bg:#f5f3ee; --card:#fff; --ink:#1d2a2e; --muted:#6b7679; --line:#e4e0d6;
+--brand:#14233a; --brand2:#0e1a2c; --gold:#1f6fd1; --gold-soft:#e6effb;
+--ok:#2f7d4f; --ok-soft:#e3f2e8; --warn:#b7791f; --warn-soft:#fbf1dc;
+--bad:#b8402f; --bad-soft:#f8e3df; --info:#2f5f9e; --info-soft:#e2ebf7; --grey-soft:#eceae4;
+--radius:12px;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.45}
+header{background:var(--brand);color:#fff;padding:14px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px}
+.logo .fish{width:30px;height:30px;border-radius:50%;background:var(--gold);display:grid;place-items:center;font-size:17px}
+.logo small{display:block;font-weight:400;font-size:12px;opacity:.75}
+.spacer{flex:1}
+.role{display:flex;background:rgba(255,255,255,.12);border-radius:999px;padding:3px}
+.role button{border:0;background:transparent;color:#fff;padding:6px 12px;border-radius:999px;cursor:pointer;font-size:13px}
+.role button.on{background:#fff;color:var(--brand);font-weight:600}
+.demo-tag{font-size:11px;background:var(--gold);color:#fff;padding:3px 8px;border-radius:6px;font-weight:700;letter-spacing:.04em}
+nav{background:var(--brand2);display:flex;gap:2px;padding:0 12px;overflow-x:auto}
+nav button{background:none;border:0;color:#cfe0e2;padding:11px 14px;cursor:pointer;font-size:14px;border-bottom:3px solid transparent;white-space:nowrap}
+nav button.on{color:#fff;border-bottom-color:var(--gold);font-weight:600}
+main{max-width:1180px;margin:0 auto;padding:20px}
+h1{font-size:22px;margin:0 0 4px}
+h2{font-size:17px;margin:0 0 12px}
+.sub{color:var(--muted);margin:0 0 18px}
+.grid{display:grid;gap:14px}
+.kpis{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
+.kpi{background:var(--card);border-radius:var(--radius);padding:14px 16px;border:1px solid var(--line);cursor:pointer}
+.kpi .n{font-size:30px;font-weight:700;line-height:1.1}
+.kpi .l{color:var(--muted);font-size:13px}
+.kpi.amber{border-left:5px solid var(--warn)} .kpi.green{border-left:5px solid var(--ok)} .kpi.red{border-left:5px solid var(--bad)} .kpi.blue{border-left:5px solid var(--info)} .kpi.gold{border-left:5px solid var(--gold)}
+.card{background:var(--card);border-radius:var(--radius);border:1px solid var(--line);padding:18px}
+.two{grid-template-columns:1.3fr 1fr}
+@media(max-width:860px){.two{grid-template-columns:1fr}}
+.actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;margin:18px 0}
+.act{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;text-align:left;cursor:pointer;font-size:14px;display:flex;gap:10px;align-items:center;color:var(--ink)}
+.act:hover{border-color:var(--brand)}
+.act .ic{width:36px;height:36px;border-radius:10px;background:var(--gold-soft);display:grid;place-items:center;font-size:18px;flex:none}
+.act b{display:block}
+.act span{color:var(--muted);font-size:12px}
+.act.locked{opacity:.55}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-weight:600;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.03em;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+.tablewrap{overflow-x:auto}
+.chip{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap}
+.c-Quarantaine,.c-Wachtopresultaat{background:var(--warn-soft);color:var(--warn)}
+.c-Vrijgegeven,.c-Conform{background:var(--ok-soft);color:var(--ok)}
+.c-Afgekeurd,.c-Geblokkeerd,.c-Nietconform{background:var(--bad-soft);color:var(--bad)}
+.c-Bemonsterd{background:var(--info-soft);color:var(--info)}
+.c-Inafwachting{background:var(--grey-soft);color:#555}
+a.id{color:var(--brand);font-weight:600;text-decoration:none;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;cursor:pointer}
+a.id:hover{text-decoration:underline}
+.muted{color:var(--muted)}
+.small{font-size:13px}
+.btn{background:var(--brand);color:#fff;border:0;border-radius:9px;padding:10px 16px;font-size:14px;cursor:pointer;font-weight:600}
+.btn.ghost{background:transparent;color:var(--brand);border:1px solid var(--line)}
+.btn.gold{background:var(--gold)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.pillars{grid-template-columns:repeat(3,1fr)}
+@media(max-width:760px){.pillars{grid-template-columns:1fr}}
+.pillar{background:var(--bg);border-radius:10px;padding:12px}
+.pillar b{display:block;margin-bottom:4px}
+.todo li{margin-bottom:8px}
+.check{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed var(--line)}
+.check:last-child{border-bottom:0}
+.dot{width:22px;height:22px;border-radius:50%;flex:none;display:grid;place-items:center;color:#fff;font-size:13px;font-weight:700;margin-top:1px}
+.dot.ok{background:var(--ok)} .dot.bad{background:var(--bad)} .dot.wait{background:#b9b4a8}
+.chain{display:flex;flex-direction:column;gap:0}
+.step{display:grid;grid-template-columns:34px 1fr;gap:12px}
+.step .rail{display:flex;flex-direction:column;align-items:center}
+.step .rail .b{width:30px;height:30px;border-radius:50%;background:var(--brand);color:#fff;display:grid;place-items:center;font-size:15px}
+.step .rail .ln{flex:1;width:2px;background:var(--line);min-height:14px}
+.step .body{padding-bottom:18px}
+.minirow{background:var(--bg);border-radius:9px;padding:10px 12px;margin-top:8px}
+.qr{width:150px;height:150px}
+.qr svg{width:100%;height:100%}
+.tracehead{display:flex;gap:18px;align-items:flex-start;flex-wrap:wrap}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14px}
+.kv dt{color:var(--muted)} .kv dd{margin:0;font-weight:500}
+select,input,textarea{font:inherit;padding:9px 10px;border:1px solid #cfcabd;border-radius:8px;width:100%;background:#fff;color:var(--ink)}
+label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px;font-weight:600}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+@media(max-width:520px){.row2,.row3{grid-template-columns:1fr}}
+.modal-bg{position:fixed;inset:0;background:rgba(15,30,34,.45);display:none;align-items:flex-start;justify-content:center;padding:30px 12px;overflow-y:auto;z-index:20}
+.modal-bg.show{display:flex}
+.modal{background:#fff;border-radius:14px;max-width:560px;width:100%;padding:22px}
+.modal h2{margin-bottom:4px}
+.modal .foot{display:flex;gap:10px;justify-content:flex-end;margin-top:18px}
+.hint{background:var(--gold-soft);border-radius:9px;padding:10px 12px;font-size:13px;margin-top:12px}
+.hint.ok{background:var(--ok-soft)} .hint.bad{background:var(--bad-soft)}
+.lotline{display:grid;grid-template-columns:1fr 110px 34px;gap:8px;margin-bottom:6px}
+.x{background:none;border:1px solid var(--line);border-radius:8px;cursor:pointer}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--brand);color:#fff;padding:11px 18px;border-radius:10px;font-size:14px;display:none;z-index:30;max-width:90vw}
+.toast.show{display:block}
+.filter{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.filter button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 12px;cursor:pointer;font-size:13px}
+.filter button.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:24px}
+.bar{height:8px;border-radius:5px;background:var(--grey-soft);position:relative;margin-top:6px}
+.bar i{position:absolute;top:0;bottom:0;left:0;border-radius:5px}
+.bar .zone{position:absolute;top:-3px;bottom:-3px;border-left:2px dashed var(--ok);border-right:2px dashed var(--ok)}
+.empty{color:var(--muted);font-style:italic;padding:8px 0}
+header{background:#fff;color:var(--ink);border-bottom:1px solid var(--line)}
+.logo img.gf{height:40px;display:block}
+.logo .tt{border-left:1px solid var(--line);padding-left:12px;font-size:16px}
+.logo .tt small{color:var(--muted);opacity:1}
+.by{display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted)}
+.by img{height:34px}
+.role{background:var(--grey-soft)} .role button{color:var(--ink)} .role button.on{background:var(--brand);color:#fff}
+@media(max-width:700px){.by span{display:none}.by img{height:26px}.logo img.gf{height:36px}.logo .tt{display:none}}
+.cs-hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:34px;align-items:center;background:linear-gradient(135deg,#eef4fc,#fff);border:1px solid var(--line);border-radius:18px;padding:clamp(20px,4vw,44px)}
+@media(max-width:860px){.cs-hero{grid-template-columns:minmax(0,1fr)}}
+.cs-kicker{color:var(--gold);font-weight:700;font-size:13px;margin-bottom:6px}
+.cs-title{font-size:clamp(28px,4vw,42px);line-height:1.08;margin:0 0 14px;text-wrap:balance}
+.cs-lead{font-size:16.5px;color:#3d4a4f;max-width:60ch}
+.cs-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.cs-badges span{background:var(--ok-soft);color:var(--ok);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:600}
+.phone{justify-self:center;width:300px;max-width:100%;border:11px solid #1d2326;border-radius:38px;background:#fff;box-shadow:0 24px 50px -20px rgba(0,0,0,.35);overflow:hidden}
+.phone-in{height:560px;overflow-y:auto}
+.flow{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap}
+.flow-step{flex:1 1 170px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;position:relative}
+.flow-step p{margin:6px 0 0;font-size:13px;color:var(--muted)}
+.flow-ic{font-size:26px}.flow-n{position:absolute;top:12px;right:14px;color:var(--gold);font-weight:800}
+.flow-arrow{align-self:center;color:var(--gold);font-size:22px}
+@media(max-width:860px){.flow-arrow{display:none}}
+.pp{background:#fff;font-size:14px}
+.pp-head{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line)}
+.pp-head img{height:34px}.pp-lbl{font-size:11px;font-weight:700;color:var(--gold);text-align:right}
+.pp-stat{display:flex;gap:12px;align-items:center;padding:14px 16px;margin:12px;border-radius:12px}
+.pp-stat.ok{background:var(--ok-soft);color:var(--ok)}.pp-stat.bad{background:var(--bad-soft);color:var(--bad)}.pp-stat.wait{background:var(--warn-soft);color:var(--warn)}
+.pp-stat b{display:block;font-size:15px}.pp-stat span{font-size:12px}
+.pp-big{width:40px;height:40px;border-radius:50%;background:currentColor;display:grid;place-items:center;flex:none;font-size:20px;font-weight:800}
+.pp-big{color:#fff}.pp-stat.ok .pp-big{background:var(--ok)}.pp-stat.bad .pp-big{background:var(--bad)}.pp-stat.wait .pp-big{background:var(--warn)}
+.pp-sec{padding:10px 16px;border-top:1px solid var(--line)}
+.pp-prod{font-size:18px;font-weight:700}.pp-sub{color:var(--muted);font-size:12.5px}
+.pp-h{font-size:12px;font-weight:700;color:var(--muted);margin-bottom:4px}
+.pp-row{display:flex;justify-content:space-between;gap:10px;padding:5px 0;font-size:13px}.pp-row span{color:var(--muted)}.pp-row b{text-align:right}.pp-row b.g{color:var(--ok)}.pp-row small{color:var(--muted);font-weight:400;display:block}
+.pp-t{display:grid;grid-template-columns:12px 1fr auto;gap:8px;align-items:center;font-size:13px;padding:3px 0}.pp-t i{width:9px;height:9px;border-radius:50%;background:var(--gold)}.pp-t span{color:var(--muted)}
+.pp-lab{display:flex;gap:10px;align-items:center;font-size:11.5px;color:var(--muted)}.pp-lab img{height:30px}
+.pp-page{max-width:440px;margin:0 auto}.pp-page .pp{border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.pp-bar{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+body.pp-mode nav,body.pp-mode header .role{display:none}
+body.qr-scan .qr-hide,body.qr-scan footer,body.qr-scan .demo-tag{display:none}
+.userbox{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}
+.userbox .btn{padding:6px 12px;font-size:13px}
+@media(max-width:600px){.userbox span{display:none}}
+.login{max-width:380px;margin:40px auto}
+body.auth nav{display:none}
+body.busy{cursor:progress} body.busy .modal .btn{opacity:.6;pointer-events:none}
+</style>
+</head>
+<body>
+<header>
+<div class="logo"><img class="gf" src="data:image/png;base64,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" alt="Allora Labs"><div class="tt">Traceability<small>Lijst II-verificatie voor edibles</small></div></div>
+<div class="spacer"></div>
+<div class="userbox" id="userbox"></div>
+</header>
+<nav id="nav">
+<button data-tab="overzicht" class="on">Overzicht</button>
+<button data-tab="grondstof">Grondstof</button>
+<button data-tab="productie">Productie</button>
+<button data-tab="analyses">Analyses</button>
+<button data-tab="leveringen">Leveringen</button>
+<button data-tab="traceren">Traceren</button>
+<button data-tab="logboek">Logboek</button>
+<button data-tab="uitleg">Voor coffeeshops</button>
+</nav>
+<main id="main"></main>
+<footer>Traceability door Allora Labs · ISO 9001</footer>
+<div class="modal-bg" id="modalbg"><div class="modal" id="modal"></div></div>
+<div class="toast" id="toast"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>/* ===== Gedeelde logica (identiek in app en server) ===== */
+function nl(n,d){ if(d===undefined)d=1; if(n===null||n===undefined||n===''||isNaN(n)) return '–'; return Number(n).toFixed(d).replace('.',','); }
+function maakLogica(S,CFG){
+const lot = id=>S.lots.find(l=>l.id===id);
+const batch = id=>S.batches.find(b=>b.id===id);
+const monstersVan = id=>S.monsters.filter(m=>m.ref===id);
+const leverStatus = naam=>(S.leveranciers.find(l=>l.naam===naam)||{}).status||'Nieuw';
+const gebruiktG = lotId=>S.batches.reduce((s,b)=>s+b.inzet.filter(i=>i.lot===lotId).reduce((a,i)=>a+Number(i.g),0),0);
+const restG = lotId=>{ const l=lot(lotId); return l? Math.round((l.gram-gebruiktG(lotId))*100)/100 : 0; };
+const geleverd = bId=>S.leveringen.filter(x=>x.batch===bId).reduce((s,x)=>s+Number(x.stuks),0);
+const voorraad = bId=>{ const b=batch(bId); return b? b.stuks-geleverd(bId):0; };
+const lotResultaat = lotId=>monstersVan(lotId).filter(m=>m.oordeel==='Conform').slice(-1)[0];
+function vereistGrondstof(verp,lev){
+let n = verp<=4 ? verp : Math.ceil(1+Math.sqrt(verp));
+if(leverStatus(lev)==='Nieuw' && verp>4) n=Math.min(verp,Math.ceil(n*CFG.strengFactor));
+return n;
+}
+const vereistVoor = ref=>{ if(ref.indexOf('GL')===0){const l=lot(ref);return vereistGrondstof(l.verp,l.leverancier);} return CFG.stuksEindproduct; };
+const isCBD = b=>b&&b.cat==='CBD';
+function theoretisch(b){
+let mg=0, compleet=true; const k=isCBD(b)?'cbd':'thc';
+b.inzet.forEach(i=>{ const r=lotResultaat(i.lot); if(r&&r[k]!=null) mg+= i.g*(r[k]/100)*1000; else compleet=false; });
+return compleet&&b.stuks? mg/b.stuks : null;
+}
+/* Lijst II-dossier: alle controles voor vrijgave van een batch */
+function dossierCBD(b){
+const m = monstersVan(b.id).filter(x=>x.oordeel).slice(-1)[0];
+const pending = monstersVan(b.id).find(x=>!x.oordeel);
+const th = theoretisch(b), tol=Math.round(CFG.labelTolerantie*100);
+const checks=[];
+const lotsOk = b.inzet.every(i=>lot(i.lot)&&lot(i.lot).status==='Vrijgegeven');
+checks.push({s:lotsOk?'ok':'bad',t:'Grondstof vrijgegeven',d:b.inzet.map(i=>i.lot+' ('+((lot(i.lot)||{}).status||'?')+')').join(', ')});
+if(!m){
+checks.push({s:'wait',t:'CBD binnen ±'+tol+' % van etiket',d:(pending?'Monster '+pending.id+' wacht op resultaat Allora Labs.':'Nog geen monster genomen.')+(th?' Verwacht max. '+nl(th)+' mg CBD/stuk.':'')});
+checks.push({s:'wait',t:'THC onder de limiet',d:'Limiet: '+nl(CFG.cbdThcMax,2)+' mg THC per stuk'});
+return {checks:checks,klaar:false,ok:false,m:m,th:th};
+}
+const dev=(m.cbdmg-b.label)/b.label;
+checks.push({s:Math.abs(dev)<=CFG.labelTolerantie?'ok':'bad',t:'CBD binnen ±'+tol+' % van etiket',d:nl(m.cbdmg)+' mg CBD gemeten · etiket '+b.label+' mg ('+(dev>=0?'+':'')+nl(dev*100,0)+' %)'});
+const thc=Number(m.mg)||0;
+checks.push({s:thc<=CFG.cbdThcMax?'ok':'bad',t:'THC onder de limiet',d:(thc?nl(thc,2)+' mg THC per stuk':'THC niet aangetoond')+' · limiet '+nl(CFG.cbdThcMax,2)+' mg'});
+const ok=checks.every(c=>c.s==='ok');
+return {checks:checks,klaar:true,ok:ok,m:m,th:th};
+}
+function dossier(b){
+if(isCBD(b)) return dossierCBD(b);
+const m = monstersVan(b.id).filter(x=>x.oordeel).slice(-1)[0];
+const pending = monstersVan(b.id).find(x=>!x.oordeel);
+const th = theoretisch(b);
+const checks=[];
+const lotsOk = b.inzet.every(i=>lot(i.lot)&&lot(i.lot).status==='Vrijgegeven');
+checks.push({s:lotsOk?'ok':'bad',t:'Grondstof vrijgegeven',d:b.inzet.map(i=>i.lot+' ('+((lot(i.lot)||{}).status||'?')+')').join(', ')});
+const lr = b.inzet.map(i=>lotResultaat(i.lot));
+const pcrLots = lr.every(r=>r&&r.pcr==='Positief'), pcrWacht = lr.some(r=>r&&!r.pcr);
+checks.push({s:pcrLots?'ok':(pcrWacht?'wait':'bad'),t:'Grondstof bevat cannabis-RNA (PCR)',d:pcrWacht?'PCR op de grondstof nog in te voeren door Allora Labs.':(pcrLots?'De grondstof zelf is aantoonbaar plantaardig materiaal.':'Geen cannabis-RNA aangetoond in de grondstof.')});
+if(!m){
+const msg = pending? 'Monster '+pending.id+' wacht op resultaat Allora Labs.' : 'Nog geen monster genomen.';
+checks.push({s:'wait',t:'PCR eindproduct: cannabis-RNA aangetoond',d:msg});
+checks.push({s:'wait',t:'Massabalans grondstof → product',d: th? 'Maximaal '+nl(th)+' mg THC/stuk op basis van '+b.inzet.map(i=>i.g+' g '+i.lot).join(' + ')+'.':'—'});
+checks.push({s:'wait',t:'Dosering binnen ±'+Math.round(CFG.labelTolerantie*100)+' % van etiket',d:'Etiket: '+b.label+' mg/stuk'});
+return {checks:checks,klaar:false,ok:false,m:m,th:th};
+}
+checks.push({s:m.pcr==='Positief'?'ok':(m.pcr?'bad':'wait'),t:'PCR eindproduct: cannabis-RNA aangetoond',d:(m.pcr||'Nog in te voeren')+(m.ct?' · Ct '+nl(m.ct):'')+(m.rapport?' · rapport '+m.rapport:'')});
+const ratio = th? m.mg/th : null;
+let mbS='bad', mbD='';
+if(ratio==null){ mbS='wait'; mbD='Kan niet berekenen: resultaat grondstof ontbreekt.'; }
+else if(ratio>CFG.massabalansMax){ mbD='Gemeten '+nl(m.mg)+' mg vs. max. '+nl(th)+' mg uit de grondstof ('+nl(ratio*100,0)+' %). Meer THC dan de grondstof kan leveren: wijst op toegevoegd extract of een doseerfout.'; }
+else if(ratio<CFG.massabalansMin){ mbD='Gemeten '+nl(m.mg)+' mg vs. '+nl(th)+' mg verwacht ('+nl(ratio*100,0)+' %). Groot verlies of doseerfout.'; }
+else { mbS='ok'; mbD='Gemeten '+nl(m.mg)+' mg vs. max. '+nl(th)+' mg uit de grondstof ('+nl(ratio*100,0)+' %): past bij Lijst II-grondstof als enige THC-bron.'; }
+checks.push({s:mbS,t:'Massabalans grondstof → product',d:mbD,ratio:ratio});
+const dev = (m.mg-b.label)/b.label;
+checks.push({s:Math.abs(dev)<=CFG.labelTolerantie?'ok':'bad',t:'Dosering binnen ±'+Math.round(CFG.labelTolerantie*100)+' % van etiket',d:nl(m.mg)+' mg gemeten · etiket '+b.label+' mg ('+(dev>=0?'+':'')+nl(dev*100,0)+' %)'});
+const ok = checks.every(c=>c.s==='ok');
+const wacht = !ok && !checks.some(c=>c.s==='bad');
+return {checks:checks,klaar:!wacht,ok:ok,m:m,th:th,ratio:ratio};
+}
+return {isCBD,lot,batch,monstersVan,leverStatus,gebruiktG,restG,geleverd,voorraad,lotResultaat,vereistGrondstof,vereistVoor,theoretisch,dossier};
+}
+/* ===== Einde gedeelde logica ===== */
+/* Gegevens voor het openbare productpaspoort (geen leveranciers, geen coffeeshops) */
+function paspoortData(S,CFG,b){
+const L=maakLogica(S,CFG), d=L.dossier(b), m=d.m||null;
+return {id:b.id, product:b.product, datum:b.datum, status:b.status, cat:b.cat||'THC', label:b.label, cbdThcMax:CFG.cbdThcMax,
+lots:b.inzet.map(i=>{ const l=L.lot(i.lot)||{}, r=L.lotResultaat(i.lot)||{}; return {type:l.type||'', datum:l.datum||'', oDatum:r.oDatum||'', thc:r.thc, rapport:r.rapport||''}; }),
+m: m?{mg:m.mg, cbdmg:m.cbdmg, pcr:m.pcr||'', oDatum:m.oDatum||'', rapport:m.rapport||''}:null,
+checks:d.checks.map(c=>({s:c.s,t:c.t}))};
+}
+</script>
+<script>
+/* ---------- Status en serververbinding ---------- */
+const API = 'https://script.google.com/macros/s/AKfycby3ve1slVCUcRsuCM6uDAbTBXGx3azDjC3LAHFwtGLEtrZDSwml5VyjriW03ZytH-LQ/exec';
+const _Q = new URLSearchParams(location.search);
+const INIT_ID = (_Q.get('id')||'').replace(/[^A-Za-z0-9-]/g,'');
+const P_CODE = (_Q.get('p')||'').replace(/[^A-Za-z0-9]/g,'');
+let S=null, CFG={}, PRODUCTEN=[], GRONDSTOFTYPES=[], KLANTEN=[], BEMONSTERAARS=[];
+let TOKEN=null; try{ TOKEN=localStorage.getItem('allora-trace-token'); }catch(e){}
+let ROLE='producent', TAB=INIT_ID?'traceren':'overzicht', TRACE=INIT_ID||null, FILTER={}, BUSY=false;
+const typeCat = n=>(GRONDSTOFTYPES.find(g=>g.naam===n)||{cat:'THC'}).cat;
+const typeLabel = n=>typeCat(n)==='CBD'?'CBD':'Lijst II';
+function setState(st){ S=st; CFG=S.cfg; PRODUCTEN=S.producten; GRONDSTOFTYPES=S.grondstoftypes; KLANTEN=S.klanten.map(k=>k.naam); BEMONSTERAARS=S.bemonsteraars; ROLE=S.user.rol; Object.assign(window, maakLogica(S,CFG)); }
+function call(fn){ const args=[].slice.call(arguments,1); return fetch(API,{method:'POST',credentials:'omit',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({fn:fn,args:args})}).catch(()=>{throw new Error('Geen verbinding met de server. Probeer het opnieuw.');}).then(r=>r.json()).then(j=>{ if(!j.ok) throw new Error(j.error); return j.result; }); }
+function fout(e){ const msg=String((e&&e.message)||e).replace(/^(Error|Exception):\s*/,''); if(msg.indexOf('SESSIE_VERLOPEN')>=0){ TOKEN=null; try{localStorage.removeItem('allora-trace-token');}catch(x){} closeModal(); toonLogin('Je sessie is verlopen. Log opnieuw in.'); } else toast(msg); }
+async function laad(){ try{ setState(await call('getState',TOKEN)); toonApp(); }catch(e){ fout(e); if(!S) toonLogin(); } }
+async function doe(type,p){
+if(BUSY) return false; BUSY=true; document.body.classList.add('busy');
+try{ const r=await call('actie',TOKEN,type,p); setState(r.state); closeModal(); render(); toast(r.msg); return true; }
+catch(e){ fout(e); return false; }
+finally{ BUSY=false; document.body.classList.remove('busy'); }
+}
+function toonLogin(msg){
+S=null; document.body.classList.add('auth'); $('#userbox').innerHTML='';
+$('#main').innerHTML=`<div class="login card"><h1>Inloggen</h1><p class="sub">Traceability door Allora Labs</p>${msg?`<div class="hint bad" style="margin-bottom:8px">${esc(msg)}</div>`:''}
+<form id="lf" autocomplete="off"><label>PIN</label><input id="l_pin" type="password" inputmode="numeric" autofocus><div id="l_naam"></div>
+<button class="btn" style="width:100%;margin-top:16px" id="l_btn">Verder</button></form></div>`;
+$('#lf').onsubmit=async ev=>{
+ev.preventDefault(); const pin=$('#l_pin').value.trim(); if(!pin) return toast('Vul je PIN in.');
+const sel=$('#l_sel'), txt=$('#l_txt'); let naam='';
+if(sel) naam = sel.value==='__ander' ? (txt?txt.value.trim():'') : sel.value; else if(txt) naam=txt.value.trim();
+if((sel||txt)&&!naam) return toast('Kies of vul je naam in.');
+$('#l_btn').disabled=true;
+try{
+const r=await call('login',pin,naam);
+if(r.kiesNaam){
+$('#l_naam').innerHTML = r.namen.length
+? `<label>Wie ben je?</label><select id="l_sel" onchange="$('#l_txtw').style.display=this.value==='__ander'?'block':'none'">${opts(r.namen.concat([{v:'__ander',l:'Andere naam…'}]))}</select><div id="l_txtw" style="display:none"><input id="l_txt" placeholder="Je naam" style="margin-top:8px"></div>`
+: `<label>Je naam</label><input id="l_txt" placeholder="Voor het logboek">`;
+$('#l_btn').textContent='Inloggen';
+} else {
+TOKEN=r.token; try{ localStorage.setItem('allora-trace-token',TOKEN); }catch(x){}
+await laad();
+}
+}catch(e){ fout(e); }
+if($('#l_btn')) $('#l_btn').disabled=false;
+};
+}
+function toonApp(){
+document.body.classList.remove('auth');
+$('#userbox').innerHTML=`${S.demo?'<span class="demo-tag" style="color:#fff">DEMO</span>':''}<span>${esc(S.user.naam)} · ${ROLE==='allora'?'Allora Labs':'Producent'}</span><button class="btn ghost" onclick="uitloggen()">Uitloggen</button>`;
+render();
+}
+function uitloggen(){ call('logout',TOKEN).catch(()=>{}); TOKEN=null; try{localStorage.removeItem('allora-trace-token');}catch(x){} toonLogin(); }
+async function toonPaspoortPubliek(){
+document.body.classList.add('pp-mode','qr-scan','auth');
+$('#main').innerHTML='<div class="empty" style="text-align:center;padding:40px">Productpaspoort laden…</div>';
+try{ const P=await call('getPaspoort',P_CODE); $('#main').innerHTML=`<div class="pp-page">${paspoortHTML(P,false)}</div>`; }
+catch(e){ $('#main').innerHTML=`<div class="pp-page"><div class="card"><h2>Productpaspoort niet gevonden</h2><p class="muted">${esc(String(e.message||e).replace(/^(Error|Exception):\s*/,''))}</p></div></div>`; }
+}
+/* ---------- Helpers ---------- */
+const $ = s=>document.querySelector(s);
+const esc = s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const dmy = iso=> iso? iso.slice(8,10)+'-'+iso.slice(5,7)+'-'+iso.slice(0,4):'';
+const today = ()=> new Date().toISOString().slice(0,10);
+const chip = s=>`<span class="chip c-${String(s).replace(/\s/g,'')}">${esc(s)}</span>`;
+const idl = id=>/^(GL|PB)-/.test(id)?`<a class="id" onclick="goTrace('${id}')">${id}</a>`:`<span class="id">${esc(id)}</span>`;
+function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),3200); }
+/* ---------- Render ---------- */
+function render(){
+if(!S) return;
+document.body.classList.toggle('pp-mode',!!PASPOORT);
+if(PASPOORT){ $('#main').innerHTML=paspoortPagina(); window.scrollTo(0,0); return; }
+document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.tab===TAB));
+document.querySelectorAll('.role button').forEach(b=>b.classList.toggle('on',b.dataset.role===ROLE));
+const f={overzicht,grondstof,productie,analyses,leveringen,traceren,logboek,uitleg}[TAB];
+$('#main').innerHTML=f();
+if(TAB==='traceren') drawQR();
+window.scrollTo(0,0);
+}
+function actiesHTML(){
+const a=[
+['📦','Grondstof ontvangen','Hasj, wiet, kief of CBD binnen','fIntake',false],
+['🧪','Monster genomen','Grondstof of eindproduct','fMonster',false],
+['🧁','Batch geproduceerd','Grondstof inzetten','fBatch',false],
+['🚚','Levering aan coffeeshop','Alleen vrijgegeven batches','fLevering',false],
+['📋','Resultaat invoeren','Alleen Allora Labs','fResultaat',ROLE!=='allora'],
+['✏️','Correctie','Fout herstellen, met reden','fCorrectie',false]
+];
+return `<div class="actions">${a.map(([ic,t,s,fn,lock])=>`<button class="act ${lock?'locked':''}" onclick="${lock?"toast('Resultaten worden alleen door Allora Labs ingevoerd.')":fn+'()'}"><div class="ic">${ic}</div><div><b>${t}</b><span>${s}</span></div></button>`).join('')}</div>`;
+}
+function overzicht(){
+const L=S.lots, B=S.batches;
+const c=(arr,st)=>arr.filter(x=>x.status===st).length;
+const lev30=S.leveringen.filter(x=>(new Date(today())-new Date(x.datum))/864e5<=30).reduce((s,x)=>s+x.stuks,0);
+const wacht=S.monsters.filter(m=>!m.oordeel);
+const todo=[];
+L.filter(l=>l.status==='Quarantaine').forEach(l=>{ if(!monstersVan(l.id).some(m=>!m.oordeel)) todo.push(`${idl(l.id)} in quarantaine: monster nemen (${vereistGrondstof(l.verp,l.leverancier)} verpakkingen).`); });
+wacht.forEach(m=>todo.push(`${idl(m.ref)} wacht op resultaat Allora Labs (${m.id}).`));
+S.monsters.filter(m=>!m.oordeel&&m.genomen<m.vereist).forEach(m=>todo.push(`<b>Bemonstering onvolledig:</b> ${m.id} heeft ${m.genomen} van ${m.vereist} stuks.`));
+S.monsters.filter(m=>!m.oordeel&&!(BEMONSTERAARS.find(x=>x.naam===m.door)||{}).cert).forEach(m=>todo.push(`<b>Niet-gecertificeerde bemonsteraar:</b> ${m.id} (${esc(m.door)}).`));
+B.filter(b=>b.status==='In afwachting').forEach(b=>todo.push(`${idl(b.id)} geproduceerd: monster nemen (${CFG.stuksEindproduct} stuks).`));
+B.filter(b=>b.status==='Geblokkeerd').forEach(b=>todo.push(`<b>${idl(b.id)} geblokkeerd</b>: mag niet geleverd worden. Bekijk het dossier.`));
+return `
+<h1>Overzicht</h1>
+<p class="sub">Van Lijst II-grondstof tot edible in de coffeeshop: elke stap geregistreerd, elke batch pas vrij na analyse door Allora Labs.</p>
+<div class="grid kpis">
+<div class="kpi amber" onclick="go('grondstof','Quarantaine')"><div class="n">${c(L,'Quarantaine')}</div><div class="l">Grondstof in quarantaine</div></div>
+<div class="kpi green" onclick="go('grondstof','Vrijgegeven')"><div class="n">${c(L,'Vrijgegeven')}</div><div class="l">Grondstof vrijgegeven</div></div>
+<div class="kpi red" onclick="go('grondstof','Afgekeurd')"><div class="n">${c(L,'Afgekeurd')}</div><div class="l">Grondstof afgekeurd</div></div>
+<div class="kpi blue" onclick="go('productie','open')"><div class="n">${c(B,'In afwachting')+c(B,'Bemonsterd')}</div><div class="l">Batches in afwachting</div></div>
+<div class="kpi green" onclick="go('productie','Vrijgegeven')"><div class="n">${c(B,'Vrijgegeven')}</div><div class="l">Batches vrijgegeven</div></div>
+<div class="kpi red" onclick="go('productie','Geblokkeerd')"><div class="n">${c(B,'Geblokkeerd')}</div><div class="l">Batches geblokkeerd</div></div>
+<div class="kpi gold" onclick="go('leveringen')"><div class="n">${lev30.toLocaleString('nl-NL')}</div><div class="l">Stuks geleverd, 30 dagen</div></div>
+</div>
+${actiesHTML()}
+<div class="grid two">
+<div class="card"><h2>Actie nodig</h2>${todo.length?`<ul class="todo">${todo.map(t=>`<li>${t}</li>`).join('')}</ul>`:'<div class="empty">Alles bijgewerkt.</div>'}</div>
+<div class="card"><h2>Lijst II-verificatie</h2>
+<p class="small muted" style="margin-top:-6px">Elke batch krijgt een dossier dat aantoont dat het product van Lijst II-grondstof is gemaakt en niet van een solvent-extract (Lijst I).</p>
+<div class="grid" style="gap:8px">
+<div class="pillar"><b>1 · Plantaardig materiaal</b><span class="small">PCR op het eindproduct: cannabis-RNA aangetoond, net als in de ingezette grondstof.</span></div>
+<div class="pillar"><b>2 · Massabalans</b><span class="small">De THC per stuk mag niet hoger zijn dan wat de ingezette grondstof kan leveren.</span></div>
+<div class="pillar"><b>3 · Keten</b><span class="small">Alleen vrijgegeven, geanalyseerde Lijst II-grondstof mag de productie in.</span></div>
+</div>
+</div>
+</div>`;
+}
+function go(tab,f){ TAB=tab; FILTER[tab]=f||'alle'; render(); }
+function filterBar(tab,opts){
+const cur=FILTER[tab]||'alle';
+return `<div class="filter">${opts.map(([v,l])=>`<button class="${cur===v?'on':''}" onclick="FILTER['${tab}']='${v}';render()">${l}</button>`).join('')}</div>`;
+}
+function grondstof(){
+const f=FILTER.grondstof||'alle';
+const rows=S.lots.filter(l=>f==='alle'||l.status===f).slice().reverse();
+return `<h1>Grondstof</h1><p class="sub">Elke partij krijgt bij binnenkomst een ID en blijft in quarantaine tot Allora Labs het resultaat vrijgeeft.</p>
+${filterBar('grondstof',[['alle','Alle'],['Quarantaine','Quarantaine'],['Vrijgegeven','Vrijgegeven'],['Afgekeurd','Afgekeurd']])}
+<div class="card tablewrap"><table><thead><tr><th>ID</th><th>Ontvangen</th><th>Leverancier</th><th>Type</th><th>Omschrijving</th><th>Gewicht</th><th>Verp.</th><th>Bemonstering</th><th>THC</th><th>PCR</th><th>Status</th><th>Rest</th></tr></thead><tbody>
+${rows.map(l=>{const r=lotResultaat(l.id)||monstersVan(l.id).filter(m=>m.oordeel).slice(-1)[0];const ls=leverStatus(l.leverancier);return `<tr><td>${idl(l.id)}</td><td>${dmy(l.datum)}</td><td>${esc(l.leverancier)}<div class="small muted">${ls}</div></td><td>${esc(l.type||'')}<div class="small muted">${typeLabel(l.type)}</div></td><td>${esc(l.soort)}</td><td>${l.gram} g</td><td>${l.verp}</td><td>${vereistGrondstof(l.verp,l.leverancier)} verp.${ls==='Nieuw'?' <span class="small muted">(streng)</span>':''}</td><td>${r?nl(r.thc)+' %':'–'}</td><td>${r?(r.pcr||(typeCat(l.type)==='CBD'?'<span class="muted">n.v.t.</span>':'<span class="muted">Nog in te voeren</span>')):'–'}</td><td>${chip(l.status)}</td><td>${restG(l.id)} g</td></tr>`;}).join('')||'<tr><td colspan="12" class="empty">Geen partijen.</td></tr>'}
+</tbody></table></div>`;
+}
+function productie(){
+const f=FILTER.productie||'alle';
+const rows=S.batches.filter(b=>f==='alle'||(f==='open'?['In afwachting','Bemonsterd'].includes(b.status):b.status===f)).slice().reverse();
+return `<h1>Productie</h1><p class="sub">Elke batch is gekoppeld aan de partijen grondstof die erin zitten. Vrijgave volgt automatisch als het Lijst II-dossier compleet is.</p>
+${filterBar('productie',[['alle','Alle'],['open','In afwachting'],['Vrijgegeven','Vrijgegeven'],['Geblokkeerd','Geblokkeerd']])}
+<div class="card tablewrap"><table><thead><tr><th>ID</th><th>Datum</th><th>Product</th><th>Stuks</th><th>Grondstof ingezet</th><th>Max. uit grondstof</th><th>Gemeten</th><th>PCR</th><th>Status</th><th>Voorraad</th></tr></thead><tbody>
+${rows.map(b=>{const d=dossier(b);return `<tr><td>${idl(b.id)}</td><td>${dmy(b.datum)}</td><td>${esc(b.product)}${isCBD(b)?' <span class="chip c-Bemonsterd">CBD</span>':''}</td><td>${b.stuks}</td><td>${b.inzet.map(i=>`${i.g} g ${idl(i.lot)}`).join('<br>')}</td><td>${d.th?nl(d.th)+' mg '+(isCBD(b)?'CBD':'THC'):'–'}</td><td>${d.m?(isCBD(b)?nl(d.m.cbdmg)+' mg CBD':nl(d.m.mg)+' mg THC'):'–'}</td><td>${isCBD(b)?'<span class="muted small">n.v.t. (CBD)</span>':(d.m?(d.m.pcr||'–'):'–')}</td><td>${chip(b.status)}</td><td>${b.stuks-geleverd(b.id)}</td></tr>`;}).join('')||'<tr><td colspan="10" class="empty">Geen batches.</td></tr>'}
+</tbody></table></div>`;
+}
+function analyses(){
+const rows=S.monsters.slice().reverse();
+return `<h1>Analyses</h1><p class="sub">Monsters en resultaten. De producent registreert het monster; Allora Labs voert het resultaat in.</p>
+<div class="card tablewrap"><table><thead><tr><th>Monster</th><th>Datum</th><th>Van</th><th>Bemonsterd door</th><th>Aantal</th><th>Rapport</th><th>Resultaat</th><th>PCR</th><th>Oordeel</th></tr></thead><tbody>
+${rows.map(m=>{const cert=(BEMONSTERAARS.find(x=>x.naam===m.door)||{}).cert;const kort=m.genomen<m.vereist;return `<tr><td><span class="id">${m.id}</span></td><td>${dmy(m.datum)}</td><td>${idl(m.ref)}<div class="small muted">${m.type}</div></td><td>${esc(m.door)}${cert?'':' <span class="chip c-Afgekeurd">niet gecertificeerd</span>'}</td><td>${m.genomen}/${m.vereist}${kort?' <span class="chip c-Afgekeurd">te weinig</span>':''}</td><td>${m.link?`<a href="${esc(m.link)}" target="_blank" rel="noopener">${esc(m.rapport||'Rapport')}</a>`:(esc(m.rapport)||'–')}</td><td>${m.type==='Grondstof'?(m.thc!=null?'THC '+nl(m.thc)+' %'+(m.cbd?' · CBD '+nl(m.cbd)+' %':''):'–'):(m.cbdmg!=null?'CBD '+nl(m.cbdmg)+' · THC '+nl(m.mg,2)+' mg/st':(m.mg!=null?nl(m.mg)+' mg/st':'–'))}</td><td>${m.pcr||'–'}${m.ct?`<div class="small muted">Ct ${nl(m.ct)}</div>`:''}</td><td>${m.oordeel?chip(m.oordeel):chip('Wacht op resultaat')}${m.notitie?`<div class="small muted">${esc(m.notitie)}</div>`:''}</td></tr>`;}).join('')}
+</tbody></table></div>`;
+}
+function leveringen(){
+const rows=S.leveringen.slice().reverse();
+return `<h1>Leveringen</h1><p class="sub">Alles wat de deur uitgaat. Alleen vrijgegeven batches kunnen geleverd worden.</p>
+<div style="margin-bottom:12px"><button class="btn gold" onclick="fLevering()">+ Levering registreren</button></div>
+<div class="card tablewrap"><table><thead><tr><th>ID</th><th>Datum</th><th>Batch</th><th>Product</th><th>Coffeeshop</th><th>Stuks</th><th>Pakbon</th><th>Blinde controle</th></tr></thead><tbody>
+${rows.map(x=>`<tr><td><span class="id">${esc(x.id)}</span></td><td>${dmy(x.datum)}</td><td>${idl(x.batch)}</td><td>${esc((batch(x.batch)||{}).product)}</td><td>${esc(x.klant)}</td><td>${x.stuks}</td><td>${esc(x.bon)}</td><td>${x.blind?'<span class="chip c-Bemonsterd">Aangevraagd</span>':'Nee'}</td></tr>`).join('')||'<tr><td colspan="8" class="empty">Nog geen leveringen.</td></tr>'}
+</tbody></table></div>
+<p class="small muted">Blinde controle: Allora Labs vraagt een coffeeshop een stuk uit het schap op te sturen. De producent vervangt het geteste stuk.</p>`;
+}
+function logboek(){
+return `<h1>Logboek</h1><p class="sub">Elke registratie met tijd en gebruiker. Niets wordt overschreven.</p>
+<div class="card tablewrap"><table><thead><tr><th>Tijd</th><th>Gebruiker</th><th>Actie</th><th>ID</th><th>Details</th></tr></thead><tbody>
+${S.log.map(x=>`<tr><td class="small">${x.t}</td><td>${esc(x.wie)}<div class="small muted">${esc(x.rol||'')}</div></td><td>${esc(x.actie)}</td><td>${idl(x.id)}</td><td class="small">${esc(x.detail)}</td></tr>`).join('')}
+</tbody></table></div>`;
+}
+function uitleg(){
+const vb = S.batches.find(b=>b.status==='Vrijgegeven');
+const flow=[
+['🌿','Lijst II-grondstof','Hasj, ijswaterhasj, wiet of kief. Elke partij krijgt een ID en wordt door Allora Labs getest voordat hij gebruikt mag worden.'],
+['🧁','Productie','Elke batch edibles is gekoppeld aan de geteste grondstof en de hoeveelheid die erin is gegaan.'],
+['🧬','PCR-test eindproduct','Allora Labs test elke batch: THC per stuk én cannabis-RNA. Dat laatste toont aan dat er plantmateriaal in zit.'],
+['🔳','QR-code op de verpakking','Elke verpakking draagt de QR-code van zijn batch.'],
+['🏪','In de coffeeshop','Scan de QR en het productpaspoort laat de hele keten zien. Ook bij een inspectie.']
+];
+return `<div class="cs-hero">
+<div>
+<div class="cs-kicker">Voor coffeeshops</div>
+<h1 class="cs-title">Aantoonbaar gemaakt van Lijst II-cannabis</h1>
+<p class="cs-lead">Edibles in dit systeem worden gemaakt van hasj, wiet of kief: Lijst II van de Opiumwet. Niet van solvent-extracten, die onder Lijst I vallen. Met één scan van de QR-code op de verpakking ziet u, of een inspecteur, het bewijs: van grondstof tot PCR-test van het product in uw schap.</p>
+<div class="cs-badges"><span>✓ Getest door Allora Labs</span><span>✓ ISO 9001</span><span>✓ Elke batch traceerbaar</span></div>
+${vb?`<button class="btn gold" style="margin-top:18px" onclick="openPaspoort('${vb.id}')">Bekijk een productpaspoort</button>`:''}
+</div>
+<div class="phone"><div class="phone-in">${vb?paspoortHTML(paspoortData(S,CFG,vb),true):''}</div></div>
+</div>
+<h2 style="margin:28px 0 12px">Van grondstof tot schap</h2>
+<div class="flow">${flow.map((f,i)=>`<div class="flow-step"><div class="flow-ic">${f[0]}</div><div class="flow-n">${i+1}</div><b>${f[1]}</b><p>${f[2]}</p></div>`).join('<div class="flow-arrow">→</div>')}</div>
+<div class="grid two" style="margin-top:22px">
+<div class="card"><h2>Waarom dit Lijst II aantoont</h2>
+<div class="check"><div class="dot ok">1</div><div><b>Geteste Lijst II-grondstof</b><div class="small muted">Alleen grondstof die door Allora Labs is geanalyseerd en vrijgegeven, mag de productie in. Partijen met het profiel van een extract worden geweigerd.</div></div></div>
+<div class="check"><div class="dot ok">2</div><div><b>Cannabis-RNA in het eindproduct</b><div class="small muted">De PCR-test op het product zelf toont cannabis-plantmateriaal aan, net als in de ingezette grondstof.</div></div></div>
+<div class="check"><div class="dot ok">3</div><div><b>De sommen kloppen</b><div class="small muted">Er zit nooit meer THC in een stuk dan de ingezette grondstof kan leveren. Meer THC wijst op toegevoegd extract: zo'n batch wordt automatisch geblokkeerd en nooit geleverd.</div></div></div>
+</div>
+<div class="card"><h2>Bij een inspectie</h2>
+<div class="check"><div class="dot" style="background:var(--gold)">1</div><div><b>Scan de QR-code</b><div class="small muted">Op elke verpakking, met een gewone telefooncamera.</div></div></div>
+<div class="check"><div class="dot" style="background:var(--gold)">2</div><div><b>Het productpaspoort opent</b><div class="small muted">Batch, productiedatum, type grondstof, THC per stuk en de PCR-uitslag, met labrapportnummers.</div></div></div>
+<div class="check"><div class="dot" style="background:var(--gold)">3</div><div><b>Onafhankelijk geverifieerd</b><div class="small muted">De gegevens komen rechtstreeks van Allora Labs, een ISO 9001-gecertificeerd laboratorium. Niet aanpasbaar door producent of coffeeshop.</div></div></div>
+</div>
+</div>
+<div class="card" style="margin-top:14px;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><div style="font-size:30px">🌱</div><div style="flex:1;min-width:240px"><h2 style="margin-bottom:4px">Ook voor CBD-producten</h2><span class="small muted">CBD-edibles volgen dezelfde keten. Hun productpaspoort toont het gemeten CBD-gehalte per stuk en dat THC onder de limiet blijft.</span></div>${S.batches.find(b=>isCBD(b)&&b.status==='Vrijgegeven')?`<button class="btn ghost" onclick="openPaspoort('${S.batches.find(b=>isCBD(b)&&b.status==='Vrijgegeven').id}')">Voorbeeld CBD-paspoort</button>`:''}</div>`;
+}
+function paspoortHTML(P,mini){
+const m=P.m, cbd=P.cat==='CBD', ok=P.status==='Vrijgegeven', blok=P.status==='Geblokkeerd';
+const ch=t=>(P.checks.find(c=>c.t.indexOf(t)===0)||{}).s;
+const stat = ok?`<div class="pp-stat ok"><div class="pp-big">✓</div><div><b>${cbd?'CBD-product · gecontroleerd':'Gemaakt van Lijst II-cannabis'}</b><span>${cbd?'CBD-gehalte en THC-limiet geverifieerd door Allora Labs':'Geverifieerd door Allora Labs'}</span></div></div>`
+: blok?`<div class="pp-stat bad"><div class="pp-big">✕</div><div><b>Niet vrijgegeven</b><span>Deze batch mag niet verkocht worden</span></div></div>`
+: `<div class="pp-stat wait"><div class="pp-big">…</div><div><b>Nog in controle</b><span>Deze batch is nog niet vrijgegeven</span></div></div>`;
+const tijd=[['Grondstof ontvangen',P.lots.map(x=>dmy(x.datum)).join(', ')],['Grondstof getest',P.lots.map(x=>x.oDatum?dmy(x.oDatum):'–').join(', ')],['Geproduceerd',dmy(P.datum)],['Eindproduct getest',m&&m.oDatum?dmy(m.oDatum):'–']];
+const mb=ch('Massabalans');
+return `<div class="pp ${mini?'mini':''}">
+${P.demo||(S&&S.demo)?'<div style="background:var(--gold);color:#fff;text-align:center;font-size:12px;font-weight:700;padding:4px">DEMO · voorbeeldgegevens</div>':''}<div class="pp-head"><img src="data:image/png;base64,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" alt="Allora Labs"><div class="pp-lbl">Productpaspoort<br><span style="color:var(--muted);font-weight:500">Traceability door Allora Labs</span></div></div>
+${stat}
+<div class="pp-sec"><div class="pp-prod">${esc(P.product)}</div><div class="pp-sub">Batch ${esc(P.id)} · geproduceerd ${dmy(P.datum)}</div></div>
+<div class="pp-sec"><div class="pp-h">Bewijs</div>
+${cbd?`<div class="pp-row"><span>Grondstof</span><b>${P.lots.map(x=>esc(x.type)).join(', ')}</b></div>
+<div class="pp-row"><span>CBD per stuk (gemeten)</span><b class="${ch('CBD binnen')==='ok'?'g':''}">${m?nl(m.cbdmg)+' mg':'–'} <small>etiket ${esc(P.label)} mg</small></b></div>
+<div class="pp-row"><span>THC per stuk</span><b class="${ch('THC onder')==='ok'?'g':''}">${m?(m.mg?nl(m.mg,2)+' mg':'Niet aangetoond'):'–'} <small>limiet ${nl(P.cbdThcMax,2)} mg</small></b></div>`:`
+<div class="pp-row"><span>Grondstof</span><b>${P.lots.map(x=>esc(x.type)).join(', ')} · Lijst II</b></div>
+<div class="pp-row"><span>THC grondstof</span><b>${P.lots.map(x=>x.thc!=null?nl(x.thc)+' %':'–').join(', ')}</b></div>
+<div class="pp-row"><span>PCR cannabis-RNA eindproduct</span><b class="${m&&m.pcr==='Positief'?'g':''}">${m&&m.pcr?esc(m.pcr):'–'}</b></div>
+<div class="pp-row"><span>THC per stuk (gemeten)</span><b>${m?nl(m.mg)+' mg':'–'} <small>etiket ${esc(P.label)} mg</small></b></div>
+<div class="pp-row"><span>Massabalans (geen extract)</span><b class="${mb==='ok'?'g':''}">${mb==='ok'?'Klopt':(mb==='bad'?'Afwijking':'–')}</b></div>`}
+</div>
+<div class="pp-sec"><div class="pp-h">Keten</div>${tijd.map(x=>`<div class="pp-t"><i></i><span>${x[0]}</span><b>${x[1]}</b></div>`).join('')}</div>
+<div class="pp-sec pp-lab"><div>Analyses door Allora Labs · ISO 9001<br>Rapporten ${P.lots.map(x=>x.rapport).concat([m&&m.rapport]).filter(Boolean).map(esc).join(', ')||'–'}</div></div>
+</div>`;
+}
+let PASPOORT=null;
+function openPaspoort(id){ PASPOORT=id; render(); }
+function sluitPaspoort(){ PASPOORT=null; render(); }
+function paspoortPagina(){
+const b=batch(PASPOORT);
+return `<div class="pp-page"><div class="pp-bar qr-hide"><button class="btn ghost" onclick="sluitPaspoort()">← Terug naar de app</button><span class="small muted">Zo ziet de coffeeshop of inspecteur het na het scannen</span></div>${b?paspoortHTML(paspoortData(S,CFG,b),false):'<div class="empty">Onbekende batch.</div>'}</div>`;
+}
+function goTrace(id){ TRACE=id; TAB='traceren'; render(); }
+function alleIds(){ return [...S.batches.map(b=>b.id),...S.lots.map(l=>l.id)]; }
+function traceren(){
+if(!TRACE) TRACE=S.batches[0]?S.batches[0].id:null;
+const sel=`<select onchange="goTrace(this.value)" style="max-width:340px">${alleIds().map(i=>`<option ${i===TRACE?'selected':''} value="${i}">${i} · ${esc(i.startsWith('PB')?batch(i).product:(lot(i).type+' · '+lot(i).soort))}</option>`).join('')}</select>`;
+let body='';
+if(TRACE&&TRACE.startsWith('PB')) body=traceBatch(batch(TRACE)); else if(TRACE) body=traceLot(lot(TRACE));
+return `<h1>Traceren</h1><p class="sub">Kies een ID: herkomst, analyses en bestemming in één keer. De QR-code van een batch gaat op de verpakking en opent het productpaspoort.</p>
+<div style="margin-bottom:14px">${sel}</div>${body}`;
+}
+function stepHTML(ic,title,inner,last){ return `<div class="step"><div class="rail"><div class="b">${ic}</div>${last?'':'<div class="ln"></div>'}</div><div class="body"><b>${title}</b>${inner}</div></div>`; }
+function resultLine(m){
+if(!m) return '<div class="minirow muted">Nog geen analyse.</div>';
+if(!m.oordeel) return `<div class="minirow">${m.id} · genomen ${dmy(m.datum)} door ${esc(m.door)} · ${chip('Wacht op resultaat')}</div>`;
+const cbdB = m.type==='Eindproduct'&&m.cbdmg!=null;
+const v = m.type==='Grondstof'?`THC ${nl(m.thc)} % · CBD ${nl(m.cbd)} % · CBN ${nl(m.cbn)} %`:(cbdB?`CBD ${nl(m.cbdmg)} mg/stuk · THC ${m.mg?nl(m.mg,2)+' mg':'niet aangetoond'}`:`THC ${nl(m.mg)} mg/stuk`);
+const cbdLot = m.type==='Grondstof'&&lot(m.ref)&&typeCat(lot(m.ref).type)==='CBD';
+return `<div class="minirow">Rapport <b>${esc(m.rapport)}</b> · ${v} ${cbdB||(cbdLot&&!m.pcr)?'':` · PCR ${m.pcr||'<i>nog in te voeren</i>'}${m.ct?' (Ct '+nl(m.ct)+')':''}`} · ${chip(m.oordeel)}${m.extra?`<div class="small muted">${esc(m.extra)}</div>`:''}${m.notitie?`<div class="small muted">${esc(m.notitie)}</div>`:''}</div>`;
+}
+function traceBatch(b){
+const d=dossier(b);
+const lev=S.leveringen.filter(x=>x.batch===b.id);
+const bar = !isCBD(b)&&d.th&&d.m? (()=>{const max=Math.max(d.m.mg,d.th*CFG.massabalansMax)*1.15;const p=v=>Math.min(100,v/max*100);return `<div class="small" style="margin-top:6px">Gemeten THC per stuk vs. wat de grondstof kan leveren</div><div class="bar"><div class="zone" style="left:${p(d.th*CFG.massabalansMin)}%;width:${p(d.th*CFG.massabalansMax)-p(d.th*CFG.massabalansMin)}%"></div><i style="width:${p(d.m.mg)}%;background:${d.checks[3]&&d.checks[3].s==='ok'?'var(--ok)':'var(--bad)'}"></i></div><div class="small muted">Groene zone: ${nl(d.th*CFG.massabalansMin)}–${nl(d.th*CFG.massabalansMax)} mg</div>`;})():'';
+return `<div class="grid two">
+<div class="card">
+<div class="tracehead">
+<div style="flex:1;min-width:220px"><h2 style="margin-bottom:6px">${b.id} ${chip(b.status)}</h2>
+<dl class="kv"><dt>Product</dt><dd>${esc(b.product)}</dd><dt>Geproduceerd</dt><dd>${dmy(b.datum)}</dd><dt>Stuks</dt><dd>${b.stuks} (voorraad ${b.stuks-geleverd(b.id)})</dd><dt>Overige ingrediënten</dt><dd>${esc(b.overig)||'–'}</dd></dl>
+</div>
+<div style="text-align:center"><div class="qr" id="qr" title="QR-code voor het etiket" onclick="openPaspoort('${b.id}')" style="cursor:pointer"></div><button class="btn ghost" style="padding:6px 10px;font-size:12px;margin-top:6px" onclick="openPaspoort('${b.id}')">Productpaspoort</button><br><button class="btn ghost" style="padding:6px 10px;font-size:12px;margin-top:6px" onclick="kopieer('${b.id}')">Link voor etiket kopiëren</button></div>
+</div>
+<hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+<div class="chain">
+${stepHTML('📦','Herkomst: grondstof',b.inzet.map(i=>{const l=lot(i.lot);return `<div class="minirow">${idl(i.lot)} · ${esc(l.soort)} · ${esc(l.type||'')} · ${i.g} g ingezet · ${esc(l.leverancier)} · ontvangen ${dmy(l.datum)} ${chip(l.status)}</div>${resultLine(lotResultaat(i.lot)||monstersVan(i.lot).slice(-1)[0])}`;}).join(''))}
+${stepHTML('🧁','Productie',`<div class="minirow">${dmy(b.datum)} · ${b.stuks} × ${esc(b.product)} · max. ${d.th?nl(d.th)+' mg':'–'} ${isCBD(b)?'CBD':'THC'}/stuk uit de grondstof</div>`)}
+${stepHTML('🧪','Analyse eindproduct',resultLine(monstersVan(b.id).slice(-1)[0]))}
+${stepHTML('🚚','Bestemming',lev.length?lev.map(x=>`<div class="minirow">${dmy(x.datum)} · ${esc(x.klant)} · ${x.stuks} stuks · pakbon ${esc(x.bon)}${x.blind?' · blinde controle':''}</div>`).join(''):'<div class="minirow muted">Nog niet geleverd.</div>',true)}
+</div>
+</div>
+<div class="card">
+<h2>${isCBD(b)?'CBD-dossier':'Lijst II-dossier'}</h2>
+<p class="small muted" style="margin-top:-6px">${isCBD(b)?'Toont aan dat het CBD-gehalte klopt en THC onder de limiet blijft.':'Toont aan dat deze batch van Lijst II-grondstof is gemaakt en niet van een solvent-extract (Lijst I).'}</p>
+${d.checks.map(c=>`<div class="check"><div class="dot ${c.s}">${c.s==='ok'?'✓':c.s==='bad'?'✕':'…'}</div><div><b>${c.t}</b><div class="small muted">${esc(c.d)}</div></div></div>`).join('')}
+${bar}
+<div class="hint ${d.klaar?(d.ok?'ok':'bad'):''}">${d.klaar?(d.ok?'<b>Vrijgegeven.</b> Alle controles geslaagd; batch mag geleverd worden.':'<b>Geblokkeerd.</b> Minstens één controle faalt; levering is niet mogelijk.'):'<b>In afwachting.</b> Batch kan pas geleverd worden na vrijgave.'}</div>
+</div>
+</div>`;
+}
+function traceLot(l){
+const bs=S.batches.filter(b=>b.inzet.some(i=>i.lot===l.id));
+const lev=S.leveringen.filter(x=>bs.some(b=>b.id===x.batch));
+const shops=[...new Set(lev.map(x=>x.klant))];
+return `<div class="grid two">
+<div class="card">
+<div class="tracehead">
+<div style="flex:1;min-width:220px"><h2 style="margin-bottom:6px">${l.id} ${chip(l.status)}</h2>
+<dl class="kv"><dt>Grondstof</dt><dd>${esc(l.type||'')} (${typeLabel(l.type)}) · ${esc(l.soort)}</dd><dt>Leverancier</dt><dd>${esc(l.leverancier)} (${leverStatus(l.leverancier)})</dd><dt>Ontvangen</dt><dd>${dmy(l.datum)} · ${l.gram} g · ${l.verp} verp.</dd><dt>Restant</dt><dd>${restG(l.id)} g</dd></dl></div>
+<div class="qr" id="qr"></div>
+</div>
+<hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
+<div class="chain">
+${stepHTML('🧪','Analyse grondstof',monstersVan(l.id).map(resultLine).join('')||resultLine(null))}
+${stepHTML('🧁','Gebruikt in batches',bs.length?bs.map(b=>`<div class="minirow">${idl(b.id)} · ${esc(b.product)} · ${b.inzet.filter(i=>i.lot===l.id).reduce((s,i)=>s+i.g,0)} g · ${chip(b.status)}</div>`).join(''):'<div class="minirow muted">Nog niet gebruikt.</div>')}
+${stepHTML('🚚','Bestemming',lev.length?lev.map(x=>`<div class="minirow">${dmy(x.datum)} · ${esc(x.klant)} · ${x.stuks} stuks uit ${x.batch}</div>`).join(''):'<div class="minirow muted">Geen leveringen.</div>',true)}
+</div>
+</div>
+<div class="card">
+<h2>Terugroepoverzicht</h2>
+<p class="small muted" style="margin-top:-6px">Als er iets mis is met deze partij: wie moet gebeld worden?</p>
+<dl class="kv"><dt>Batches</dt><dd>${bs.length}</dd><dt>Stuks geleverd</dt><dd>${lev.reduce((s,x)=>s+x.stuks,0)}</dd><dt>Stuks op voorraad</dt><dd>${bs.reduce((s,b)=>s+b.stuks-geleverd(b.id),0)}</dd></dl>
+<div style="margin-top:12px">${shops.length?shops.map(s=>`<div class="minirow">📍 ${esc(s)}</div>`).join(''):'<div class="empty">Geen coffeeshops betrokken.</div>'}</div>
+</div>
+</div>`;
+}
+function qrUrl(id){ const b=id.indexOf('PB')===0?batch(id):null; return b&&b.code? (S.paspoortUrl||S.appUrl)+'?p='+b.code : S.appUrl+'?id='+id; }
+function kopieer(id){ const u=qrUrl(id); try{ navigator.clipboard.writeText(u).then(()=>toast('Link gekopieerd'),()=>prompt('Kopieer de link:',u)); }catch(e){ prompt('Kopieer de link:',u); } }
+function drawQR(){
+const el=$('#qr'); if(!el||!TRACE||typeof qrcode==='undefined') return;
+try{ const q=qrcode(0,'M'); q.addData(qrUrl(TRACE)); q.make(); el.innerHTML=q.createSvgTag({cellSize:4,margin:2,scalable:true}); }catch(e){}
+}
+/* ---------- Formulieren ---------- */
+function modal(html){ $('#modal').innerHTML=html; $('#modalbg').classList.add('show'); }
+function closeModal(){ $('#modalbg').classList.remove('show'); }
+$('#modalbg').addEventListener('click',e=>{ if(e.target.id==='modalbg') closeModal(); });
+const opts=(arr,sel)=>arr.map(o=>{const v=typeof o==='string'?o:o.v,l=typeof o==='string'?o:o.l;return `<option value="${esc(v)}" ${v===sel?'selected':''}>${esc(l)}</option>`;}).join('');
+const foot=(fn,label='Opslaan')=>`<div class="foot"><button class="btn ghost" onclick="closeModal()">Annuleren</button><button class="btn" onclick="${fn}()">${label}</button></div>`;
+function fIntake(){
+modal(`<h2>📦 Grondstof ontvangen</h2><p class="small muted">De partij krijgt een ID en gaat in quarantaine.</p>
+<label>Leverancier</label><select id="i_lev" onchange="$('#i_newlev').style.display=this.value==='__nieuw'?'block':'none';intakeHint()">${opts(S.leveranciers.map(l=>({v:l.naam,l:l.naam+' · '+l.status})).concat([{v:'__nieuw',l:'+ Nieuwe leverancier…'}]))}</select><input id="i_newlev" placeholder="Naam nieuwe leverancier" style="display:none;margin-top:8px" oninput="intakeHint()">
+<label>Type grondstof</label><select id="i_type">${opts(GRONDSTOFTYPES.map(g=>({v:g.naam,l:g.naam+' · '+typeLabel(g.naam)})))}</select>
+<label>Omschrijving</label><input id="i_soort" placeholder="bijv. Lot E">
+<div class="row2"><div><label>Gewicht (g)</label><input id="i_g" type="number" min="1" placeholder="500" oninput="intakeHint()"></div><div><label>Aantal verpakkingen</label><input id="i_v" type="number" min="1" value="4" oninput="intakeHint()"></div></div>
+<label>Ref. certificaat leverancier (optioneel)</label><input id="i_ref">
+<div class="hint" id="i_hint"></div>${foot('saveIntake','Registreren')}`);
+intakeHint();
+}
+function intakeHint(){ const v=+$('#i_v').value||0, lev=$('#i_lev').value==='__nieuw'?'':$('#i_lev').value; $('#i_hint').innerHTML= v? `Bemonstering: <b>${vereistGrondstof(v,lev)} van ${v}</b> verpakkingen${leverStatus(lev)==='Nieuw'?' (strenger plan: nieuwe leverancier)':''}.`:''; }
+function saveIntake(){
+const g=+$('#i_g').value, v=+$('#i_v').value, nieuw=$('#i_lev').value==='__nieuw';
+if(!g||!v) return toast('Vul gewicht en verpakkingen in.');
+doe('intake',{leverancier:nieuw?'':$('#i_lev').value,nieuweLeverancier:nieuw?$('#i_newlev').value:'',type:$('#i_type').value,soort:$('#i_soort').value,gram:g,verp:v,ref:$('#i_ref').value});
+}
+function fMonster(pre){
+const kand=[...S.lots.filter(l=>l.status==='Quarantaine'&&!monstersVan(l.id).some(m=>!m.oordeel)).map(l=>({v:l.id,l:`${l.id} · ${l.type} · ${l.soort} (grondstof)`})),
+...S.batches.filter(b=>b.status==='In afwachting').map(b=>({v:b.id,l:`${b.id} · ${b.product} (eindproduct)`}))];
+if(!kand.length) return toast('Niets om te bemonsteren: geen grondstof in quarantaine of batches in afwachting.');
+modal(`<h2>🧪 Monster genomen</h2><p class="small muted">Registreer welk materiaal bemonsterd is en door wie.</p>
+<label>Partij of batch</label><select id="m_ref" onchange="monsterHint()">${opts(kand,pre)}</select>
+<label>Bemonsterd door</label><select id="m_door" onchange="monsterHint()">${opts(BEMONSTERAARS.map(b=>({v:b.naam,l:b.naam+(b.cert?' · gecertificeerd':' · niet gecertificeerd')})))}</select>
+<label id="m_lbl">Aantal genomen</label><input id="m_n" type="number" min="1" oninput="monsterHint()">
+<div class="hint" id="m_hint"></div>${foot('saveMonster','Registreren')}`);
+monsterHint(true);
+}
+function monsterHint(init){
+const ref=$('#m_ref').value, req=vereistVoor(ref), gl=ref.startsWith('GL');
+$('#m_lbl').textContent= gl?'Aantal bemonsterde verpakkingen':'Aantal genomen stuks';
+if(init) $('#m_n').value=req;
+const n=+$('#m_n').value||0, cert=BEMONSTERAARS.find(b=>b.naam===$('#m_door').value).cert;
+const probs=[]; if(n<req) probs.push(`te weinig: ${n} van ${req}`); if(!cert) probs.push('bemonsteraar niet gecertificeerd door Allora Labs');
+$('#m_hint').className='hint'+(probs.length?' bad':' ok');
+$('#m_hint').innerHTML= (gl?`Vereist: <b>${req}</b> verpakkingen, uit elk een deelmonster, samengevoegd.`:`Vereist: <b>${req}</b> stuks uit begin, midden en eind van de batch (3 potentie/homogeniteit, 1 PCR, 1 retentie).`) + (probs.length?`<br>⚠️ ${probs.join(' · ')}. Wordt gemarkeerd.`:'');
+}
+function saveMonster(){
+const n=+$('#m_n').value; if(!n) return toast('Vul het aantal in.');
+doe('monster',{ref:$('#m_ref').value,door:$('#m_door').value,genomen:n});
+}
+function fBatch(){
+if(!S.lots.some(l=>l.status==='Vrijgegeven'&&restG(l.id)>0)) return toast('Geen vrijgegeven grondstof op voorraad. Productie is pas mogelijk na vrijgave.');
+modal(`<h2>🧁 Batch geproduceerd</h2><p class="small muted">Alleen vrijgegeven Lijst II-grondstof is te kiezen.</p>
+<label>Product</label><select id="b_p" onchange="batchLots()">${opts(PRODUCTEN.map(p=>({v:p.naam,l:p.naam+(p.cat==='CBD'?' · CBD':'')})))}</select>
+<label>Aantal stuks</label><input id="b_n" type="number" min="1" value="400" oninput="batchHint()">
+<label>Ingezette grondstof</label><div id="b_lots"></div>
+<button class="btn ghost" style="padding:6px 10px;font-size:13px" onclick="addLotLine()">+ Partij toevoegen</button>
+<label>Overige ingrediënten (lotnummers, optioneel)</label><input id="b_ov" placeholder="bijv. Roomboter L2450 · Bloem L8840">
+<div class="hint" id="b_hint"></div>${foot('saveBatch','Registreren')}`);
+batchLots();
+}
+function batchLots(){
+const cat=(PRODUCTEN.find(x=>x.naam===$('#b_p').value)||{}).cat;
+window._vrij=S.lots.filter(l=>l.status==='Vrijgegeven'&&restG(l.id)>0&&typeCat(l.type)===cat);
+$('#b_lots').innerHTML=''; if(window._vrij.length) addLotLine(); else $('#b_hint').innerHTML='Geen vrijgegeven '+(cat==='CBD'?'CBD-':'Lijst II-')+'grondstof op voorraad.';
+}
+function addLotLine(){
+const d=document.createElement('div'); d.className='lotline';
+d.innerHTML=`<select oninput="batchHint()">${opts(window._vrij.map(l=>({v:l.id,l:`${l.id} · ${l.type} · ${l.soort} · ${restG(l.id)} g`})))}</select><input type="number" min="0" placeholder="gram" value="" oninput="batchHint()"><button class="x" onclick="this.parentNode.remove();batchHint()">✕</button>`;
+$('#b_lots').appendChild(d); batchHint();
+}
+function leesInzet(){ return [...document.querySelectorAll('#b_lots .lotline')].map(r=>({lot:r.children[0].value,g:+r.children[1].value||0})).filter(i=>i.g>0); }
+function batchHint(){
+const n=+$('#b_n').value||0, p=PRODUCTEN.find(x=>x.naam===$('#b_p').value), inzet=leesInzet();
+if(!n||!inzet.length){ $('#b_hint').innerHTML='Vul aantal stuks en ingezette grondstof in.'; return; }
+const th=theoretisch({inzet,stuks:n,cat:p.cat}); const st=p.cat==='CBD'?'CBD':'THC';
+const over=inzet.filter(i=>i.g>restG(i.lot));
+const dev=th? (th-p.mg)/p.mg:0;
+$('#b_hint').className='hint'+(over.length?' bad':'');
+$('#b_hint').innerHTML=`Max. ${st} per stuk uit deze grondstof: <b>${nl(th)} mg</b> (etiket ${p.mg} mg). Na bakverlies verwacht iets lager.`+
+(th<p.mg*0.9?'<br>⚠️ Te weinig grondstof voor de etiketdosering.':'')+(dev>0.35?'<br>⚠️ Ruim meer grondstof dan nodig voor de etiketdosering.':'')+
+(over.length?`<br>⚠️ Meer dan restvoorraad: ${over.map(i=>i.lot).join(', ')}.`:'');
+}
+function saveBatch(){
+const n=+$('#b_n').value, inzet=leesInzet();
+if(!n||!inzet.length) return toast('Vul aantal stuks en ingezette grondstof in.');
+doe('batch',{product:$('#b_p').value,stuks:n,inzet:inzet,overig:$('#b_ov').value});
+}
+function fLevering(){
+const vrij=S.batches.filter(b=>b.status==='Vrijgegeven'&&b.stuks-geleverd(b.id)>0);
+if(!vrij.length) return toast('Geen vrijgegeven batches met voorraad.');
+modal(`<h2>🚚 Levering aan coffeeshop</h2><p class="small muted">Geblokkeerde of nog niet vrijgegeven batches staan hier niet tussen.</p>
+<label>Batch</label><select id="l_b">${opts(vrij.map(b=>({v:b.id,l:`${b.id} · ${b.product} · ${b.stuks-geleverd(b.id)} op voorraad`})))}</select>
+<label>Coffeeshop</label><select id="l_k" onchange="$('#l_newk').style.display=this.value==='__nieuw'?'block':'none'">${opts(KLANTEN.concat([{v:'__nieuw',l:'+ Nieuwe coffeeshop…'}]))}</select><input id="l_newk" placeholder="Naam coffeeshop" style="display:none;margin-top:8px">
+<div class="row2"><div><label>Aantal stuks</label><input id="l_n" type="number" min="1" value="100"></div><div><label>Pakbon</label><input id="l_bon" placeholder="bijv. 0430"></div></div>
+<label><input type="checkbox" id="l_blind" style="width:auto;margin-right:6px">Blinde controle aanvragen bij deze coffeeshop</label>
+${foot('saveLevering','Registreren')}`);
+}
+function saveLevering(){
+const n=+$('#l_n').value, nieuw=$('#l_k').value==='__nieuw'; if(!n) return toast('Vul het aantal in.');
+doe('levering',{batch:$('#l_b').value,klant:nieuw?'':$('#l_k').value,nieuweKlant:nieuw?$('#l_newk').value:'',stuks:n,bon:$('#l_bon').value,blind:$('#l_blind').checked});
+}
+function fResultaat(){
+const open=S.monsters.filter(m=>!m.oordeel||(m.type==='Grondstof'&&!m.pcr&&typeCat(lot(m.ref).type)!=='CBD'));
+if(!open.length) return toast('Geen monsters die op een resultaat wachten.');
+modal(`<h2>📋 Resultaat invoeren · Allora Labs</h2>
+<label>Monster</label><select id="r_m" onchange="resultVelden()">${opts(open.map(m=>({v:m.id,l:`${m.id} · ${m.ref} (${m.type.toLowerCase()})${m.oordeel?' · PCR aanvullen':''}`})))}</select>
+<div id="r_velden"></div><div class="hint" id="r_hint"></div>${foot('saveResultaat','Resultaat vastleggen')}`);
+resultVelden();
+}
+function resultVelden(){
+const m=S.monsters.find(x=>x.id===$('#r_m').value), gl=m.type==='Grondstof';
+$('#r_velden').innerHTML=`<label>Rapportnummer</label><input id="r_rap" value="${esc(m.rapport||'')}" placeholder="bijv. AL-2026-1234"><label>Link naar rapport (optioneel)</label><input id="r_link" value="${esc(m.link||'')}" placeholder="https://…">`+
+(!gl&&isCBD(batch(m.ref))?`<div class="row2"><div><label>CBD per stuk (mg)</label><input id="r_cbdmg" type="number" step="0.1" value="" oninput="resultHint()"></div><div><label>THC per stuk (mg, 0 = niet aangetoond)</label><input id="r_mg" type="number" step="0.01" value="0" oninput="resultHint()"></div></div><label>Opmerking (optioneel)</label><input id="r_not" value="">`:'')+
+(!gl&&isCBD(batch(m.ref))?'':(gl?`<div class="row3"><div><label>THC totaal (%)</label><input id="r_thc" type="number" step="0.1" value="${m.thc??''}" oninput="resultHint()"></div><div><label>CBD (%)</label><input id="r_cbd" type="number" step="0.1" value="${m.cbd??''}"></div><div><label>CBN (%)</label><input id="r_cbn" type="number" step="0.1" value="${m.cbn??''}"></div></div>`
+:`<label>THC totaal per stuk (mg)</label><input id="r_mg" type="number" step="0.1" value="" oninput="resultHint()">`)+
+`<div class="row2"><div><label>PCR cannabis-RNA</label><select id="r_pcr" onchange="resultHint()">${opts(gl?['Positief','Negatief',{v:'',l:'Nog niet uitgevoerd / n.v.t.'}]:['Positief','Negatief'], gl&&typeCat(lot(m.ref).type)==='CBD'?'':(m.pcr||'Positief'))}</select></div><div><label>Ct-waarde</label><input id="r_ct" type="number" step="0.1" value="${m.ct??''}"></div></div>`+
+(gl?`<label>Overige resultaten (optioneel)</label><input id="r_extra" value="${esc(m.extra||'')}" placeholder="bijv. CBG 0,6 % · terpenen 0,35 %"><label>Oordeel</label><select id="r_o" onchange="resultHint()">${opts(['Conform','Niet conform'])}</select>`:'')+
+`<label>Opmerking (optioneel)</label><input id="r_not" value="${esc(m.notitie||'')}">`);
+resultHint();
+}
+function resultHint(){
+const m=S.monsters.find(x=>x.id===$('#r_m').value), h=$('#r_hint');
+if(m.type==='Grondstof'){ const ok=$('#r_o').value==='Conform'; h.className='hint '+(ok?'ok':'bad'); h.innerHTML= ok?`Partij ${m.ref} wordt <b>vrijgegeven</b> voor productie.`:`Partij ${m.ref} wordt <b>afgekeurd</b>.`; return; }
+const b=batch(m.ref);
+if((isCBD(b)&&$('#r_cbdmg').value==='')||(!isCBD(b)&&$('#r_mg').value==='')){ h.className='hint'; h.innerHTML='Vul de resultaten in; de app beoordeelt de batch automatisch.'; return; }
+if(isCBD(b)){ const c=+$('#r_cbdmg').value, x=+$('#r_mg').value, dv=(c-b.label)/b.label; const ok=Math.abs(dv)<=CFG.labelTolerantie&&x<=CFG.cbdThcMax;
+h.className='hint '+(ok?'ok':'bad'); h.innerHTML=`Automatische beoordeling ${b.id}: CBD ${dv>=0?'+':''}${nl(dv*100,0)} % t.o.v. etiket · THC ${x?nl(x,2)+' mg':'niet aangetoond'} (limiet ${nl(CFG.cbdThcMax,2)} mg)<br><b>${ok?'→ Vrijgegeven':'→ Geblokkeerd'}</b>`; return; }
+const th=theoretisch(b), mg=+$('#r_mg').value, pcr=$('#r_pcr').value;
+const ratio=th?mg/th:0, dev=(mg-b.label)/b.label;
+const ok = pcr==='Positief' && ratio>=CFG.massabalansMin && ratio<=CFG.massabalansMax && Math.abs(dev)<=CFG.labelTolerantie;
+h.className='hint '+(ok?'ok':'bad');
+h.innerHTML=`Automatische beoordeling ${b.id}: PCR ${pcr} · massabalans ${nl(ratio*100,0)} % van max. ${nl(th)} mg · etiket ${dev>=0?'+':''}${nl(dev*100,0)} %<br><b>${ok?'→ Vrijgegeven':'→ Geblokkeerd'}</b>`;
+}
+async function saveResultaat(){
+const m=S.monsters.find(x=>x.id===$('#r_m').value), gl=m.type==='Grondstof', cbdE=!gl&&isCBD(batch(m.ref));
+const v=id=>{ const e=$(id); return e?e.value:''; };
+const p={monster:m.id,rapport:v('#r_rap'),link:v('#r_link'),notitie:v('#r_not'),pcr:cbdE?'':v('#r_pcr'),ct:cbdE?'':v('#r_ct')};
+if(gl) Object.assign(p,{thc:v('#r_thc'),cbd:v('#r_cbd'),cbn:v('#r_cbn'),extra:v('#r_extra'),oordeel:v('#r_o')});
+else if(cbdE) Object.assign(p,{cbdmg:v('#r_cbdmg'),mg:v('#r_mg')});
+else p.mg=v('#r_mg');
+if(await doe('resultaat',p)) goTrace(m.ref);
+}
+const CORR_VELDEN={GL:[['soort','Omschrijving'],['gram','Gewicht (g)'],['verp','Verpakkingen'],['ref','Ref. leverancier'],['notitie','Notitie']],
+PB:[['stuks','Stuks'],['overig','Overige ingrediënten'],['notitie','Notitie']],
+M:[['door','Bemonsterd door'],['genomen','Aantal genomen'],['rapport','Rapportnummer'],['link','Link rapport'],['notitie','Notitie']],
+LV:[['klant','Coffeeshop'],['stuks','Stuks'],['bon','Pakbon']]};
+function corrRec(id){ return S.lots.find(x=>x.id===id)||S.batches.find(x=>x.id===id)||S.monsters.find(x=>x.id===id)||S.leveringen.find(x=>x.id===id); }
+function fCorrectie(){
+const ids=[...S.lots.map(x=>({v:x.id,l:x.id+' · '+x.type+' · '+x.soort})),...S.batches.map(x=>({v:x.id,l:x.id+' · '+x.product})),...S.monsters.map(x=>({v:x.id,l:x.id+' · monster van '+x.ref})),...S.leveringen.map(x=>({v:x.id,l:x.id+' · levering '+x.batch+' → '+x.klant}))];
+modal(`<h2>✏️ Correctie</h2><p class="small muted">Herstel een fout. De oude waarde, de nieuwe waarde en de reden komen in het logboek.</p>
+<label>Registratie</label><select id="c_id" onchange="corrVelden()">${opts(ids.reverse())}</select>
+<label>Veld</label><select id="c_v" onchange="corrHuidig()"></select>
+<div class="hint" id="c_h"></div>
+<label>Nieuwe waarde</label><input id="c_w">
+<label>Reden</label><input id="c_r" placeholder="bijv. tikfout bij invoer">
+${foot('saveCorrectie','Correctie vastleggen')}`);
+corrVelden();
+}
+function corrVelden(){ const id=$('#c_id').value, k=id.split('-')[0]; $('#c_v').innerHTML=opts(CORR_VELDEN[k].map(f=>({v:f[0],l:f[1]}))); corrHuidig(); }
+function corrHuidig(){ const r=corrRec($('#c_id').value), f=$('#c_v').value, cur=r?r[f]:''; $('#c_h').innerHTML='Huidige waarde: <b>'+esc(cur===null||cur===''?'(leeg)':cur)+'</b>'; $('#c_w').value=cur??''; }
+function saveCorrectie(){ if(!$('#c_r').value.trim()) return toast('Geef een reden.'); doe('correctie',{id:$('#c_id').value,veld:$('#c_v').value,waarde:$('#c_w').value,reden:$('#c_r').value}); }
+/* ---------- Opstarten ---------- */
+document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>{TAB=b.dataset.tab;PASPOORT=null;render();});
+document.addEventListener('visibilitychange',()=>{ if(!document.hidden&&S&&TOKEN&&!BUSY&&!$('#modalbg').classList.contains('show')) call('getState',TOKEN).then(st=>{setState(st);render();}).catch(()=>{}); });
+if(P_CODE) toonPaspoortPubliek(); else if(TOKEN) laad(); else toonLogin();
+</script>
+</body>
+</html>
