@@ -389,6 +389,8 @@ nav .btn-add .ico{stroke:#fff;width:18px;height:18px}
 .btn .ico{stroke:currentColor;width:18px;height:18px}
 .qrc .acts .btn{padding:6px 9px}
 @media(max-width:700px){nav{overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}nav button{white-space:nowrap}nav .btn-add{position:fixed;right:16px;bottom:18px;z-index:40;box-shadow:0 10px 28px rgba(20,35,58,.35);border-radius:999px;padding:14px 20px;font-size:15px}main{padding-bottom:90px}}
+
+.no-blind .opt-blind{display:none!important}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
 </head>
@@ -504,18 +506,22 @@ checks:d.checks.map(c=>({s:c.s,t:c.t}))};
 </script>
 <script>
 /* ---------- Status en serververbinding ---------- */
-const API = 'https://script.google.com/macros/s/AKfycby3ve1slVCUcRsuCM6uDAbTBXGx3azDjC3LAHFwtGLEtrZDSwml5VyjriW03ZytH-LQ/exec';
+let API = 'https://script.google.com/macros/s/AKfycby3ve1slVCUcRsuCM6uDAbTBXGx3azDjC3LAHFwtGLEtrZDSwml5VyjriW03ZytH-LQ/exec';
 const _Q = new URLSearchParams(location.search);
+const KCODE = (_Q.get('k')||'').replace(/[^A-Za-z0-9-]/g,'').toLowerCase();
+const KLANTEN_URL = 'https://allora-traceability.github.io/paspoort/klanten.json';
+let KLANT = {opties:{}};
+const TKEY = 'allora-'+'trace-token'+(KCODE?'-'+KCODE:'');
 const INIT_ID = (_Q.get('id')||'').replace(/[^A-Za-z0-9-]/g,'');
 const P_CODE = (_Q.get('p')||'').replace(/[^A-Za-z0-9]/g,'');
 let S=null, CFG={}, PRODUCTEN=[], GRONDSTOFTYPES=[], KLANTEN=[], BEMONSTERAARS=[];
-let TOKEN=null; try{ TOKEN=localStorage.getItem('allora-trace-token'); }catch(e){}
+let TOKEN=null; try{ TOKEN=localStorage.getItem(TKEY); }catch(e){}
 let ROLE='producent', TAB=INIT_ID?'traceren':'overzicht', TRACE=INIT_ID||null, FILTER={}, BUSY=false;
 const typeCat = n=>(GRONDSTOFTYPES.find(g=>g.naam===n)||{cat:'THC'}).cat;
 const typeLabel = n=>typeCat(n)==='CBD'?'CBD':'Lijst II';
 function setState(st){ S=st; CFG=S.cfg; PRODUCTEN=S.producten; GRONDSTOFTYPES=S.grondstoftypes; KLANTEN=S.klanten.map(k=>k.naam); BEMONSTERAARS=S.bemonsteraars; ROLE=S.user.rol; Object.assign(window, maakLogica(S,CFG)); }
 function call(fn){ const args=[].slice.call(arguments,1); return fetch(API,{method:'POST',credentials:'omit',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({fn:fn,args:args})}).catch(()=>{throw new Error('Geen verbinding met de server. Probeer het opnieuw.');}).then(r=>r.json()).then(j=>{ if(!j.ok) throw new Error(j.error); return j.result; }); }
-function fout(e){ const msg=String((e&&e.message)||e).replace(/^(Error|Exception):\s*/,''); if(msg.indexOf('SESSIE_VERLOPEN')>=0){ TOKEN=null; try{localStorage.removeItem('allora-trace-token');}catch(x){} closeModal(); toonLogin('Je sessie is verlopen. Log opnieuw in.'); } else toast(msg); }
+function fout(e){ const msg=String((e&&e.message)||e).replace(/^(Error|Exception):\s*/,''); if(msg.indexOf('SESSIE_VERLOPEN')>=0){ TOKEN=null; try{localStorage.removeItem(TKEY);}catch(x){} closeModal(); toonLogin('Je sessie is verlopen. Log opnieuw in.'); } else toast(msg); }
 async function laad(){ try{ setState(await call('getState',TOKEN)); toonApp(); }catch(e){ fout(e); if(!S) toonLogin(); } }
 async function doe(type,p){
 if(BUSY) return false; BUSY=true; document.body.classList.add('busy');
@@ -542,7 +548,7 @@ $('#l_naam').innerHTML = r.namen.length
 : `<label>Je naam</label><input id="l_txt" placeholder="Voor het logboek">`;
 $('#l_btn').textContent='Inloggen';
 } else {
-TOKEN=r.token; try{ localStorage.setItem('allora-trace-token',TOKEN); }catch(x){}
+TOKEN=r.token; try{ localStorage.setItem(TKEY,TOKEN); }catch(x){}
 await laad();
 }
 }catch(e){ fout(e); }
@@ -554,7 +560,7 @@ document.body.classList.remove('auth');
 $('#userbox').innerHTML=`${S.demo?'<span class="demo-tag" style="color:#fff">DEMO</span>':''}<span>${esc(S.user.naam)} · ${ROLE==='allora'?'Allora Labs':'Producent'}</span><button class="btn ghost" onclick="uitloggen()">Uitloggen</button>`;
 render();
 }
-function uitloggen(){ call('logout',TOKEN).catch(()=>{}); TOKEN=null; try{localStorage.removeItem('allora-trace-token');}catch(x){} toonLogin(); }
+function uitloggen(){ call('logout',TOKEN).catch(()=>{}); TOKEN=null; try{localStorage.removeItem(TKEY);}catch(x){} toonLogin(); }
 async function toonPaspoortPubliek(){
 document.body.classList.add('pp-mode','qr-scan','auth');
 $('#main').innerHTML='<div class="empty" style="text-align:center;padding:40px">Productpaspoort laden…</div>';
@@ -715,7 +721,7 @@ ${vb?`<button class="btn gold" style="margin-top:18px" onclick="openPaspoort('${
 <div class="card" style="margin-top:14px;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><div class="flow-ic" style="margin:0">${ico('drop')}</div><div style="flex:1;min-width:240px"><h2 style="margin-bottom:4px">Ook voor CBD-producten</h2><span class="small muted">CBD-edibles volgen dezelfde keten. Hun productpaspoort toont het gemeten CBD-gehalte per stuk en dat THC onder de limiet blijft.</span></div>${S.batches.find(b=>isCBD(b)&&b.status==='Vrijgegeven')?`<button class="btn ghost" onclick="openPaspoort('${S.batches.find(b=>isCBD(b)&&b.status==='Vrijgegeven').id}')">Voorbeeld CBD-paspoort</button>`:''}</div>`;
 }
 const DOCI='<svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:none;stroke:var(--gold);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;margin-left:3px;vertical-align:-1px"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>';
-function rapUrl(P,src,k){ if(!src||!src.rapport) return ''; if(src.link) return src.link; const base=(S&&S.paspoortUrl)||'https://allora-traceability.github.io/paspoort/'; return (P.demo||(S&&S.demo))&&P.code? base+'rapport.html?p='+encodeURIComponent(P.code)+'&r='+encodeURIComponent(src.rapport)+'&k='+k : ''; }
+function rapUrl(P,src,k){ if(!src||!src.rapport) return ''; if(src.link) return src.link; const base=(S&&S.paspoortUrl)||'https://allora-traceability.github.io/paspoort/'; return (P.demo||(S&&S.demo))&&P.code? base+'rapport.html?p='+encodeURIComponent(P.code)+'&r='+encodeURIComponent(src.rapport)+'&k='+k+(typeof KCODE!=='undefined'&&KCODE?'&c='+KCODE:'') : ''; }
 function rl(P,src,k,txt){ const u=rapUrl(P,src,k); return u?`<a href="${esc(u)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;border-bottom:1.5px dotted var(--gold)" onclick="event.stopPropagation()">${txt}${DOCI}</a>`:txt; }
 function paspoortHTML(P,mini){
 const m=P.m, cbd=P.cat==='CBD', ok=P.status==='Vrijgegeven', blok=P.status==='Geblokkeerd';
@@ -824,7 +830,7 @@ ${stepHTML('truck','Bestemming',lev.length?lev.map(x=>`<div class="minirow">${dm
 </div>
 </div>`;
 }
-function qrUrl(id){ const b=id.indexOf('PB')===0?batch(id):null; return b&&b.code? (S.paspoortUrl||S.appUrl)+'?p='+b.code : S.appUrl+'?id='+id; }
+function qrUrl(id){ const b=id.indexOf('PB')===0?batch(id):null, kq=KCODE?'&k='+KCODE:''; return b&&b.code? String(S.paspoortUrl||S.appUrl).split('?')[0]+'?p='+b.code+kq : String(S.appUrl).split('?')[0]+'?id='+id+kq; }
 function kopieer(id){ const u=qrUrl(id); try{ navigator.clipboard.writeText(u).then(()=>toast('Link gekopieerd'),()=>prompt('Kopieer de link:',u)); }catch(e){ prompt('Kopieer de link:',u); } }
 function drawQR(){
 const el=$('#qr'); if(!el||!TRACE||typeof qrcode==='undefined') return;
@@ -1202,7 +1208,7 @@ return [
 {key:'stuks',q:'Hoeveel stuks?',h:()=>d.batch?(batch(d.batch).stuks-geleverd(d.batch))+' op voorraad.':'',type:'num',unit:'stuks',max:()=>batch(d.batch).stuks-geleverd(d.batch)},
 {key:'bon',q:'Pakbonnummer?',h:'Mag leeg blijven.',type:'text',ph:'0430',opt:true},
 {key:'_sum',q:'Klopt dit?',type:'sum',rows:()=>[['Product',(batch(d.batch)||{}).product+' · '+d.batch],['Coffeeshop',d.klant==='__nieuw'?d._nieuw+' (nieuw)':d.klant],['Aantal',d.stuks+' stuks'],['Pakbon',d.bon||'–']],
-extra:`<label style="display:flex;gap:8px;align-items:center;margin-top:12px;font-weight:500"><input type="checkbox" id="wz-blind" style="width:auto;margin:0" ${d.blind?'checked':''} onchange="WIZ.d.blind=this.checked">Blinde controle aanvragen bij deze coffeeshop</label>`}
+extra:`<label class="opt-blind" style="display:flex;gap:8px;align-items:center;margin-top:12px;font-weight:500"><input type="checkbox" id="wz-blind" style="width:auto;margin:0" ${d.blind?'checked':''} onchange="WIZ.d.blind=this.checked">Blinde controle aanvragen bij deze coffeeshop</label>`}
 ];
 }
 function wizRender(){
@@ -1302,6 +1308,7 @@ if(['grondstof','productie','analyses','leveringen'].indexOf(TAB)>=0){ OV=TAB; T
 if(!TAB||TAB==='overzicht') TAB='keten';
 if(TAB==='uitslagen'&&ROLE!=='allora') TAB='keten';
 const ua=document.querySelector('#nav [data-tab=uitslagen]'); if(ua) ua.style.display=ROLE==='allora'?'':'none';
+const verberg=(typeof KLANT!=='undefined'&&KLANT.opties&&KLANT.opties.verbergTabs)||[]; document.querySelectorAll('#nav button[data-tab]').forEach(b=>{ if(b.dataset.tab!=='uitslagen') b.style.display=verberg.indexOf(b.dataset.tab)>=0?'none':''; }); if(verberg.indexOf(TAB)>=0) TAB='keten';
 document.querySelectorAll('#nav button[data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===TAB));
 if(RTAB!==TAB+OV){ RTAB=TAB+OV; window.scrollTo(0,0); }
 const f={keten:ketenView,overzichten:overzichtenView,logboek:logboek,uitleg:uitleg,uitslagen:uitslagenView}[TAB]||ketenView;
@@ -1315,7 +1322,17 @@ let RTAB='';
 /* ---------- Opstarten ---------- */
 document.querySelectorAll('#nav button[data-tab]').forEach(b=>b.onclick=()=>{TAB=b.dataset.tab;PASPOORT=null;render();});
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden&&S&&TOKEN&&!BUSY&&!$('#modalbg').classList.contains('show')) call('getState',TOKEN).then(st=>{setState(st);render();}).catch(()=>{}); });
+(async function start(){
+try{
+const all=await (await fetch(KLANTEN_URL,{cache:'no-store'})).json();
+const c=all[KCODE||'demo'];
+if(!c){ $('#main').innerHTML='<div class="login card"><h1>Onbekende link</h1><p class="sub">Deze link hoort bij geen enkele klant. Controleer de link of vraag Allora Labs om een nieuwe.</p></div>'; return; }
+KLANT=c; KLANT.opties=c.opties||{}; if(c.api) API=c.api;
+if(c.script) await new Promise(res=>{ const s=document.createElement('script'); s.src=KLANTEN_URL.replace('klanten.json','klanten/'+(KCODE||'demo')+'.js'); s.onload=res; s.onerror=res; document.head.appendChild(s); });
+}catch(e){ if(KCODE){ $('#main').innerHTML='<div class="login card"><h1>Even geduld</h1><p class="sub">De instellingen konden niet worden geladen. Controleer de verbinding en laad de pagina opnieuw.</p></div>'; return; } }
+document.body.classList.toggle('no-blind', KLANT.opties.blindeControle===false);
 if(P_CODE) toonPaspoortPubliek(); else if(TOKEN) laad(); else toonLogin();
+})();
 </script>
 </body>
 </html>
