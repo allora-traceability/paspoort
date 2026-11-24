@@ -391,6 +391,18 @@ nav .btn-add .ico{stroke:#fff;width:18px;height:18px}
 @media(max-width:700px){nav{overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}nav button{white-space:nowrap}nav .btn-add{position:fixed;right:16px;bottom:18px;z-index:40;box-shadow:0 10px 28px rgba(20,35,58,.35);border-radius:999px;padding:14px 20px;font-size:15px}main{padding-bottom:90px}}
 
 .no-blind .opt-blind{display:none!important}
+
+.raps{display:flex;flex-direction:column;gap:8px}
+.rap{display:grid;grid-template-columns:34px 150px minmax(0,1.3fr) minmax(0,1.4fr) auto auto;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.rap-id b,.rap-wat b{display:block;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14.5px}
+.rap-id span,.rap-wat span{display:block;font-size:12.5px;color:var(--muted)}
+.rap-res{font-size:13.5px}
+.rap-acts{display:flex;gap:6px;justify-content:flex-end}
+.rbtn{padding:6px 10px!important;font-size:12.5px!important;text-decoration:none;color:var(--ink)}
+.rbtn .ico{width:15px!important;height:15px!important;stroke:var(--gold)!important}
+.rap-inl{display:flex;gap:6px;margin:4px 0 10px}
+@media(max-width:980px){.rap{grid-template-columns:34px minmax(0,1fr) minmax(0,1fr)}.rap-res{grid-column:2/4}.rap-st{grid-column:2}.rap-acts{grid-column:3}}
+@media(max-width:560px){.rap{grid-template-columns:34px minmax(0,1fr)}.rap-wat,.rap-res,.rap-st,.rap-acts{grid-column:2}.rap-acts{justify-content:flex-start}}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
 </head>
@@ -998,7 +1010,7 @@ function corrHuidig(){ const r=corrRec($('#c_id').value), f=$('#c_v').value, cur
 function saveCorrectie(){ if(!$('#c_r').value.trim()) return toast('Geef een reden.'); doe('correctie',{id:$('#c_id').value,veld:$('#c_v').value,waarde:$('#c_w').value,reden:$('#c_r').value}); }
 
 /* ===== UI v2: Mijn keten, zijpaneel, stap-voor-stap toevoegen, overzichten ===== */
-let OV='leveringen', KF='actief', KQ='', PANEEL=null, WIZ=null, AVIEW='item';
+let OV='leveringen', KF='actief', KQ='', PANEEL=null, WIZ=null, AVIEW='rap';
 const ST_IC={ok:'check',wait:'clock',todo:'arrowr',bad:'x',done:'check'};
 const stHTML = s=>`<span class="st st-${s.k}">${ico(ST_IC[s.k])}${esc(s.t)}</span>`;
 function groet(){ const h=new Date().getHours(); return h<12?'Goedemorgen':h<18?'Goedemiddag':'Goedenavond'; }
@@ -1135,7 +1147,7 @@ function analyseKaart(id){
 const ms=monstersVan(id); if(!ms.length) return `<div class="pn-card"><h3>Analyses</h3><div class="sm muted">Nog geen monster genomen.</div></div>`;
 return `<div class="pn-card"><h3>Analyses</h3>${ms.map(m=>{ const gl=m.type==='Grondstof', cbdE=!gl&&m.cbdmg!=null;
 const r=!m.oordeel?'Wacht op uitslag lab':gl?`THC ${nl(m.thc)} %${m.pcr?' · PCR '+esc(m.pcr):''}`:cbdE?`CBD ${nl(m.cbdmg)} mg · THC ${m.mg?nl(m.mg,2)+' mg':'niet aangetoond'}`:`THC ${nl(m.mg)} mg/stuk · PCR ${esc(m.pcr||'–')}`;
-return pnRow(`${dmy(m.datum)}${m.rapport?' · '+esc(m.rapport):''}`,r); }).join('')}</div>`;
+return pnRow(`${dmy(m.datum)}${m.rapport?' · '+esc(m.rapport):''}`,r)+(rapportLink(m,'pot')?`<div class="rap-inl" style="margin:2px 0 6px">${rapKnoppen(m)}</div>`:''); }).join('')}</div>`;
 }
 function paneelHTML(id){
 if(id.indexOf('S:')===0){
@@ -1275,14 +1287,56 @@ else if(OV==='traceren') inh=zonderKop(traceren());
 return `<div class="kv-head"><div><h1>Overzichten</h1><p class="sub">Alle details per onderwerp. Klik op een ID voor het volledige dossier.</p></div></div>
 <div class="seg" style="margin-bottom:18px">${tabs.map(([v,t])=>`<button class="${OV===v?'on':''}" onclick="OV='${v}';render()">${t}</button>`).join('')}</div>${inh}`;
 }
+let AFILT='alle';
+function rapBase(){ return (S&&S.paspoortUrl)||'https://allora-traceability.github.io/paspoort/'; }
+function b64(o){ return btoa(unescape(encodeURIComponent(JSON.stringify(o)))); }
+function rapportLink(m,kind){
+if(!m||!m.oordeel) return '';
+if(m.link) return m.link;
+if(!S.demo||!m.rapport) return '';
+let P;
+if(m.type==='Grondstof'){ const l=lot(m.ref)||{}; P={demo:true,id:'',cat:typeCat(l.type),lots:[{id:l.id,type:l.type,rapport:m.rapport,thc:m.thc,cbd:m.cbd,cbn:m.cbn,pcr:m.pcr,ct:m.ct,oDatum:m.oDatum}],m:null}; }
+else { const b=batch(m.ref)||{}; P={demo:true,id:b.id,product:b.product,cat:b.cat,label:b.label,cbdThcMax:CFG.cbdThcMax,lots:[],m:{mg:m.mg,cbdmg:m.cbdmg,pcr:m.pcr,ct:m.ct,oDatum:m.oDatum,rapport:m.rapport}}; }
+return rapBase()+'rapport.html?r='+encodeURIComponent(m.rapport)+'&k='+kind+'#d='+b64(P);
+}
+function rapKnoppen(m){
+const pot=rapportLink(m,'pot'), pcr=m.pcr&&!(m.type!=='Grondstof'&&m.cbdmg!=null)?rapportLink(m,'pcr'):'';
+if(!pot) return m.oordeel?'<span class="sm muted">Rapport volgt</span>':'';
+return `<a class="btn ghost rbtn" href="${esc(pot)}" target="_blank" rel="noopener">${ico('clip')}Analyse</a>${pcr?`<a class="btn ghost rbtn" href="${esc(pcr)}" target="_blank" rel="noopener">${ico('dna')}PCR</a>`:''}`;
+}
+function rapResultaat(m){
+if(!m.oordeel) return 'Wacht op uitslag lab';
+if(m.type==='Grondstof') return `THC ${nl(m.thc)} %${m.cbd!=null?' · CBD '+nl(m.cbd)+' %':''}${m.pcr?' · PCR '+esc(m.pcr):''}`;
+if(m.cbdmg!=null) return `CBD ${nl(m.cbdmg)} mg/stuk · THC ${m.mg?nl(m.mg,2)+' mg':'niet aangetoond'}`;
+return `THC ${nl(m.mg)} mg/stuk${m.pcr?' · PCR '+esc(m.pcr):''}`;
+}
+function rapRij(m){
+const gl=m.type==='Grondstof', o=gl?lot(m.ref):batch(m.ref); if(!o) return '';
+const st=!m.oordeel?{k:'wait',t:'Wacht op uitslag'}:m.oordeel==='Conform'?{k:'ok',t:'Conform'}:{k:'bad',t:'Niet conform'};
+const wat=gl?esc(o.type)+(o.soort?' · '+esc(o.soort):''):esc(o.product);
+return `<div class="rap">
+<div class="kc-ic">${ico(gl?(typeCat(o.type)==='CBD'?'drop':'leaf'):'box')}</div>
+<div class="rap-id"><b>${esc(m.rapport||'Nog geen rapport')}</b><span>${m.oordeel?dmy(m.oDatum):'genomen '+dmy(m.datum)}</span></div>
+<div class="rap-wat"><b>${wat}</b><span>${gl?'Grondstof':'Eindproduct'} · <a class="id" onclick="openPaneel('${m.ref}')">${m.ref}</a></span></div>
+<div class="rap-res">${rapResultaat(m)}</div>
+<div class="rap-st">${stHTML(st)}</div>
+<div class="rap-acts">${rapKnoppen(m)}</div></div>`;
+}
 function analysesView(){
-const seg=`<div style="margin-bottom:14px"><div class="seg noprint">${[['item','Per grondstof en product'],['tabel','Alle monsters']].map(([v,t])=>`<button class="${AVIEW===v?'on':''}" onclick="AVIEW='${v}';render()">${t}</button>`).join('')}</div></div>`;
+const seg=`<div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:14px"><div class="seg noprint">${[['rap','Rapporten'],['item','Per grondstof en product'],['tabel','Alle monsters']].map(([v,t])=>`<button class="${AVIEW===v?'on':''}" onclick="AVIEW='${v}';render()">${t}</button>`).join('')}</div>${AVIEW==='rap'?`<div class="seg noprint">${[['alle','Alles'],['Grondstof','Grondstof'],['Eindproduct','Eindproduct']].map(([v,t])=>`<button class="${AFILT===v?'on':''}" onclick="AFILT='${v}';render()">${t}</button>`).join('')}</div>`:''}</div>`;
 if(AVIEW==='tabel') return seg+zonderKop(analyses());
+if(AVIEW==='rap'){
+const ms=S.monsters.filter(m=>AFILT==='alle'||m.type===AFILT);
+const open=ms.filter(m=>!m.oordeel), klaar=ms.filter(m=>m.oordeel).slice().sort((a,b)=>(b.oDatum||'')>(a.oDatum||'')?1:-1);
+return seg+`<p class="sub" style="margin:0 0 12px">Alle testrapporten van Allora Labs, met de grondstof of batch waar ze bij horen.${S.demo?' In de demo openen voorbeeldrapporten; in gebruik het originele PDF.':''}</p>
+${open.length?`<h2 style="margin:6px 0 10px">Wacht op uitslag</h2><div class="raps">${open.map(rapRij).join('')}</div>`:''}
+<h2 style="margin:${open.length?'22px':'6px'} 0 10px">Rapporten <span class="sm muted" style="font-weight:500">${klaar.length}</span></h2><div class="raps">${klaar.map(rapRij).join('')||'<div class="k-empty">Nog geen rapporten.</div>'}</div>`;
+}
 const lots=S.lots.filter(l=>monstersVan(l.id).length).slice().reverse();
 const prods=[...new Set(S.batches.map(b=>b.product))];
 const grp=(titel,sub,st,id,rows)=>`<div class="grp"><div class="grp-h"><b>${titel}</b><span class="sm">${sub}</span><span class="sp"></span>${st?stHTML(st):''}${id?`<button class="btn ghost" style="padding:5px 10px;font-size:12.5px" onclick="openPaneel('${id}')">Details</button>`:''}</div>${rows}</div>`;
-return seg+`<h2 style="margin:6px 0 10px">Grondstoffen</h2>${lots.map(l=>grp(esc(l.type)+(l.soort?' · '+esc(l.soort):''),l.id,stLot(l),l.id,monstersVan(l.id).map(resultLine).join(''))).join('')||'<div class="k-empty">Nog geen analyses.</div>'}
-<h2 style="margin:22px 0 10px">Producten</h2>${prods.map(p=>{ const bs=S.batches.filter(b=>b.product===p).slice().reverse(); return grp(esc(p),bs.length+(bs.length===1?' batch':' batches'),null,null,bs.map(b=>`<div style="margin:8px 0 2px;display:flex;gap:8px;align-items:center;flex-wrap:wrap"><a class="id" onclick="openPaneel('${b.id}')">${b.id}</a><span class="sm muted">${dmy(b.datum)}</span>${stHTML(stBatch(b))}</div>${monstersVan(b.id).map(resultLine).join('')||'<div class="minirow muted">Nog geen monster.</div>'}`).join('')); }).join('')}`;
+return seg+`<h2 style="margin:6px 0 10px">Grondstoffen</h2>${lots.map(l=>grp(esc(l.type)+(l.soort?' · '+esc(l.soort):''),l.id,stLot(l),l.id,monstersVan(l.id).map(m=>resultLine(m)+`<div class="rap-inl">${rapKnoppen(m)}</div>`).join(''))).join('')||'<div class="k-empty">Nog geen analyses.</div>'}
+<h2 style="margin:22px 0 10px">Producten</h2>${prods.map(p=>{ const bs=S.batches.filter(b=>b.product===p).slice().reverse(); return grp(esc(p),bs.length+(bs.length===1?' batch':' batches'),null,null,bs.map(b=>`<div style="margin:8px 0 2px;display:flex;gap:8px;align-items:center;flex-wrap:wrap"><a class="id" onclick="openPaneel('${b.id}')">${b.id}</a><span class="sm muted">${dmy(b.datum)}</span>${stHTML(stBatch(b))}</div>${monstersVan(b.id).map(m=>resultLine(m)+`<div class="rap-inl">${rapKnoppen(m)}</div>`).join('')||'<div class="minirow muted">Nog geen monster.</div>'}`).join('')); }).join('')}`;
 }
 function qrView(){
 const bs=S.batches.filter(b=>b.code).slice().reverse();
