@@ -110,6 +110,7 @@ footer{text-align:center;color:var(--muted);font-size:12px;padding:24px}
 .bar i{position:absolute;top:0;bottom:0;left:0;border-radius:5px}
 .bar .zone{position:absolute;top:-3px;bottom:-3px;border-left:2px dashed var(--ok);border-right:2px dashed var(--ok)}
 .empty{color:var(--muted);font-style:italic;padding:8px 0}
+
 header{background:#fff;color:var(--ink);border-bottom:1px solid var(--line)}
 .logo img.gf{height:40px;display:block}
 .logo .tt{border-left:1px solid var(--line);padding-left:12px;font-size:16px}
@@ -151,13 +152,82 @@ header{background:#fff;color:var(--ink);border-bottom:1px solid var(--line)}
 .pp-bar{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
 body.pp-mode nav,body.pp-mode header .role{display:none}
 body.qr-scan .qr-hide,body.qr-scan footer,body.qr-scan .demo-tag{display:none}
+
 .userbox{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted)}
 .userbox .btn{padding:6px 12px;font-size:13px}
 @media(max-width:600px){.userbox span{display:none}}
 .login{max-width:380px;margin:40px auto}
 body.auth nav{display:none}
 body.busy{cursor:progress} body.busy .modal .btn{opacity:.6;pointer-events:none}
+
+/* ===== Allora-huisstijl ===== */
+:root{--bg:#f5f7fb;--card:#fff;--ink:#14233a;--muted:#4a5568;--line:#dde4ee;--gold:#1f6fd1;--gold-soft:#e8f1fc;--grey-soft:#eef2f7;--radius:14px}
+body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:15px}
+h1,h2,.kpi .n,.cs-title,.pp-prod,.act b{font-family:'Space Grotesk','Inter',sans-serif}
+h1{font-size:26px;font-weight:700;letter-spacing:-.01em}
+h2{font-size:18px;font-weight:600}
+header{background:#fff;border-bottom:0;padding:14px 28px}
+.logo img.gf{height:38px}
+.logo .tt{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;color:var(--ink)}
+.logo .tt small{font-family:'Inter',sans-serif;font-weight:500;font-size:12px}
+nav{background:#fff;border-bottom:1px solid var(--line);padding:0 20px;gap:4px}
+nav button{color:var(--muted);font-weight:500;padding:12px 12px;border-bottom:2px solid transparent}
+nav button:hover{color:var(--ink)}
+nav button.on{color:var(--ink);border-bottom-color:var(--gold);font-weight:600}
+main{max-width:1200px;padding:28px 28px 8px}
+.sub{color:var(--muted)}
+.card{border-radius:16px;padding:22px;box-shadow:none}
+.kpis{grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+@media(min-width:1100px){.kpis{grid-template-columns:repeat(7,1fr)}}
+.kpi{border-radius:14px;padding:16px 16px 14px;border:1px solid var(--line);transition:border-color .15s}
+.kpi:hover{border-color:var(--gold)}
+.kpi.amber,.kpi.green,.kpi.red,.kpi.blue,.kpi.gold{border-left:1px solid var(--line)}
+.kpi .n{font-size:30px;font-weight:700;color:var(--ink)}
+.kpi .l{display:flex;gap:7px;align-items:baseline;margin-top:4px;line-height:1.3}
+.kpi .l:before{content:"";flex:none;width:8px;height:8px;border-radius:50%;background:var(--gold);transform:translateY(-1px)}
+.kpi.amber .l:before{background:var(--warn)}.kpi.green .l:before{background:var(--ok)}.kpi.red .l:before{background:var(--bad)}.kpi.blue .l:before{background:var(--info)}
+.actions{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:20px 0}
+@media(max-width:900px){.actions{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.actions{grid-template-columns:minmax(0,1fr)}}
+.act{border-radius:14px;padding:14px 16px;gap:14px;min-height:72px}
+.act:hover{border-color:var(--gold)}
+.act .ic{width:40px;height:40px;border-radius:10px;background:var(--gold-soft)}
+.act b{font-weight:600;font-size:15px;color:var(--ink)}
+.act span{font-size:13px}
+.ico{width:22px;height:22px;fill:none;stroke:var(--gold);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;display:block}
+.hero{background:var(--brand);color:#fff;border-radius:18px;padding:28px 32px;margin-bottom:22px}
+.hero .kick{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#7fb3ff;margin-bottom:8px}
+.hero h1{color:#fff;font-size:30px;margin:0 0 8px}
+.hero .sub{color:#c9d6ea;margin:0;max-width:70ch}
+.pillar{background:var(--bg);border-radius:12px;padding:14px}
+.btn{border-radius:10px;font-family:inherit}
+.btn.ghost{border-color:var(--line);background:#fff}
+select,input,textarea{border-color:var(--line);border-radius:10px}
+select:focus,input:focus,textarea:focus{outline:2px solid var(--gold-soft);border-color:var(--gold)}
+th{color:var(--muted);font-size:11.5px;letter-spacing:.06em}
+.filter button{border-color:var(--line);color:var(--ink)}
+.filter button.on{background:var(--ink);border-color:var(--ink)}
+.step .rail .b{background:var(--gold-soft)}
+.step .rail .b .ico{width:17px;height:17px}
+.minirow{background:var(--bg)}
+.modal{border-radius:18px;padding:26px}
+.modal h2{font-size:21px}
+.login{max-width:400px;margin:56px auto;padding:30px}
+.login h1{font-size:28px}
+.cs-hero{background:var(--brand);border:0;color:#fff}
+.cs-kicker{color:#7fb3ff;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.cs-title{color:#fff}
+.cs-lead{color:#c9d6ea}
+.cs-badges span{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:#fff;font-weight:500}
+.phone{border-color:#0b1424;color:var(--ink)}
+.flow-step{border-radius:14px}
+.flow-ic{width:40px;height:40px;border-radius:10px;background:var(--gold-soft);display:grid;place-items:center;margin-bottom:10px}
+.flow-step b{font-family:'Space Grotesk',sans-serif;font-weight:600}
+.flow-arrow{font-size:18px}
+footer{padding:28px}
+.demo-tag{background:var(--gold)}
 </style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
 </head>
 <body>
 <header>
@@ -177,8 +247,10 @@ body.busy{cursor:progress} body.busy .modal .btn{opacity:.6;pointer-events:none}
 </nav>
 <main id="main"></main>
 <footer>Traceability door Allora Labs · ISO 9001</footer>
+
 <div class="modal-bg" id="modalbg"><div class="modal" id="modal"></div></div>
 <div class="toast" id="toast"></div>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script>/* ===== Gedeelde logica (identiek in app en server) ===== */
 function nl(n,d){ if(d===undefined)d=1; if(n===null||n===undefined||n===''||isNaN(n)) return '–'; return Number(n).toFixed(d).replace('.',','); }
@@ -327,6 +399,7 @@ $('#main').innerHTML='<div class="empty" style="text-align:center;padding:40px">
 try{ const P=await call('getPaspoort',P_CODE); $('#main').innerHTML=`<div class="pp-page">${paspoortHTML(P,false)}</div>`; }
 catch(e){ $('#main').innerHTML=`<div class="pp-page"><div class="card"><h2>Productpaspoort niet gevonden</h2><p class="muted">${esc(String(e.message||e).replace(/^(Error|Exception):\s*/,''))}</p></div></div>`; }
 }
+
 /* ---------- Helpers ---------- */
 const $ = s=>document.querySelector(s);
 const esc = s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
@@ -334,7 +407,11 @@ const dmy = iso=> iso? iso.slice(8,10)+'-'+iso.slice(5,7)+'-'+iso.slice(0,4):'';
 const today = ()=> new Date().toISOString().slice(0,10);
 const chip = s=>`<span class="chip c-${String(s).replace(/\s/g,'')}">${esc(s)}</span>`;
 const idl = id=>/^(GL|PB)-/.test(id)?`<a class="id" onclick="goTrace('${id}')">${id}</a>`:`<span class="id">${esc(id)}</span>`;
+
 function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),3200); }
+
+const ICONS={"leaf": "<path d=\"M5 19c0-8 5-13 14-14 0 9-5 14-13 14\"/><path d=\"M5 19l7-7\"/>", "flask": "<path d=\"M9 3h6\"/><path d=\"M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3\"/><path d=\"M7.5 15h9\"/>", "box": "<path d=\"M12 3l8 4.5v9L12 21l-8-4.5v-9z\"/><path d=\"M4 7.5l8 4.5 8-4.5\"/><path d=\"M12 12v9\"/>", "truck": "<path d=\"M3 6h11v10H3z\"/><path d=\"M14 10h4l3 3v3h-7\"/><circle cx=\"7\" cy=\"17.5\" r=\"1.8\"/><circle cx=\"17\" cy=\"17.5\" r=\"1.8\"/>", "clip": "<path d=\"M7 4h10v17H7z\"/><path d=\"M9.5 2.5h5v3h-5z\"/><path d=\"M9.5 10h5M9.5 13.5h5M9.5 17h3\"/>", "pen": "<path d=\"M4 20h4L19 9l-4-4L4 16z\"/><path d=\"M13.5 6.5l4 4\"/>", "dna": "<path d=\"M7 3c0 6 10 6 10 12s-10 6-10 6\"/><path d=\"M17 3c0 6-10 6-10 12\"/><path d=\"M8.5 7h7M8.5 17h7\"/>", "qr": "<path d=\"M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z\"/><path d=\"M14 14h2v2h-2zM18 18h2v2h-2zM14 18h2M18 14h2\"/>", "shop": "<path d=\"M4 9l1.5-5h13L20 9\"/><path d=\"M4 9h16v2a3 3 0 0 1-5.3 2 3 3 0 0 1-5.4 0A3 3 0 0 1 4 11z\"/><path d=\"M5.5 13v7h13v-7\"/>", "drop": "<path d=\"M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z\"/>", "pin": "<path d=\"M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z\"/><circle cx=\"12\" cy=\"10\" r=\"2.2\"/>"};
+const ico=n=>'<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">'+(ICONS[n]||'')+'</svg>';
 /* ---------- Render ---------- */
 function render(){
 if(!S) return;
@@ -349,14 +426,14 @@ window.scrollTo(0,0);
 }
 function actiesHTML(){
 const a=[
-['📦','Grondstof ontvangen','Hasj, wiet, kief of CBD binnen','fIntake',false],
-['🧪','Monster genomen','Grondstof of eindproduct','fMonster',false],
-['🧁','Batch geproduceerd','Grondstof inzetten','fBatch',false],
-['🚚','Levering aan coffeeshop','Alleen vrijgegeven batches','fLevering',false],
-['📋','Resultaat invoeren','Alleen Allora Labs','fResultaat',ROLE!=='allora'],
-['✏️','Correctie','Fout herstellen, met reden','fCorrectie',false]
+['leaf','Grondstof ontvangen','Hasj, wiet, kief of CBD binnen','fIntake',false],
+['flask','Monster genomen','Grondstof of eindproduct','fMonster',false],
+['box','Batch geproduceerd','Grondstof inzetten','fBatch',false],
+['truck','Levering aan coffeeshop','Alleen vrijgegeven batches','fLevering',false],
+['clip','Resultaat invoeren','Alleen Allora Labs','fResultaat',ROLE!=='allora'],
+['pen','Correctie','Fout herstellen, met reden','fCorrectie',false]
 ];
-return `<div class="actions">${a.map(([ic,t,s,fn,lock])=>`<button class="act ${lock?'locked':''}" onclick="${lock?"toast('Resultaten worden alleen door Allora Labs ingevoerd.')":fn+'()'}"><div class="ic">${ic}</div><div><b>${t}</b><span>${s}</span></div></button>`).join('')}</div>`;
+return `<div class="actions">${a.map(([ic,t,s,fn,lock])=>`<button class="act ${lock?'locked':''}" onclick="${lock?"toast('Resultaten worden alleen door Allora Labs ingevoerd.')":fn+'()'}"><div class="ic">${ico(ic)}</div><div><b>${t}</b><span>${s}</span></div></button>`).join('')}</div>`;
 }
 function overzicht(){
 const L=S.lots, B=S.batches;
@@ -371,8 +448,8 @@ S.monsters.filter(m=>!m.oordeel&&!(BEMONSTERAARS.find(x=>x.naam===m.door)||{}).c
 B.filter(b=>b.status==='In afwachting').forEach(b=>todo.push(`${idl(b.id)} geproduceerd: monster nemen (${CFG.stuksEindproduct} stuks).`));
 B.filter(b=>b.status==='Geblokkeerd').forEach(b=>todo.push(`<b>${idl(b.id)} geblokkeerd</b>: mag niet geleverd worden. Bekijk het dossier.`));
 return `
-<h1>Overzicht</h1>
-<p class="sub">Van Lijst II-grondstof tot edible in de coffeeshop: elke stap geregistreerd, elke batch pas vrij na analyse door Allora Labs.</p>
+<div class="hero"><div class="kick">Traceability door Allora Labs</div><h1>Overzicht</h1>
+<p class="sub">Van Lijst II-grondstof tot edible in de coffeeshop: elke stap geregistreerd, elke batch pas vrij na analyse door Allora Labs.</p></div>
 <div class="grid kpis">
 <div class="kpi amber" onclick="go('grondstof','Quarantaine')"><div class="n">${c(L,'Quarantaine')}</div><div class="l">Grondstof in quarantaine</div></div>
 <div class="kpi green" onclick="go('grondstof','Vrijgegeven')"><div class="n">${c(L,'Vrijgegeven')}</div><div class="l">Grondstof vrijgegeven</div></div>
@@ -443,11 +520,11 @@ ${S.log.map(x=>`<tr><td class="small">${x.t}</td><td>${esc(x.wie)}<div class="sm
 function uitleg(){
 const vb = S.batches.find(b=>b.status==='Vrijgegeven');
 const flow=[
-['🌿','Lijst II-grondstof','Hasj, ijswaterhasj, wiet of kief. Elke partij krijgt een ID en wordt door Allora Labs getest voordat hij gebruikt mag worden.'],
-['🧁','Productie','Elke batch edibles is gekoppeld aan de geteste grondstof en de hoeveelheid die erin is gegaan.'],
-['🧬','PCR-test eindproduct','Allora Labs test elke batch: THC per stuk én cannabis-RNA. Dat laatste toont aan dat er plantmateriaal in zit.'],
-['🔳','QR-code op de verpakking','Elke verpakking draagt de QR-code van zijn batch.'],
-['🏪','In de coffeeshop','Scan de QR en het productpaspoort laat de hele keten zien. Ook bij een inspectie.']
+['leaf','Lijst II-grondstof','Hasj, ijswaterhasj, wiet of kief. Elke partij krijgt een ID en wordt door Allora Labs getest voordat hij gebruikt mag worden.'],
+['box','Productie','Elke batch edibles is gekoppeld aan de geteste grondstof en de hoeveelheid die erin is gegaan.'],
+['dna','PCR-test eindproduct','Allora Labs test elke batch: THC per stuk én cannabis-RNA. Dat laatste toont aan dat er plantmateriaal in zit.'],
+['qr','QR-code op de verpakking','Elke verpakking draagt de QR-code van zijn batch.'],
+['shop','In de coffeeshop','Scan de QR en het productpaspoort laat de hele keten zien. Ook bij een inspectie.']
 ];
 return `<div class="cs-hero">
 <div>
@@ -460,7 +537,7 @@ ${vb?`<button class="btn gold" style="margin-top:18px" onclick="openPaspoort('${
 <div class="phone"><div class="phone-in">${vb?paspoortHTML(paspoortData(S,CFG,vb),true):''}</div></div>
 </div>
 <h2 style="margin:28px 0 12px">Van grondstof tot schap</h2>
-<div class="flow">${flow.map((f,i)=>`<div class="flow-step"><div class="flow-ic">${f[0]}</div><div class="flow-n">${i+1}</div><b>${f[1]}</b><p>${f[2]}</p></div>`).join('<div class="flow-arrow">→</div>')}</div>
+<div class="flow">${flow.map((f,i)=>`<div class="flow-step"><div class="flow-ic">${ico(f[0])}</div><div class="flow-n">${i+1}</div><b>${f[1]}</b><p>${f[2]}</p></div>`).join('<div class="flow-arrow">→</div>')}</div>
 <div class="grid two" style="margin-top:22px">
 <div class="card"><h2>Waarom dit Lijst II aantoont</h2>
 <div class="check"><div class="dot ok">1</div><div><b>Geteste Lijst II-grondstof</b><div class="small muted">Alleen grondstof die door Allora Labs is geanalyseerd en vrijgegeven, mag de productie in. Partijen met het profiel van een extract worden geweigerd.</div></div></div>
@@ -473,7 +550,7 @@ ${vb?`<button class="btn gold" style="margin-top:18px" onclick="openPaspoort('${
 <div class="check"><div class="dot" style="background:var(--gold)">3</div><div><b>Onafhankelijk geverifieerd</b><div class="small muted">De gegevens komen rechtstreeks van Allora Labs, een ISO 9001-gecertificeerd laboratorium. Niet aanpasbaar door producent of coffeeshop.</div></div></div>
 </div>
 </div>
-<div class="card" style="margin-top:14px;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><div style="font-size:30px">🌱</div><div style="flex:1;min-width:240px"><h2 style="margin-bottom:4px">Ook voor CBD-producten</h2><span class="small muted">CBD-edibles volgen dezelfde keten. Hun productpaspoort toont het gemeten CBD-gehalte per stuk en dat THC onder de limiet blijft.</span></div>${S.batches.find(b=>isCBD(b)&&b.status==='Vrijgegeven')?`<button class="btn ghost" onclick="openPaspoort('${S.batches.find(b=>isCBD(b)&&b.status==='Vrijgegeven').id}')">Voorbeeld CBD-paspoort</button>`:''}</div>`;
+<div class="card" style="margin-top:14px;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><div class="flow-ic" style="margin:0">${ico('drop')}</div><div style="flex:1;min-width:240px"><h2 style="margin-bottom:4px">Ook voor CBD-producten</h2><span class="small muted">CBD-edibles volgen dezelfde keten. Hun productpaspoort toont het gemeten CBD-gehalte per stuk en dat THC onder de limiet blijft.</span></div>${S.batches.find(b=>isCBD(b)&&b.status==='Vrijgegeven')?`<button class="btn ghost" onclick="openPaspoort('${S.batches.find(b=>isCBD(b)&&b.status==='Vrijgegeven').id}')">Voorbeeld CBD-paspoort</button>`:''}</div>`;
 }
 function paspoortHTML(P,mini){
 const m=P.m, cbd=P.cat==='CBD', ok=P.status==='Vrijgegeven', blok=P.status==='Geblokkeerd';
@@ -518,7 +595,7 @@ if(TRACE&&TRACE.startsWith('PB')) body=traceBatch(batch(TRACE)); else if(TRACE) 
 return `<h1>Traceren</h1><p class="sub">Kies een ID: herkomst, analyses en bestemming in één keer. De QR-code van een batch gaat op de verpakking en opent het productpaspoort.</p>
 <div style="margin-bottom:14px">${sel}</div>${body}`;
 }
-function stepHTML(ic,title,inner,last){ return `<div class="step"><div class="rail"><div class="b">${ic}</div>${last?'':'<div class="ln"></div>'}</div><div class="body"><b>${title}</b>${inner}</div></div>`; }
+function stepHTML(ic,title,inner,last){ return `<div class="step"><div class="rail"><div class="b">${ico(ic)}</div>${last?'':'<div class="ln"></div>'}</div><div class="body"><b>${title}</b>${inner}</div></div>`; }
 function resultLine(m){
 if(!m) return '<div class="minirow muted">Nog geen analyse.</div>';
 if(!m.oordeel) return `<div class="minirow">${m.id} · genomen ${dmy(m.datum)} door ${esc(m.door)} · ${chip('Wacht op resultaat')}</div>`;
@@ -541,10 +618,10 @@ return `<div class="grid two">
 </div>
 <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
 <div class="chain">
-${stepHTML('📦','Herkomst: grondstof',b.inzet.map(i=>{const l=lot(i.lot);return `<div class="minirow">${idl(i.lot)} · ${esc(l.soort)} · ${esc(l.type||'')} · ${i.g} g ingezet · ${esc(l.leverancier)} · ontvangen ${dmy(l.datum)} ${chip(l.status)}</div>${resultLine(lotResultaat(i.lot)||monstersVan(i.lot).slice(-1)[0])}`;}).join(''))}
-${stepHTML('🧁','Productie',`<div class="minirow">${dmy(b.datum)} · ${b.stuks} × ${esc(b.product)} · max. ${d.th?nl(d.th)+' mg':'–'} ${isCBD(b)?'CBD':'THC'}/stuk uit de grondstof</div>`)}
-${stepHTML('🧪','Analyse eindproduct',resultLine(monstersVan(b.id).slice(-1)[0]))}
-${stepHTML('🚚','Bestemming',lev.length?lev.map(x=>`<div class="minirow">${dmy(x.datum)} · ${esc(x.klant)} · ${x.stuks} stuks · pakbon ${esc(x.bon)}${x.blind?' · blinde controle':''}</div>`).join(''):'<div class="minirow muted">Nog niet geleverd.</div>',true)}
+${stepHTML('leaf','Herkomst: grondstof',b.inzet.map(i=>{const l=lot(i.lot);return `<div class="minirow">${idl(i.lot)} · ${esc(l.soort)} · ${esc(l.type||'')} · ${i.g} g ingezet · ${esc(l.leverancier)} · ontvangen ${dmy(l.datum)} ${chip(l.status)}</div>${resultLine(lotResultaat(i.lot)||monstersVan(i.lot).slice(-1)[0])}`;}).join(''))}
+${stepHTML('box','Productie',`<div class="minirow">${dmy(b.datum)} · ${b.stuks} × ${esc(b.product)} · max. ${d.th?nl(d.th)+' mg':'–'} ${isCBD(b)?'CBD':'THC'}/stuk uit de grondstof</div>`)}
+${stepHTML('flask','Analyse eindproduct',resultLine(monstersVan(b.id).slice(-1)[0]))}
+${stepHTML('truck','Bestemming',lev.length?lev.map(x=>`<div class="minirow">${dmy(x.datum)} · ${esc(x.klant)} · ${x.stuks} stuks · pakbon ${esc(x.bon)}${x.blind?' · blinde controle':''}</div>`).join(''):'<div class="minirow muted">Nog niet geleverd.</div>',true)}
 </div>
 </div>
 <div class="card">
@@ -569,16 +646,16 @@ return `<div class="grid two">
 </div>
 <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
 <div class="chain">
-${stepHTML('🧪','Analyse grondstof',monstersVan(l.id).map(resultLine).join('')||resultLine(null))}
-${stepHTML('🧁','Gebruikt in batches',bs.length?bs.map(b=>`<div class="minirow">${idl(b.id)} · ${esc(b.product)} · ${b.inzet.filter(i=>i.lot===l.id).reduce((s,i)=>s+i.g,0)} g · ${chip(b.status)}</div>`).join(''):'<div class="minirow muted">Nog niet gebruikt.</div>')}
-${stepHTML('🚚','Bestemming',lev.length?lev.map(x=>`<div class="minirow">${dmy(x.datum)} · ${esc(x.klant)} · ${x.stuks} stuks uit ${x.batch}</div>`).join(''):'<div class="minirow muted">Geen leveringen.</div>',true)}
+${stepHTML('flask','Analyse grondstof',monstersVan(l.id).map(resultLine).join('')||resultLine(null))}
+${stepHTML('box','Gebruikt in batches',bs.length?bs.map(b=>`<div class="minirow">${idl(b.id)} · ${esc(b.product)} · ${b.inzet.filter(i=>i.lot===l.id).reduce((s,i)=>s+i.g,0)} g · ${chip(b.status)}</div>`).join(''):'<div class="minirow muted">Nog niet gebruikt.</div>')}
+${stepHTML('truck','Bestemming',lev.length?lev.map(x=>`<div class="minirow">${dmy(x.datum)} · ${esc(x.klant)} · ${x.stuks} stuks uit ${x.batch}</div>`).join(''):'<div class="minirow muted">Geen leveringen.</div>',true)}
 </div>
 </div>
 <div class="card">
 <h2>Terugroepoverzicht</h2>
 <p class="small muted" style="margin-top:-6px">Als er iets mis is met deze partij: wie moet gebeld worden?</p>
 <dl class="kv"><dt>Batches</dt><dd>${bs.length}</dd><dt>Stuks geleverd</dt><dd>${lev.reduce((s,x)=>s+x.stuks,0)}</dd><dt>Stuks op voorraad</dt><dd>${bs.reduce((s,b)=>s+b.stuks-geleverd(b.id),0)}</dd></dl>
-<div style="margin-top:12px">${shops.length?shops.map(s=>`<div class="minirow">📍 ${esc(s)}</div>`).join(''):'<div class="empty">Geen coffeeshops betrokken.</div>'}</div>
+<div style="margin-top:12px">${shops.length?shops.map(s=>`<div class="minirow">${esc(s)}</div>`).join(''):'<div class="empty">Geen coffeeshops betrokken.</div>'}</div>
 </div>
 </div>`;
 }
@@ -588,14 +665,16 @@ function drawQR(){
 const el=$('#qr'); if(!el||!TRACE||typeof qrcode==='undefined') return;
 try{ const q=qrcode(0,'M'); q.addData(qrUrl(TRACE)); q.make(); el.innerHTML=q.createSvgTag({cellSize:4,margin:2,scalable:true}); }catch(e){}
 }
+
 /* ---------- Formulieren ---------- */
 function modal(html){ $('#modal').innerHTML=html; $('#modalbg').classList.add('show'); }
 function closeModal(){ $('#modalbg').classList.remove('show'); }
 $('#modalbg').addEventListener('click',e=>{ if(e.target.id==='modalbg') closeModal(); });
 const opts=(arr,sel)=>arr.map(o=>{const v=typeof o==='string'?o:o.v,l=typeof o==='string'?o:o.l;return `<option value="${esc(v)}" ${v===sel?'selected':''}>${esc(l)}</option>`;}).join('');
 const foot=(fn,label='Opslaan')=>`<div class="foot"><button class="btn ghost" onclick="closeModal()">Annuleren</button><button class="btn" onclick="${fn}()">${label}</button></div>`;
+
 function fIntake(){
-modal(`<h2>📦 Grondstof ontvangen</h2><p class="small muted">De partij krijgt een ID en gaat in quarantaine.</p>
+modal(`<h2>Grondstof ontvangen</h2><p class="small muted">De partij krijgt een ID en gaat in quarantaine.</p>
 <label>Leverancier</label><select id="i_lev" onchange="$('#i_newlev').style.display=this.value==='__nieuw'?'block':'none';intakeHint()">${opts(S.leveranciers.map(l=>({v:l.naam,l:l.naam+' · '+l.status})).concat([{v:'__nieuw',l:'+ Nieuwe leverancier…'}]))}</select><input id="i_newlev" placeholder="Naam nieuwe leverancier" style="display:none;margin-top:8px" oninput="intakeHint()">
 <label>Type grondstof</label><select id="i_type">${opts(GRONDSTOFTYPES.map(g=>({v:g.naam,l:g.naam+' · '+typeLabel(g.naam)})))}</select>
 <label>Omschrijving</label><input id="i_soort" placeholder="bijv. Lot E">
@@ -614,7 +693,7 @@ function fMonster(pre){
 const kand=[...S.lots.filter(l=>l.status==='Quarantaine'&&!monstersVan(l.id).some(m=>!m.oordeel)).map(l=>({v:l.id,l:`${l.id} · ${l.type} · ${l.soort} (grondstof)`})),
 ...S.batches.filter(b=>b.status==='In afwachting').map(b=>({v:b.id,l:`${b.id} · ${b.product} (eindproduct)`}))];
 if(!kand.length) return toast('Niets om te bemonsteren: geen grondstof in quarantaine of batches in afwachting.');
-modal(`<h2>🧪 Monster genomen</h2><p class="small muted">Registreer welk materiaal bemonsterd is en door wie.</p>
+modal(`<h2>Monster genomen</h2><p class="small muted">Registreer welk materiaal bemonsterd is en door wie.</p>
 <label>Partij of batch</label><select id="m_ref" onchange="monsterHint()">${opts(kand,pre)}</select>
 <label>Bemonsterd door</label><select id="m_door" onchange="monsterHint()">${opts(BEMONSTERAARS.map(b=>({v:b.naam,l:b.naam+(b.cert?' · gecertificeerd':' · niet gecertificeerd')})))}</select>
 <label id="m_lbl">Aantal genomen</label><input id="m_n" type="number" min="1" oninput="monsterHint()">
@@ -628,7 +707,7 @@ if(init) $('#m_n').value=req;
 const n=+$('#m_n').value||0, cert=BEMONSTERAARS.find(b=>b.naam===$('#m_door').value).cert;
 const probs=[]; if(n<req) probs.push(`te weinig: ${n} van ${req}`); if(!cert) probs.push('bemonsteraar niet gecertificeerd door Allora Labs');
 $('#m_hint').className='hint'+(probs.length?' bad':' ok');
-$('#m_hint').innerHTML= (gl?`Vereist: <b>${req}</b> verpakkingen, uit elk een deelmonster, samengevoegd.`:`Vereist: <b>${req}</b> stuks uit begin, midden en eind van de batch (3 potentie/homogeniteit, 1 PCR, 1 retentie).`) + (probs.length?`<br>⚠️ ${probs.join(' · ')}. Wordt gemarkeerd.`:'');
+$('#m_hint').innerHTML= (gl?`Vereist: <b>${req}</b> verpakkingen, uit elk een deelmonster, samengevoegd.`:`Vereist: <b>${req}</b> stuks uit begin, midden en eind van de batch (3 potentie/homogeniteit, 1 PCR, 1 retentie).`) + (probs.length?`<br>${probs.join(' · ')}. Wordt gemarkeerd.`:'');
 }
 function saveMonster(){
 const n=+$('#m_n').value; if(!n) return toast('Vul het aantal in.');
@@ -636,7 +715,7 @@ doe('monster',{ref:$('#m_ref').value,door:$('#m_door').value,genomen:n});
 }
 function fBatch(){
 if(!S.lots.some(l=>l.status==='Vrijgegeven'&&restG(l.id)>0)) return toast('Geen vrijgegeven grondstof op voorraad. Productie is pas mogelijk na vrijgave.');
-modal(`<h2>🧁 Batch geproduceerd</h2><p class="small muted">Alleen vrijgegeven Lijst II-grondstof is te kiezen.</p>
+modal(`<h2>Batch geproduceerd</h2><p class="small muted">Alleen vrijgegeven Lijst II-grondstof is te kiezen.</p>
 <label>Product</label><select id="b_p" onchange="batchLots()">${opts(PRODUCTEN.map(p=>({v:p.naam,l:p.naam+(p.cat==='CBD'?' · CBD':'')})))}</select>
 <label>Aantal stuks</label><input id="b_n" type="number" min="1" value="400" oninput="batchHint()">
 <label>Ingezette grondstof</label><div id="b_lots"></div>
@@ -664,8 +743,8 @@ const over=inzet.filter(i=>i.g>restG(i.lot));
 const dev=th? (th-p.mg)/p.mg:0;
 $('#b_hint').className='hint'+(over.length?' bad':'');
 $('#b_hint').innerHTML=`Max. ${st} per stuk uit deze grondstof: <b>${nl(th)} mg</b> (etiket ${p.mg} mg). Na bakverlies verwacht iets lager.`+
-(th<p.mg*0.9?'<br>⚠️ Te weinig grondstof voor de etiketdosering.':'')+(dev>0.35?'<br>⚠️ Ruim meer grondstof dan nodig voor de etiketdosering.':'')+
-(over.length?`<br>⚠️ Meer dan restvoorraad: ${over.map(i=>i.lot).join(', ')}.`:'');
+(th<p.mg*0.9?'<br>Te weinig grondstof voor de etiketdosering.':'')+(dev>0.35?'<br>Ruim meer grondstof dan nodig voor de etiketdosering.':'')+
+(over.length?`<br>Meer dan restvoorraad: ${over.map(i=>i.lot).join(', ')}.`:'');
 }
 function saveBatch(){
 const n=+$('#b_n').value, inzet=leesInzet();
@@ -675,7 +754,7 @@ doe('batch',{product:$('#b_p').value,stuks:n,inzet:inzet,overig:$('#b_ov').value
 function fLevering(){
 const vrij=S.batches.filter(b=>b.status==='Vrijgegeven'&&b.stuks-geleverd(b.id)>0);
 if(!vrij.length) return toast('Geen vrijgegeven batches met voorraad.');
-modal(`<h2>🚚 Levering aan coffeeshop</h2><p class="small muted">Geblokkeerde of nog niet vrijgegeven batches staan hier niet tussen.</p>
+modal(`<h2>Levering aan coffeeshop</h2><p class="small muted">Geblokkeerde of nog niet vrijgegeven batches staan hier niet tussen.</p>
 <label>Batch</label><select id="l_b">${opts(vrij.map(b=>({v:b.id,l:`${b.id} · ${b.product} · ${b.stuks-geleverd(b.id)} op voorraad`})))}</select>
 <label>Coffeeshop</label><select id="l_k" onchange="$('#l_newk').style.display=this.value==='__nieuw'?'block':'none'">${opts(KLANTEN.concat([{v:'__nieuw',l:'+ Nieuwe coffeeshop…'}]))}</select><input id="l_newk" placeholder="Naam coffeeshop" style="display:none;margin-top:8px">
 <div class="row2"><div><label>Aantal stuks</label><input id="l_n" type="number" min="1" value="100"></div><div><label>Pakbon</label><input id="l_bon" placeholder="bijv. 0430"></div></div>
@@ -689,7 +768,7 @@ doe('levering',{batch:$('#l_b').value,klant:nieuw?'':$('#l_k').value,nieuweKlant
 function fResultaat(){
 const open=S.monsters.filter(m=>!m.oordeel||(m.type==='Grondstof'&&!m.pcr&&typeCat(lot(m.ref).type)!=='CBD'));
 if(!open.length) return toast('Geen monsters die op een resultaat wachten.');
-modal(`<h2>📋 Resultaat invoeren · Allora Labs</h2>
+modal(`<h2>Resultaat invoeren · Allora Labs</h2>
 <label>Monster</label><select id="r_m" onchange="resultVelden()">${opts(open.map(m=>({v:m.id,l:`${m.id} · ${m.ref} (${m.type.toLowerCase()})${m.oordeel?' · PCR aanvullen':''}`})))}</select>
 <div id="r_velden"></div><div class="hint" id="r_hint"></div>${foot('saveResultaat','Resultaat vastleggen')}`);
 resultVelden();
@@ -734,7 +813,7 @@ LV:[['klant','Coffeeshop'],['stuks','Stuks'],['bon','Pakbon']]};
 function corrRec(id){ return S.lots.find(x=>x.id===id)||S.batches.find(x=>x.id===id)||S.monsters.find(x=>x.id===id)||S.leveringen.find(x=>x.id===id); }
 function fCorrectie(){
 const ids=[...S.lots.map(x=>({v:x.id,l:x.id+' · '+x.type+' · '+x.soort})),...S.batches.map(x=>({v:x.id,l:x.id+' · '+x.product})),...S.monsters.map(x=>({v:x.id,l:x.id+' · monster van '+x.ref})),...S.leveringen.map(x=>({v:x.id,l:x.id+' · levering '+x.batch+' → '+x.klant}))];
-modal(`<h2>✏️ Correctie</h2><p class="small muted">Herstel een fout. De oude waarde, de nieuwe waarde en de reden komen in het logboek.</p>
+modal(`<h2>Correctie</h2><p class="small muted">Herstel een fout. De oude waarde, de nieuwe waarde en de reden komen in het logboek.</p>
 <label>Registratie</label><select id="c_id" onchange="corrVelden()">${opts(ids.reverse())}</select>
 <label>Veld</label><select id="c_v" onchange="corrHuidig()"></select>
 <div class="hint" id="c_h"></div>
@@ -746,6 +825,7 @@ corrVelden();
 function corrVelden(){ const id=$('#c_id').value, k=id.split('-')[0]; $('#c_v').innerHTML=opts(CORR_VELDEN[k].map(f=>({v:f[0],l:f[1]}))); corrHuidig(); }
 function corrHuidig(){ const r=corrRec($('#c_id').value), f=$('#c_v').value, cur=r?r[f]:''; $('#c_h').innerHTML='Huidige waarde: <b>'+esc(cur===null||cur===''?'(leeg)':cur)+'</b>'; $('#c_w').value=cur??''; }
 function saveCorrectie(){ if(!$('#c_r').value.trim()) return toast('Geef een reden.'); doe('correctie',{id:$('#c_id').value,veld:$('#c_v').value,waarde:$('#c_w').value,reden:$('#c_r').value}); }
+
 /* ---------- Opstarten ---------- */
 document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>{TAB=b.dataset.tab;PASPOORT=null;render();});
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden&&S&&TOKEN&&!BUSY&&!$('#modalbg').classList.contains('show')) call('getState',TOKEN).then(st=>{setState(st);render();}).catch(()=>{}); });
