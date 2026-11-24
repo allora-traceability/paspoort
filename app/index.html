@@ -393,7 +393,7 @@ nav .btn-add .ico{stroke:#fff;width:18px;height:18px}
 .no-blind .opt-blind{display:none!important}
 
 .raps{display:flex;flex-direction:column;gap:8px}
-.rap{display:grid;grid-template-columns:34px 150px minmax(0,1.3fr) minmax(0,1.4fr) auto auto;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.rap{display:grid;grid-template-columns:34px 140px minmax(0,1.2fr) minmax(0,1.3fr) 124px 176px;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
 .rap-id b,.rap-wat b{display:block;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14.5px}
 .rap-id span,.rap-wat span{display:block;font-size:12.5px;color:var(--muted)}
 .rap-res{font-size:13.5px}
@@ -448,6 +448,9 @@ body.print-lbl #lblprint .lbl{box-shadow:none;border-radius:0;break-after:page;p
 body.print-lbl #lblprint.lf-a4{display:grid;grid-template-columns:repeat(3,70mm);grid-auto-rows:37mm;padding:.5mm 0 0}
 body.print-lbl #lblprint.lf-a4 .lbl{break-after:auto;page-break-after:auto;break-inside:avoid}
 }
+
+.rap-st{justify-self:start}.rap-res{font-variant-numeric:tabular-nums}
+@media(max-width:1100px) and (min-width:981px){.rap{grid-template-columns:34px 120px minmax(0,1fr) minmax(0,1fr) 124px 176px;gap:10px}}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
 </head>
