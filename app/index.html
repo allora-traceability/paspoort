@@ -226,6 +226,169 @@ th{color:var(--muted);font-size:11.5px;letter-spacing:.06em}
 .flow-arrow{font-size:18px}
 footer{padding:28px}
 .demo-tag{background:var(--gold)}
+
+/* ===== UI v2: keten, paneel, wizard ===== */
+nav{align-items:center}
+nav .nav-sp{flex:1}
+nav .btn-add{display:inline-flex;align-items:center;gap:8px;background:var(--gold);color:#fff;border:0;border-radius:10px;padding:9px 16px;font-weight:600;font-size:14px;cursor:pointer;margin:6px 0}
+nav .btn-add:hover{background:#1a5fb4}
+nav .btn-add .ico{stroke:#fff;width:18px;height:18px}
+.kv-head{display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap;margin-bottom:18px}
+.kv-head h1{margin:0 0 4px}
+.kv-head .sub{margin:0}
+.kv-tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.seg{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:12px;padding:3px;gap:2px;flex-wrap:wrap}
+.seg button{border:0;background:none;padding:7px 14px;border-radius:9px;font:inherit;font-size:13.5px;font-weight:500;color:var(--muted);cursor:pointer}
+.seg button.on{background:var(--ink);color:#fff}
+.seg button:hover:not(.on){color:var(--ink);background:var(--bg)}
+.zoek{position:relative}
+.zoek input{padding-left:34px;width:220px;height:38px;margin:0}
+.zoek .ico{position:absolute;left:10px;top:9px;width:18px;height:18px;stroke:var(--muted)}
+.todo-band{background:var(--brand);color:#fff;border-radius:18px;padding:20px 24px;margin-bottom:20px;display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.todo-band .tb-t{flex:1;min-width:220px}
+.todo-band .tb-k{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#7fb3ff;margin-bottom:4px}
+.todo-band h2{color:#fff;margin:0;font-size:21px}
+.todo-band .tb-s{color:#c9d6ea;font-size:14px;margin-top:2px}
+.todo-band .tb-acts{display:flex;gap:8px;flex-wrap:wrap}
+.tb-chip{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--ink);border:0;border-radius:10px;padding:9px 13px;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
+.tb-chip:hover{background:var(--gold-soft)}
+.tb-chip small{font-weight:500;color:var(--muted)}
+.tb-chip .ico{width:17px;height:17px}
+.keten{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:72px;background:#fff;border:1px solid var(--line);border-radius:18px;padding:22px 24px 26px}
+.keten svg.kl{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.kl path{fill:none;stroke-width:2;stroke:#c3cfdf;transition:opacity .15s,stroke .15s}
+.kl path.l-ok{stroke:#9fd0b2}.kl path.l-wait{stroke:#f0cf8f}.kl path.l-todo{stroke:#9cc3ef}.kl path.l-bad{stroke:#eaa79c}.kl path.l-done{stroke:#a9b8cf}
+.kcol{display:flex;flex-direction:column;gap:12px;position:relative;z-index:1;min-width:0}
+.kh{display:flex;align-items:center;gap:8px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;color:var(--ink);margin-bottom:4px}
+.kh .ico{width:18px;height:18px}
+.kh span{margin-left:auto;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:var(--muted);background:var(--bg);border-radius:999px;padding:2px 9px}
+.kc{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer;transition:border-color .15s,box-shadow .15s,opacity .15s;position:relative}
+.kc:hover{border-color:var(--gold);box-shadow:0 6px 18px rgba(20,35,58,.08)}
+.kc:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.kc-top{display:flex;gap:10px;align-items:flex-start}
+.kc-ic{flex:none;width:34px;height:34px;border-radius:9px;background:var(--gold-soft);display:grid;place-items:center}
+.kc-ic .ico{width:18px;height:18px}
+.kc-t{min-width:0}
+.kc-t b{display:block;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;line-height:1.25;color:var(--ink)}
+.kc-t span{display:block;font-size:12.5px;color:var(--muted);margin-top:1px}
+.kc-bar{height:6px;border-radius:99px;background:var(--grey-soft);margin:11px 0 4px;overflow:hidden}
+.kc-bar i{display:block;height:100%;border-radius:99px;background:var(--gold)}
+.kc-bl{font-size:12px;color:var(--muted)}
+.kc-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;flex-wrap:wrap}
+.st{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:600;border-radius:999px;padding:3px 9px 3px 7px}
+.st .ico{width:14px;height:14px;stroke-width:2.2}
+.st-ok{background:var(--ok-soft);color:var(--ok)}.st-ok .ico{stroke:var(--ok)}
+.st-wait{background:var(--warn-soft);color:var(--warn)}.st-wait .ico{stroke:var(--warn)}
+.st-todo{background:var(--gold-soft);color:var(--gold)}.st-todo .ico{stroke:var(--gold)}
+.st-bad{background:var(--bad-soft);color:var(--bad)}.st-bad .ico{stroke:var(--bad)}
+.st-done{background:var(--grey-soft);color:#3d4f6b}.st-done .ico{stroke:#3d4f6b}
+.kc-act{border:0;background:var(--ink);color:#fff;font:inherit;font-size:12.5px;font-weight:600;border-radius:8px;padding:6px 11px;cursor:pointer}
+.kc-act:hover{background:var(--gold)}
+.kc.k-bad{border-color:#efc4bc}
+.kc.k-todo{border-color:#b9d4f3}
+.kc.arch{opacity:.6}
+.keten.dim .kc:not(.hl){opacity:.28}
+.keten.dim .kl path:not(.hl){opacity:.15}
+.keten.dim .kl path.hl{stroke:var(--gold)}
+.ks-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+.ks-chips span{font-size:11.5px;background:var(--bg);border-radius:6px;padding:2px 7px;color:var(--muted)}
+.k-empty{border:1.5px dashed var(--line);border-radius:14px;padding:18px;text-align:center;color:var(--muted);font-size:13px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:14px;font-size:12.5px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:50%}
+@media(max-width:860px){.keten{grid-template-columns:minmax(0,1fr);gap:22px;padding:16px}.keten svg.kl{display:none}.zoek input{width:100%}.kv-tools{width:100%}.zoek{flex:1}}
+/* zijpaneel */
+.pn{position:fixed;inset:0;z-index:60;pointer-events:none}
+.pn-bg{position:absolute;inset:0;background:rgba(20,35,58,.32);opacity:0;transition:opacity .2s}
+.pn-in{position:absolute;top:0;right:0;bottom:0;width:min(480px,100%);background:var(--bg);transform:translateX(100%);transition:transform .25s ease;display:flex;flex-direction:column}
+.pn.open{pointer-events:auto}.pn.open .pn-bg{opacity:1}.pn.open .pn-in{transform:none;box-shadow:-12px 0 40px rgba(20,35,58,.18)}
+.pn-head{background:var(--brand);color:#fff;padding:20px 22px 22px;position:relative}
+.pn-head .k{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#7fb3ff}
+.pn-head h2{color:#fff;font-size:23px;margin:6px 0 2px;padding-right:40px}
+.pn-head .s{color:#c9d6ea;font-size:13.5px}
+.pn-head .st{margin-top:12px}
+.pn-x{position:absolute;right:14px;top:14px;width:36px;height:36px;border-radius:10px;border:0;background:rgba(255,255,255,.12);cursor:pointer;display:grid;place-items:center}
+.pn-x .ico{stroke:#fff;width:18px;height:18px}
+.pn-body{flex:1;overflow:auto;padding:16px 18px 24px}
+.pn-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px}
+.pn-card h3{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;margin:0 0 8px}
+.pn-row{display:flex;justify-content:space-between;gap:12px;padding:6px 0;font-size:13.5px;border-bottom:1px solid var(--line)}
+.pn-row:last-child{border-bottom:0}.pn-row span{color:var(--muted)}.pn-row b{font-weight:600;text-align:right}
+.pn-chk{display:flex;gap:10px;align-items:flex-start;padding:6px 0;font-size:13.5px}
+.pn-chk .d{flex:none;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;margin-top:1px}
+.pn-chk .d .ico{width:12px;height:12px;stroke:#fff;stroke-width:3}
+.pn-chk .d.ok{background:var(--ok)}.pn-chk .d.bad{background:var(--bad)}.pn-chk .d.wait{background:var(--warn)}
+.pn-chk small{display:block;color:var(--muted);font-size:12px}
+.pn-link{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid var(--line);cursor:pointer;font-size:13.5px}
+.pn-link:last-child{border-bottom:0}.pn-link:hover b{color:var(--gold)}
+.pn-acts{display:flex;gap:8px;flex-wrap:wrap;padding:14px 18px;border-top:1px solid var(--line);background:#fff}
+.pn-acts .btn{flex:1;justify-content:center;min-width:130px}
+.pn-qr{display:flex;gap:14px;align-items:center}
+.pn-qr .q{width:104px;height:104px;flex:none;border:1px solid var(--line);border-radius:10px;padding:6px;background:#fff}
+.pn-qr .q svg{width:100%;height:100%}
+/* wizard */
+.modal.wz{max-width:600px;padding:0;overflow:hidden}
+.wz-top{padding:18px 24px 0}
+.wz-k{display:flex;justify-content:space-between;align-items:center;font-size:12.5px;font-weight:600;color:var(--muted)}
+.wz-k b{color:var(--gold);letter-spacing:.06em;text-transform:uppercase;font-size:12px}
+.wz-prog{display:flex;gap:5px;margin-top:10px}
+.wz-prog i{flex:1;height:4px;border-radius:99px;background:var(--grey-soft)}
+.wz-prog i.on{background:var(--gold)}
+.wz-body{padding:20px 24px 8px;min-height:230px}
+.wz-q{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:24px;line-height:1.2;margin:0 0 6px;color:var(--ink)}
+.wz-h{color:var(--muted);font-size:14px;margin:0 0 16px}
+.wz-opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.wz-o{display:flex;gap:10px;align-items:center;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:12px;font:inherit;cursor:pointer;position:relative;min-height:58px}
+.wz-o:hover{border-color:#9cc3ef}
+.wz-o.on{border-color:var(--gold);background:var(--gold-soft)}
+.wz-o b{display:block;font-size:14px;font-weight:600;color:var(--ink)}
+.wz-o small{display:block;font-size:12px;color:var(--muted)}
+.wz-o .ic{flex:none;width:32px;height:32px;border-radius:8px;background:var(--gold-soft);display:grid;place-items:center}
+.wz-o.on .ic{background:#fff}
+.wz-o .ic .ico{width:17px;height:17px}
+.wz-big{font-size:22px;font-weight:600;height:56px;max-width:260px}
+.wz-unit{display:flex;align-items:center;gap:10px}
+.wz-unit span{font-size:16px;color:var(--muted);font-weight:500}
+.wz-err{color:var(--bad);font-size:13px;margin-top:10px;min-height:18px}
+.wz-calc{background:var(--bg);border-radius:12px;padding:12px 14px;margin-top:14px;font-size:14px}
+.wz-calc b{font-family:'Space Grotesk',sans-serif;font-size:20px}
+.wz-sum .pn-row{font-size:14px}
+.wz-foot{display:flex;justify-content:space-between;gap:10px;padding:16px 24px 20px}
+.wz-start{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.wz-start .wz-o{flex-direction:column;align-items:flex-start;min-height:132px;padding:16px}
+.wz-start .wz-o .ic{width:42px;height:42px;border-radius:11px}
+.wz-start .wz-o .ic .ico{width:22px;height:22px}
+.wz-start .wz-o b{font-family:'Space Grotesk',sans-serif;font-size:16px;margin-top:6px}
+.wz-more{display:flex;gap:16px;margin-top:16px;font-size:13.5px}
+.wz-more a{color:var(--gold);cursor:pointer;font-weight:500}
+.lotpick{display:flex;flex-direction:column;gap:8px}
+.lotpick label{display:flex;align-items:center;gap:12px;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;margin:0;font-weight:500;cursor:default}
+.lotpick label div{flex:1;font-size:14px;color:var(--ink)}
+.lotpick label div small{display:block;color:var(--muted);font-size:12px;font-weight:400}
+.lotpick input{width:110px;margin:0;text-align:right}
+@media(max-width:560px){.wz-start{grid-template-columns:minmax(0,1fr)}.wz-start .wz-o{min-height:0;flex-direction:row;align-items:center}}
+/* overzichten */
+.ov-sec{margin-top:18px}
+.grp{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:12px}
+.grp-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+.grp-h b{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600}
+.grp-h .sm{color:var(--muted);font-size:13px}
+.grp-h .sp{flex:1}
+.qrgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
+.qrc{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
+.qrc .q{width:150px;height:150px}
+.qrc .q svg{width:100%;height:100%}
+.qrc b{font-family:'Space Grotesk',sans-serif;font-size:16px}
+.qrc .sm{font-size:12.5px;color:var(--muted)}
+.qrc .acts{display:flex;gap:6px;margin-top:6px}
+.qrc .acts .btn{padding:6px 10px;font-size:12.5px}
+.uitsl{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+@media print{body.print-qr header,body.print-qr nav,body.print-qr footer,body.print-qr .kv-head,body.print-qr .seg,body.print-qr .qrc .acts,body.print-qr .noprint{display:none!important}body.print-qr main{padding:0;max-width:none}body.print-qr{background:#fff}body.print-qr .qrgrid{grid-template-columns:repeat(3,1fr)}body.print-qr .qrc{break-inside:avoid;border:1px dashed #999}}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;white-space:nowrap}
+.btn .ico{stroke:currentColor;width:18px;height:18px}
+.qrc .acts .btn{padding:6px 9px}
+@media(max-width:700px){nav{overflow-x:auto;flex-wrap:nowrap;scrollbar-width:none}nav button{white-space:nowrap}nav .btn-add{position:fixed;right:16px;bottom:18px;z-index:40;box-shadow:0 10px 28px rgba(20,35,58,.35);border-radius:999px;padding:14px 20px;font-size:15px}main{padding-bottom:90px}}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
 </head>
@@ -236,14 +399,13 @@ footer{padding:28px}
 <div class="userbox" id="userbox"></div>
 </header>
 <nav id="nav">
-<button data-tab="overzicht" class="on">Overzicht</button>
-<button data-tab="grondstof">Grondstof</button>
-<button data-tab="productie">Productie</button>
-<button data-tab="analyses">Analyses</button>
-<button data-tab="leveringen">Leveringen</button>
-<button data-tab="traceren">Traceren</button>
+<button data-tab="keten" class="on">Mijn keten</button>
+<button data-tab="overzichten">Overzichten</button>
+<button data-tab="uitslagen" style="display:none">Uitslagen invoeren</button>
 <button data-tab="logboek">Logboek</button>
-<button data-tab="uitleg">Voor coffeeshops</button>
+<button data-tab="uitleg">Voor klanten</button>
+<span class="nav-sp"></span>
+<button class="btn-add" onclick="wizStart()"><svg class="ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>Toevoegen</button>
 </nav>
 <main id="main"></main>
 <footer>Traceability door Allora Labs · ISO 9001</footer>
@@ -334,9 +496,9 @@ return {isCBD,lot,batch,monstersVan,leverStatus,gebruiktG,restG,geleverd,voorraa
 /* Gegevens voor het openbare productpaspoort (geen leveranciers, geen coffeeshops) */
 function paspoortData(S,CFG,b){
 const L=maakLogica(S,CFG), d=L.dossier(b), m=d.m||null;
-return {id:b.id, product:b.product, datum:b.datum, status:b.status, cat:b.cat||'THC', label:b.label, cbdThcMax:CFG.cbdThcMax,
-lots:b.inzet.map(i=>{ const l=L.lot(i.lot)||{}, r=L.lotResultaat(i.lot)||{}; return {type:l.type||'', datum:l.datum||'', oDatum:r.oDatum||'', thc:r.thc, rapport:r.rapport||''}; }),
-m: m?{mg:m.mg, cbdmg:m.cbdmg, pcr:m.pcr||'', oDatum:m.oDatum||'', rapport:m.rapport||''}:null,
+return {id:b.id, code:b.code||'', product:b.product, datum:b.datum, status:b.status, cat:b.cat||'THC', label:b.label, cbdThcMax:CFG.cbdThcMax,
+lots:b.inzet.map(i=>{ const l=L.lot(i.lot)||{}, r=L.lotResultaat(i.lot)||{}; return {type:l.type||'', datum:l.datum||'', oDatum:r.oDatum||'', thc:r.thc, cbd:r.cbd, cbn:r.cbn, pcr:r.pcr||'', ct:r.ct, rapport:r.rapport||'', link:r.link||''}; }),
+m: m?{mg:m.mg, cbdmg:m.cbdmg, pcr:m.pcr||'', ct:m.ct, oDatum:m.oDatum||'', rapport:m.rapport||'', link:m.link||''}:null,
 checks:d.checks.map(c=>({s:c.s,t:c.t}))};
 }
 </script>
@@ -410,10 +572,10 @@ const idl = id=>/^(GL|PB)-/.test(id)?`<a class="id" onclick="goTrace('${id}')">$
 
 function toast(m){ const t=$('#toast'); t.textContent=m; t.classList.add('show'); clearTimeout(t._h); t._h=setTimeout(()=>t.classList.remove('show'),3200); }
 
-const ICONS={"leaf": "<path d=\"M5 19c0-8 5-13 14-14 0 9-5 14-13 14\"/><path d=\"M5 19l7-7\"/>", "flask": "<path d=\"M9 3h6\"/><path d=\"M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3\"/><path d=\"M7.5 15h9\"/>", "box": "<path d=\"M12 3l8 4.5v9L12 21l-8-4.5v-9z\"/><path d=\"M4 7.5l8 4.5 8-4.5\"/><path d=\"M12 12v9\"/>", "truck": "<path d=\"M3 6h11v10H3z\"/><path d=\"M14 10h4l3 3v3h-7\"/><circle cx=\"7\" cy=\"17.5\" r=\"1.8\"/><circle cx=\"17\" cy=\"17.5\" r=\"1.8\"/>", "clip": "<path d=\"M7 4h10v17H7z\"/><path d=\"M9.5 2.5h5v3h-5z\"/><path d=\"M9.5 10h5M9.5 13.5h5M9.5 17h3\"/>", "pen": "<path d=\"M4 20h4L19 9l-4-4L4 16z\"/><path d=\"M13.5 6.5l4 4\"/>", "dna": "<path d=\"M7 3c0 6 10 6 10 12s-10 6-10 6\"/><path d=\"M17 3c0 6-10 6-10 12\"/><path d=\"M8.5 7h7M8.5 17h7\"/>", "qr": "<path d=\"M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z\"/><path d=\"M14 14h2v2h-2zM18 18h2v2h-2zM14 18h2M18 14h2\"/>", "shop": "<path d=\"M4 9l1.5-5h13L20 9\"/><path d=\"M4 9h16v2a3 3 0 0 1-5.3 2 3 3 0 0 1-5.4 0A3 3 0 0 1 4 11z\"/><path d=\"M5.5 13v7h13v-7\"/>", "drop": "<path d=\"M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z\"/>", "pin": "<path d=\"M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z\"/><circle cx=\"12\" cy=\"10\" r=\"2.2\"/>"};
+const ICONS={"leaf": "<path d=\"M5 19c0-8 5-13 14-14 0 9-5 14-13 14\"/><path d=\"M5 19l7-7\"/>", "flask": "<path d=\"M9 3h6\"/><path d=\"M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3\"/><path d=\"M7.5 15h9\"/>", "box": "<path d=\"M12 3l8 4.5v9L12 21l-8-4.5v-9z\"/><path d=\"M4 7.5l8 4.5 8-4.5\"/><path d=\"M12 12v9\"/>", "truck": "<path d=\"M3 6h11v10H3z\"/><path d=\"M14 10h4l3 3v3h-7\"/><circle cx=\"7\" cy=\"17.5\" r=\"1.8\"/><circle cx=\"17\" cy=\"17.5\" r=\"1.8\"/>", "clip": "<path d=\"M7 4h10v17H7z\"/><path d=\"M9.5 2.5h5v3h-5z\"/><path d=\"M9.5 10h5M9.5 13.5h5M9.5 17h3\"/>", "pen": "<path d=\"M4 20h4L19 9l-4-4L4 16z\"/><path d=\"M13.5 6.5l4 4\"/>", "dna": "<path d=\"M7 3c0 6 10 6 10 12s-10 6-10 6\"/><path d=\"M17 3c0 6-10 6-10 12\"/><path d=\"M8.5 7h7M8.5 17h7\"/>", "qr": "<path d=\"M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4z\"/><path d=\"M14 14h2v2h-2zM18 18h2v2h-2zM14 18h2M18 14h2\"/>", "shop": "<path d=\"M4 9l1.5-5h13L20 9\"/><path d=\"M4 9h16v2a3 3 0 0 1-5.3 2 3 3 0 0 1-5.4 0A3 3 0 0 1 4 11z\"/><path d=\"M5.5 13v7h13v-7\"/>", "drop": "<path d=\"M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z\"/>", "pin": "<path d=\"M12 21s-6-5.5-6-11a6 6 0 0 1 12 0c0 5.5-6 11-6 11z\"/><circle cx=\"12\" cy=\"10\" r=\"2.2\"/>", "check": "<path d=\"M5 12.5l4.5 4.5L19 7.5\"/>", "x": "<path d=\"M6 6l12 12M18 6L6 18\"/>", "clock": "<circle cx=\"12\" cy=\"12\" r=\"8.5\"/><path d=\"M12 7.5V12l3 2\"/>", "arrowr": "<path d=\"M5 12h14M13 6l6 6-6 6\"/>", "search": "<circle cx=\"11\" cy=\"11\" r=\"6.5\"/><path d=\"M20 20l-4.2-4.2\"/>", "plus": "<path d=\"M12 5v14M5 12h14\"/>"};
 const ico=n=>'<svg class="ico" viewBox="0 0 24 24" aria-hidden="true">'+(ICONS[n]||'')+'</svg>';
 /* ---------- Render ---------- */
-function render(){
+function renderOud(){
 if(!S) return;
 document.body.classList.toggle('pp-mode',!!PASPOORT);
 if(PASPOORT){ $('#main').innerHTML=paspoortPagina(); window.scrollTo(0,0); return; }
@@ -505,7 +667,7 @@ ${rows.map(m=>{const cert=(BEMONSTERAARS.find(x=>x.naam===m.door)||{}).cert;cons
 function leveringen(){
 const rows=S.leveringen.slice().reverse();
 return `<h1>Leveringen</h1><p class="sub">Alles wat de deur uitgaat. Alleen vrijgegeven batches kunnen geleverd worden.</p>
-<div style="margin-bottom:12px"><button class="btn gold" onclick="fLevering()">+ Levering registreren</button></div>
+<div style="margin-bottom:12px"><button class="btn gold" onclick="wizStart('levering')">+ Levering registreren</button></div>
 <div class="card tablewrap"><table><thead><tr><th>ID</th><th>Datum</th><th>Batch</th><th>Product</th><th>Coffeeshop</th><th>Stuks</th><th>Pakbon</th><th>Blinde controle</th></tr></thead><tbody>
 ${rows.map(x=>`<tr><td><span class="id">${esc(x.id)}</span></td><td>${dmy(x.datum)}</td><td>${idl(x.batch)}</td><td>${esc((batch(x.batch)||{}).product)}</td><td>${esc(x.klant)}</td><td>${x.stuks}</td><td>${esc(x.bon)}</td><td>${x.blind?'<span class="chip c-Bemonsterd">Aangevraagd</span>':'Nee'}</td></tr>`).join('')||'<tr><td colspan="8" class="empty">Nog geen leveringen.</td></tr>'}
 </tbody></table></div>
@@ -552,6 +714,9 @@ ${vb?`<button class="btn gold" style="margin-top:18px" onclick="openPaspoort('${
 </div>
 <div class="card" style="margin-top:14px;display:flex;gap:16px;align-items:center;flex-wrap:wrap"><div class="flow-ic" style="margin:0">${ico('drop')}</div><div style="flex:1;min-width:240px"><h2 style="margin-bottom:4px">Ook voor CBD-producten</h2><span class="small muted">CBD-edibles volgen dezelfde keten. Hun productpaspoort toont het gemeten CBD-gehalte per stuk en dat THC onder de limiet blijft.</span></div>${S.batches.find(b=>isCBD(b)&&b.status==='Vrijgegeven')?`<button class="btn ghost" onclick="openPaspoort('${S.batches.find(b=>isCBD(b)&&b.status==='Vrijgegeven').id}')">Voorbeeld CBD-paspoort</button>`:''}</div>`;
 }
+const DOCI='<svg viewBox="0 0 24 24" style="width:13px;height:13px;fill:none;stroke:var(--gold);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;margin-left:3px;vertical-align:-1px"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/></svg>';
+function rapUrl(P,src,k){ if(!src||!src.rapport) return ''; if(src.link) return src.link; const base=(S&&S.paspoortUrl)||'https://allora-traceability.github.io/paspoort/'; return (P.demo||(S&&S.demo))&&P.code? base+'rapport.html?p='+encodeURIComponent(P.code)+'&r='+encodeURIComponent(src.rapport)+'&k='+k : ''; }
+function rl(P,src,k,txt){ const u=rapUrl(P,src,k); return u?`<a href="${esc(u)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;border-bottom:1.5px dotted var(--gold)" onclick="event.stopPropagation()">${txt}${DOCI}</a>`:txt; }
 function paspoortHTML(P,mini){
 const m=P.m, cbd=P.cat==='CBD', ok=P.status==='Vrijgegeven', blok=P.status==='Geblokkeerd';
 const ch=t=>(P.checks.find(c=>c.t.indexOf(t)===0)||{}).s;
@@ -566,12 +731,12 @@ ${stat}
 <div class="pp-sec"><div class="pp-prod">${esc(P.product)}</div><div class="pp-sub">Batch ${esc(P.id)} · geproduceerd ${dmy(P.datum)}</div></div>
 <div class="pp-sec"><div class="pp-h">Bewijs</div>
 ${cbd?`<div class="pp-row"><span>Grondstof</span><b>${P.lots.map(x=>esc(x.type)).join(', ')}</b></div>
-<div class="pp-row"><span>CBD per stuk (gemeten)</span><b class="${ch('CBD binnen')==='ok'?'g':''}">${m?nl(m.cbdmg)+' mg':'–'} <small>etiket ${esc(P.label)} mg</small></b></div>
-<div class="pp-row"><span>THC per stuk</span><b class="${ch('THC onder')==='ok'?'g':''}">${m?(m.mg?nl(m.mg,2)+' mg':'Niet aangetoond'):'–'} <small>limiet ${nl(P.cbdThcMax,2)} mg</small></b></div>`:`
+<div class="pp-row"><span>CBD per stuk (gemeten)</span><b class="${ch('CBD binnen')==='ok'?'g':''}">${m?rl(P,m,'pot',nl(m.cbdmg)+' mg'):'–'} <small>etiket ${esc(P.label)} mg</small></b></div>
+<div class="pp-row"><span>THC per stuk</span><b class="${ch('THC onder')==='ok'?'g':''}">${m?rl(P,m,'pot',m.mg?nl(m.mg,2)+' mg':'Niet aangetoond'):'–'} <small>limiet ${nl(P.cbdThcMax,2)} mg</small></b></div>`:`
 <div class="pp-row"><span>Grondstof</span><b>${P.lots.map(x=>esc(x.type)).join(', ')} · Lijst II</b></div>
-<div class="pp-row"><span>THC grondstof</span><b>${P.lots.map(x=>x.thc!=null?nl(x.thc)+' %':'–').join(', ')}</b></div>
-<div class="pp-row"><span>PCR cannabis-RNA eindproduct</span><b class="${m&&m.pcr==='Positief'?'g':''}">${m&&m.pcr?esc(m.pcr):'–'}</b></div>
-<div class="pp-row"><span>THC per stuk (gemeten)</span><b>${m?nl(m.mg)+' mg':'–'} <small>etiket ${esc(P.label)} mg</small></b></div>
+<div class="pp-row"><span>THC grondstof</span><b>${P.lots.map(x=>x.thc!=null?rl(P,x,'pot',nl(x.thc)+' %'):'–').join(', ')}</b></div>
+<div class="pp-row"><span>PCR cannabis-RNA eindproduct</span><b class="${m&&m.pcr==='Positief'?'g':''}">${m&&m.pcr?rl(P,m,'pcr',esc(m.pcr)):'–'}</b></div>
+<div class="pp-row"><span>THC per stuk (gemeten)</span><b>${m?rl(P,m,'pot',nl(m.mg)+' mg'):'–'} <small>etiket ${esc(P.label)} mg</small></b></div>
 <div class="pp-row"><span>Massabalans (geen extract)</span><b class="${mb==='ok'?'g':''}">${mb==='ok'?'Klopt':(mb==='bad'?'Afwijking':'–')}</b></div>`}
 </div>
 <div class="pp-sec"><div class="pp-h">Keten</div>${tijd.map(x=>`<div class="pp-t"><i></i><span>${x[0]}</span><b>${x[1]}</b></div>`).join('')}</div>
@@ -804,7 +969,7 @@ const p={monster:m.id,rapport:v('#r_rap'),link:v('#r_link'),notitie:v('#r_not'),
 if(gl) Object.assign(p,{thc:v('#r_thc'),cbd:v('#r_cbd'),cbn:v('#r_cbn'),extra:v('#r_extra'),oordeel:v('#r_o')});
 else if(cbdE) Object.assign(p,{cbdmg:v('#r_cbdmg'),mg:v('#r_mg')});
 else p.mg=v('#r_mg');
-if(await doe('resultaat',p)) goTrace(m.ref);
+if(await doe('resultaat',p)) openPaneel(m.ref);
 }
 const CORR_VELDEN={GL:[['soort','Omschrijving'],['gram','Gewicht (g)'],['verp','Verpakkingen'],['ref','Ref. leverancier'],['notitie','Notitie']],
 PB:[['stuks','Stuks'],['overig','Overige ingrediënten'],['notitie','Notitie']],
@@ -826,8 +991,329 @@ function corrVelden(){ const id=$('#c_id').value, k=id.split('-')[0]; $('#c_v').
 function corrHuidig(){ const r=corrRec($('#c_id').value), f=$('#c_v').value, cur=r?r[f]:''; $('#c_h').innerHTML='Huidige waarde: <b>'+esc(cur===null||cur===''?'(leeg)':cur)+'</b>'; $('#c_w').value=cur??''; }
 function saveCorrectie(){ if(!$('#c_r').value.trim()) return toast('Geef een reden.'); doe('correctie',{id:$('#c_id').value,veld:$('#c_v').value,waarde:$('#c_w').value,reden:$('#c_r').value}); }
 
+/* ===== UI v2: Mijn keten, zijpaneel, stap-voor-stap toevoegen, overzichten ===== */
+let OV='leveringen', KF='actief', KQ='', PANEEL=null, WIZ=null, AVIEW='item';
+const ST_IC={ok:'check',wait:'clock',todo:'arrowr',bad:'x',done:'check'};
+const stHTML = s=>`<span class="st st-${s.k}">${ico(ST_IC[s.k])}${esc(s.t)}</span>`;
+function groet(){ const h=new Date().getHours(); return h<12?'Goedemorgen':h<18?'Goedemiddag':'Goedenavond'; }
+function bLots(b){ return b.inzet.map(i=>i.lot).filter((v,i,a)=>a.indexOf(v)===i); }
+function bShops(b){ return S.leveringen.filter(x=>x.batch===b.id).map(x=>x.klant).filter((v,i,a)=>a.indexOf(v)===i); }
+function stLot(l){
+if(l.status==='Afgekeurd') return {k:'bad',t:'Afgekeurd'};
+if(l.status==='Quarantaine'){
+if(monstersVan(l.id).some(m=>!m.oordeel)) return ROLE==='allora'?{k:'wait',t:'Wacht op uitslag lab',act:`uitslagVoor('${l.id}')`,actT:'Uitslag invoeren'}:{k:'wait',t:'Wacht op uitslag lab'};
+return {k:'todo',t:'In quarantaine',act:`fMonster('${l.id}')`,actT:'Monster nemen'};
+}
+if(restG(l.id)<=0) return {k:'done',t:'Opgebruikt'};
+return {k:'ok',t:'Vrijgegeven',act:`wizStart('batch')`,actT:'Batch maken'};
+}
+function stBatch(b){
+if(b.status==='Geblokkeerd') return {k:'bad',t:'Geblokkeerd'};
+if(b.status==='In afwachting') return {k:'todo',t:'Nog niet getest',act:`fMonster('${b.id}')`,actT:'Monster nemen'};
+if(b.status==='Bemonsterd') return ROLE==='allora'?{k:'wait',t:'Wacht op uitslag lab',act:`uitslagVoor('${b.id}')`,actT:'Uitslag invoeren'}:{k:'wait',t:'Wacht op uitslag lab'};
+if(b.stuks-geleverd(b.id)<=0) return {k:'done',t:'Alles geleverd'};
+return {k:'ok',t:'Vrijgegeven',act:`wizStart('levering','${b.id}')`,actT:'Leveren'};
+}
+function lotArch(l){
+const bs=S.batches.filter(b=>b.inzet.some(i=>i.lot===l.id));
+const klaar=l.status==='Afgekeurd'||(l.status==='Vrijgegeven'&&restG(l.id)<=0);
+return klaar&&bs.every(b=>b.status==='Geblokkeerd'||(b.status==='Vrijgegeven'&&b.stuks-geleverd(b.id)<=0));
+}
+const batchArch = b=>bLots(b).every(id=>lot(id)&&lotArch(lot(id)));
+function zoekMatch(txt){ return !KQ||txt.toLowerCase().indexOf(KQ.toLowerCase())>=0; }
+function ketenData(){
+const toon = arch=>KF==='alles'||(KF==='archief'?arch:!arch);
+let lots=S.lots.filter(l=>toon(lotArch(l)));
+let bs=S.batches.filter(b=>toon(batchArch(b)));
+if(KQ){
+const hitL=new Set(lots.filter(l=>zoekMatch([l.id,l.type,l.soort,l.leverancier].join(' '))).map(l=>l.id));
+const hitB=new Set(bs.filter(b=>zoekMatch([b.id,b.product].join(' '))||bShops(b).some(zoekMatch)).map(b=>b.id));
+bs.forEach(b=>{ if(bLots(b).some(id=>hitL.has(id))) hitB.add(b.id); });
+bs=bs.filter(b=>hitB.has(b.id));
+bs.forEach(b=>bLots(b).forEach(id=>hitL.add(id)));
+lots=lots.filter(l=>hitL.has(l.id));
+}
+const nB=id=>bs.filter(b=>bLots(b).indexOf(id)>=0).length, pr=l=>['todo','wait'].indexOf(stLot(l).k)>=0?0:nB(l.id)?1:2;
+lots.sort((a,b)=>(pr(a)-pr(b))||(nB(b.id)-nB(a.id))||(b.datum>a.datum?1:-1));
+const li=id=>{const i=lots.findIndex(l=>l.id===id);return i<0?999:i;};
+bs.sort((a,b)=>(Math.min(...bLots(a).map(li))-Math.min(...bLots(b).map(li)))||(a.datum>b.datum?1:-1));
+const shops=[]; bs.forEach(b=>bShops(b).forEach(s=>{ if(shops.indexOf(s)<0) shops.push(s); }));
+return {lots,bs,shops};
+}
+function rels(id){
+const r=new Set([id]);
+const addB=b=>{ r.add(b.id); bLots(b).forEach(x=>r.add(x)); bShops(b).forEach(s=>r.add('S:'+s)); };
+if(id.indexOf('S:')===0) S.batches.filter(b=>bShops(b).indexOf(id.slice(2))>=0).forEach(addB);
+else if(id.indexOf('GL')===0) S.batches.filter(b=>bLots(b).indexOf(id)>=0).forEach(addB);
+else { const b=batch(id); if(b) addB(b); }
+return [...r];
+}
+function kaartLot(l){
+const s=stLot(l), rest=restG(l.id), pct=l.gram?Math.max(0,Math.min(100,rest/l.gram*100)):0;
+const res=lotResultaat(l.id);
+return `<div class="kc k-${s.k} ${lotArch(l)?'arch':''}" tabindex="0" data-id="${l.id}" onclick="openPaneel('${l.id}')" onkeydown="if(event.key==='Enter')openPaneel('${l.id}')">
+<div class="kc-top"><div class="kc-ic">${ico(typeCat(l.type)==='CBD'?'drop':'leaf')}</div><div class="kc-t"><b>${esc(l.type)}${l.soort?' · '+esc(l.soort):''}</b><span>${l.id} · ${esc(l.leverancier)}</span></div></div>
+<div class="kc-bar"><i style="width:${pct}%"></i></div><div class="kc-bl">${nl(rest,0)} g van ${nl(l.gram,0)} g over${res&&res.thc!=null?' · THC '+nl(res.thc)+' %':''}</div>
+<div class="kc-foot">${stHTML(s)}${s.act?`<button class="kc-act" onclick="event.stopPropagation();${s.act}">${s.actT}</button>`:''}</div></div>`;
+}
+function kaartBatch(b){
+const s=stBatch(b), gel=geleverd(b.id), pct=b.stuks?Math.min(100,gel/b.stuks*100):0, m=monstersVan(b.id).filter(x=>x.oordeel).slice(-1)[0];
+const meet = m?(isCBD(b)?nl(m.cbdmg)+' mg CBD':nl(m.mg)+' mg THC')+' per stuk':'Etiket '+b.label+' mg';
+return `<div class="kc k-${s.k} ${batchArch(b)?'arch':''}" tabindex="0" data-id="${b.id}" onclick="openPaneel('${b.id}')" onkeydown="if(event.key==='Enter')openPaneel('${b.id}')">
+<div class="kc-top"><div class="kc-ic">${ico(isCBD(b)?'drop':'box')}</div><div class="kc-t"><b>${esc(b.product)}</b><span>${b.id} · ${dmy(b.datum)}</span></div></div>
+<div class="kc-bar"><i style="width:${pct}%;background:${s.k==='bad'?'var(--bad)':'var(--gold)'}"></i></div><div class="kc-bl">${gel} van ${b.stuks} geleverd · ${meet}</div>
+<div class="kc-foot">${stHTML(s)}${s.act?`<button class="kc-act" onclick="event.stopPropagation();${s.act}">${s.actT}</button>`:''}</div></div>`;
+}
+function kaartShop(naam,bs){
+const lev=S.leveringen.filter(x=>x.klant===naam&&bs.some(b=>b.id===x.batch));
+const st=lev.reduce((s,x)=>s+Number(x.stuks),0);
+const prods=[...new Set(lev.map(x=>(batch(x.batch)||{}).product))];
+const laatst=lev.map(x=>x.datum).sort().slice(-1)[0];
+return `<div class="kc" tabindex="0" data-id="S:${esc(naam)}" onclick="openPaneel('S:${esc(naam)}')" onkeydown="if(event.key==='Enter')openPaneel('S:${esc(naam)}')">
+<div class="kc-top"><div class="kc-ic">${ico('shop')}</div><div class="kc-t"><b>${esc(naam)}</b><span>${st} stuks · laatst ${dmy(laatst)}</span></div></div>
+<div class="ks-chips">${prods.map(p=>`<span>${esc(p)}</span>`).join('')}</div></div>`;
+}
+function todoItems(){
+const it=[];
+S.lots.forEach(l=>{ const s=stLot(l); if(s.act&&(s.k==='todo'||(ROLE==='allora'&&s.k==='wait'))) it.push({id:l.id,t:l.type+(l.soort?' · '+l.soort:''),s}); });
+S.batches.forEach(b=>{ const s=stBatch(b); if(s.act&&(s.k==='todo'||(ROLE==='allora'&&s.k==='wait'))) it.push({id:b.id,t:b.product,s}); });
+return it;
+}
+function ketenView(){
+const {lots,bs,shops}=ketenData(), todo=todoItems();
+const wacht=S.batches.filter(b=>b.status==='Bemonsterd').length+S.lots.filter(l=>l.status==='Quarantaine'&&monstersVan(l.id).some(m=>!m.oordeel)).length;
+const band = `<div class="todo-band"><div class="tb-t"><div class="tb-k">${groet()}, ${esc(S.user.naam.split(' ')[0])}</div>
+<h2>${todo.length?(todo.length===1?'Eén ding vraagt je aandacht':todo.length+' dingen vragen je aandacht'):'Alles is bijgewerkt'}</h2>
+<div class="tb-s">${wacht&&ROLE!=='allora'?wacht+(wacht===1?' item wacht':' items wachten')+' op de uitslag van Allora Labs.':todo.length?'Klik op een actie om verder te gaan.':'Nieuwe grondstof of batch? Gebruik + Toevoegen.'}</div></div>
+<div class="tb-acts">${todo.slice(0,4).map(x=>`<button class="tb-chip" onclick="${x.s.act}">${ico(x.s.actT==='Uitslag invoeren'?'clip':'flask')}${esc(x.s.actT)} <small>${esc(x.t)}</small></button>`).join('')}</div></div>`;
+const kol=(ic,t,n,html,leeg)=>`<div class="kcol"><div class="kh">${ico(ic)}${t}<span>${n}</span></div>${html||`<div class="k-empty">${leeg}</div>`}</div>`;
+return `<div class="kv-head"><div><h1>Mijn keten</h1><p class="sub">Van grondstof tot coffeeshop. Klik op een kaart voor details, beweeg erover om de keten te volgen.</p></div>
+<div class="kv-tools"><div class="seg">${[['actief','Actief'],['alles','Alles'],['archief','Archief']].map(([v,t])=>`<button class="${KF===v?'on':''}" onclick="KF='${v}';render()">${t}</button>`).join('')}</div>
+<div class="zoek">${ico('search')}<input id="kq" placeholder="Zoek op ID, product of shop" value="${esc(KQ)}" oninput="KQ=this.value;clearTimeout(window._kq);window._kq=setTimeout(()=>{render();const e=$('#kq');e.focus();e.setSelectionRange(e.value.length,e.value.length);},250)"></div></div></div>
+${band}
+<div class="keten" id="keten"><svg class="kl" id="kl" aria-hidden="true"></svg>
+${kol('leaf','Grondstof',lots.length,lots.map(kaartLot).join(''),KF==='archief'?'Nog niets gearchiveerd.':'Geen grondstof gevonden.')}
+${kol('box','Producten',bs.length,bs.map(kaartBatch).join(''),'Nog geen batches. Maak er een met + Toevoegen.')}
+${kol('shop','Coffeeshops',shops.length,shops.map(s=>kaartShop(s,bs)).join(''),'Nog niets geleverd.')}
+</div>
+<div class="legend"><span><i style="background:var(--ok)"></i>Vrijgegeven</span><span><i style="background:var(--warn)"></i>Wacht op lab</span><span><i style="background:var(--gold)"></i>Jouw volgende stap</span><span><i style="background:var(--bad)"></i>Geblokkeerd of afgekeurd</span><span><i style="background:#3d4f6b"></i>Afgerond</span></div>`;
+}
+function tekenLijnen(){
+const k=$('#keten'), svg=$('#kl'); if(!k||!svg) return;
+if(getComputedStyle(svg).display==='none') return;
+const kr=k.getBoundingClientRect(), pos=id=>{ const e=k.querySelector(`[data-id="${CSS.escape(id)}"]`); if(!e) return null; const r=e.getBoundingClientRect(); return {l:r.left-kr.left,r:r.right-kr.left,y:r.top-kr.top+Math.min(32,r.height/2)}; };
+const lijn=(a,b,cls,ids)=>{ const p=pos(a),q=pos(b); if(!p||!q) return ''; const x1=p.r,x2=q.l,dx=(x2-x1)/2; return `<path class="${cls}" data-a="${esc(a)}" data-b="${esc(b)}" d="M${x1} ${p.y} C${x1+dx} ${p.y} ${x2-dx} ${q.y} ${x2} ${q.y}"/>`; };
+let h='';
+[...k.querySelectorAll('.kc[data-id^="PB"]')].forEach(e=>{ const b=batch(e.dataset.id); if(!b) return; const c='l-'+stBatch(b).k;
+bLots(b).forEach(l=>h+=lijn(l,b.id,c)); bShops(b).forEach(s=>h+=lijn(b.id,'S:'+s,c)); });
+svg.innerHTML=h;
+k.querySelectorAll('.kc').forEach(e=>{
+e.onmouseenter=()=>{ const r=new Set(rels(e.dataset.id)); k.classList.add('dim'); k.querySelectorAll('.kc').forEach(x=>x.classList.toggle('hl',r.has(x.dataset.id))); svg.querySelectorAll('path').forEach(p=>p.classList.toggle('hl',r.has(p.dataset.a)&&r.has(p.dataset.b))); };
+e.onmouseleave=()=>{ k.classList.remove('dim'); k.querySelectorAll('.hl').forEach(x=>x.classList.remove('hl')); };
+});
+}
+window.addEventListener('resize',()=>{ if(TAB==='keten') tekenLijnen(); });
+/* ---------- zijpaneel ---------- */
+function openPaneel(id){ PANEEL=id; toonPaneel(id); }
+function sluitPaneel(){ PANEEL=null; const p=$('#pn'); if(p) p.classList.remove('open'); }
+function toonPaneel(id,stil){
+let p=$('#pn'); if(!p){ p=document.createElement('div'); p.id='pn'; p.className='pn'; p.innerHTML='<div class="pn-bg" onclick="sluitPaneel()"></div><aside class="pn-in" role="dialog" aria-modal="true" aria-labelledby="pn-t"></aside>'; document.body.appendChild(p); document.addEventListener('keydown',e=>{ if(e.key==='Escape'&&PANEEL) sluitPaneel(); }); }
+const h=paneelHTML(id); if(!h){ sluitPaneel(); return; }
+p.querySelector('.pn-in').innerHTML=h;
+if(!p.classList.contains('open')) requestAnimationFrame(()=>p.classList.add('open'));
+const q=p.querySelector('#pn-qr'); if(q&&typeof qrcode!=='undefined'){ try{ const c=qrcode(0,'M'); c.addData(qrUrl(id)); c.make(); q.innerHTML=c.createSvgTag({cellSize:4,margin:1,scalable:true}); }catch(e){} }
+}
+const pnRow=(a,b)=>`<div class="pn-row"><span>${a}</span><b>${b}</b></div>`;
+const pnHead=(k,t,s,st)=>`<div class="pn-head"><button class="pn-x" onclick="sluitPaneel()" aria-label="Sluiten">${ico('x')}</button><div class="k">${k}</div><h2 id="pn-t">${t}</h2><div class="s">${s}</div>${st?stHTML(st):''}</div>`;
+function analyseKaart(id){
+const ms=monstersVan(id); if(!ms.length) return `<div class="pn-card"><h3>Analyses</h3><div class="sm muted">Nog geen monster genomen.</div></div>`;
+return `<div class="pn-card"><h3>Analyses</h3>${ms.map(m=>{ const gl=m.type==='Grondstof', cbdE=!gl&&m.cbdmg!=null;
+const r=!m.oordeel?'Wacht op uitslag lab':gl?`THC ${nl(m.thc)} %${m.pcr?' · PCR '+esc(m.pcr):''}`:cbdE?`CBD ${nl(m.cbdmg)} mg · THC ${m.mg?nl(m.mg,2)+' mg':'niet aangetoond'}`:`THC ${nl(m.mg)} mg/stuk · PCR ${esc(m.pcr||'–')}`;
+return pnRow(`${dmy(m.datum)}${m.rapport?' · '+esc(m.rapport):''}`,r); }).join('')}</div>`;
+}
+function paneelHTML(id){
+if(id.indexOf('S:')===0){
+const naam=id.slice(2), lev=S.leveringen.filter(x=>x.klant===naam).slice().reverse(); if(!lev.length) return '';
+const st=lev.reduce((s,x)=>s+Number(x.stuks),0);
+return pnHead('Coffeeshop',esc(naam),`${lev.length} leveringen · ${st} stuks`)+`<div class="pn-body"><div class="pn-card"><h3>Leveringen</h3>${lev.map(x=>`<div class="pn-link" onclick="openPaneel('${x.batch}')"><span>${dmy(x.datum)} · ${esc((batch(x.batch)||{}).product)}<br><small class="muted">${x.batch} · pakbon ${esc(x.bon||'–')}</small></span><b>${x.stuks} st.</b></div>`).join('')}</div></div>`;
+}
+if(id.indexOf('GL')===0){
+const l=lot(id); if(!l) return ''; const s=stLot(l), bs=S.batches.filter(b=>b.inzet.some(i=>i.lot===id));
+return pnHead('Grondstof · '+typeLabel(l.type),esc(l.type)+(l.soort?' · '+esc(l.soort):''),`${l.id} · ontvangen ${dmy(l.datum)}`,s)+`<div class="pn-body">
+<div class="pn-card"><h3>Gegevens</h3>${pnRow('Leverancier',esc(l.leverancier))}${pnRow('Gewicht',nl(l.gram,0)+' g · '+l.verp+' verpakkingen')}${pnRow('Nog over',nl(restG(id),0)+' g')}</div>
+${analyseKaart(id)}
+<div class="pn-card"><h3>Gebruikt in</h3>${bs.length?bs.map(b=>`<div class="pn-link" onclick="openPaneel('${b.id}')"><span>${esc(b.product)}<br><small class="muted">${b.id} · ${b.inzet.filter(i=>i.lot===id).reduce((a,i)=>a+Number(i.g),0)} g</small></span>${stHTML(stBatch(b))}</div>`).join(''):'<div class="sm muted">Nog niet gebruikt.</div>'}</div></div>
+<div class="pn-acts">${s.act?`<button class="btn" onclick="sluitPaneel();${s.act}">${s.actT}</button>`:''}<button class="btn ghost" onclick="sluitPaneel();goTrace('${id}')">Volledig dossier</button></div>`;
+}
+const b=batch(id); if(!b) return ''; const s=stBatch(b), d=dossier(b), lev=S.leveringen.filter(x=>x.batch===id).slice().reverse(), vr=b.stuks-geleverd(id);
+const dotIc={ok:'check',bad:'x',wait:'clock'};
+return pnHead(isCBD(b)?'Product · CBD':'Product · Lijst II',esc(b.product),`${b.id} · gemaakt ${dmy(b.datum)} · ${b.stuks} stuks`,s)+`<div class="pn-body">
+<div class="pn-card"><h3>${isCBD(b)?'CBD-dossier':'Lijst II-dossier'}</h3>${d.checks.map(c=>`<div class="pn-chk"><div class="d ${c.s}">${ico(dotIc[c.s]||'clock')}</div><div>${esc(c.t)}<small>${esc(c.d)}</small></div></div>`).join('')}</div>
+<div class="pn-card"><h3>Grondstof</h3>${b.inzet.map(i=>{const l=lot(i.lot)||{};return `<div class="pn-link" onclick="openPaneel('${i.lot}')"><span>${esc(l.type||'')} · ${esc(l.soort||'')}<br><small class="muted">${i.lot} · ${i.g} g</small></span>${l.id?stHTML(stLot(l)):''}</div>`;}).join('')}</div>
+${analyseKaart(id)}
+<div class="pn-card"><h3>Geleverd</h3>${pnRow('Op voorraad',vr+' van '+b.stuks)}${lev.map(x=>`<div class="pn-link" onclick="openPaneel('S:${esc(x.klant)}')"><span>${esc(x.klant)}<br><small class="muted">${dmy(x.datum)} · pakbon ${esc(x.bon||'–')}</small></span><b>${x.stuks} st.</b></div>`).join('')}</div>
+${b.code?`<div class="pn-card"><h3>QR-code voor de verpakking</h3><div class="pn-qr"><div class="q" id="pn-qr"></div><div style="display:flex;flex-direction:column;gap:8px"><button class="btn ghost" onclick="sluitPaneel();openPaspoort('${id}')">Productpaspoort bekijken</button><button class="btn ghost" onclick="kopieer('${id}')">Link kopiëren</button></div></div></div>`:''}</div>
+<div class="pn-acts">${s.act?`<button class="btn" onclick="sluitPaneel();${s.act}">${s.actT}</button>`:''}<button class="btn ghost" onclick="sluitPaneel();goTrace('${id}')">Volledig dossier</button></div>`;
+}
+/* ---------- + Toevoegen: stap voor stap ---------- */
+const WTITEL={grondstof:'Grondstof ontvangen',batch:'Batch gemaakt',levering:'Levering aan coffeeshop'};
+function wizStart(kind,pre){
+sluitPaneel();
+if(!kind){
+modal(`<div class="wz-top"><div class="wz-k"><b>Toevoegen</b></div></div><div class="wz-body"><h2 class="wz-q">Wat wil je vastleggen?</h2><p class="wz-h">Kies wat er is gebeurd. Je krijgt daarna steeds één vraag.</p>
+<div class="wz-start">
+<button class="wz-o" onclick="wizStart('grondstof')"><div class="ic">${ico('leaf')}</div><div><b>Grondstof ontvangen</b><small>Hasj, wiet, kief of CBD binnengekomen</small></div></button>
+<button class="wz-o" onclick="wizStart('batch')"><div class="ic">${ico('box')}</div><div><b>Batch gemaakt</b><small>Edibles geproduceerd van vrijgegeven grondstof</small></div></button>
+<button class="wz-o" onclick="wizStart('levering')"><div class="ic">${ico('truck')}</div><div><b>Levering</b><small>Producten naar een coffeeshop gebracht</small></div></button></div>
+<div class="wz-more"><a onclick="closeModal();fMonster()">Monster genomen</a>${ROLE==='allora'?'<a onclick="closeModal();fResultaat()">Uitslag invoeren</a>':''}<a onclick="closeModal();fCorrectie()">Iets corrigeren</a></div></div>
+<div class="wz-foot"><span></span><button class="btn ghost" onclick="closeModal()">Annuleren</button></div>`);
+$('#modal').classList.add('wz'); return;
+}
+if(kind==='batch'&&!S.lots.some(l=>l.status==='Vrijgegeven'&&restG(l.id)>0)) return toast('Er is nog geen vrijgegeven grondstof. Eerst moet Allora Labs de grondstof goedkeuren.');
+if(kind==='levering'&&!S.batches.some(b=>b.status==='Vrijgegeven'&&b.stuks-geleverd(b.id)>0)) return toast('Er is nog geen vrijgegeven batch op voorraad.');
+WIZ={kind,i:0,d:{}};
+if(kind==='levering'&&pre){ WIZ.d.batch=pre; WIZ.d.stuks=batch(pre).stuks-geleverd(pre); WIZ.skipBatch=true; }
+wizRender();
+}
+function wizSteps(){
+const d=WIZ.d;
+if(WIZ.kind==='grondstof') return [
+{key:'leverancier',q:'Van welke leverancier komt het?',type:'choice',nieuw:'Nieuwe leverancier',opts:()=>S.leveranciers.map(l=>({v:l.naam,t:l.naam,s:l.status==='Nieuw'?'Nog niet goedgekeurd':'Goedgekeurd',ic:'truck'}))},
+{key:'type',q:'Wat voor grondstof is het?',type:'choice',opts:()=>GRONDSTOFTYPES.map(g=>({v:g.naam,t:g.naam,s:typeLabel(g.naam),ic:g.cat==='CBD'?'drop':'leaf'}))},
+{key:'soort',q:'Hoe wil je deze partij noemen?',h:'Bijvoorbeeld het lotnummer of de naam van de leverancier. Mag leeg blijven.',type:'text',ph:'Lot E',opt:true},
+{key:'gram',q:'Hoeveel gram is het in totaal?',type:'num',unit:'gram'},
+{key:'verp',q:'In hoeveel verpakkingen zit het?',h:'Dit bepaalt hoeveel verpakkingen bemonsterd moeten worden.',type:'num',unit:'verpakkingen'},
+{key:'_sum',q:'Klopt dit?',type:'sum',rows:()=>[['Leverancier',d.leverancier==='__nieuw'?d._nieuw+' (nieuw)':d.leverancier],['Grondstof',d.type+(d.soort?' · '+d.soort:'')],['Gewicht',d.gram+' g in '+d.verp+' verpakkingen']],
+na:()=>`De partij gaat in quarantaine. Neem daarna een monster uit <b>${vereistGrondstof(+d.verp,d.leverancier==='__nieuw'?'':d.leverancier)}</b> van de ${d.verp} verpakkingen.`}
+];
+if(WIZ.kind==='batch'){
+const p=()=>PRODUCTEN.find(x=>x.naam===d.product)||{};
+return [
+{key:'product',q:'Welk product heb je gemaakt?',type:'choice',opts:()=>PRODUCTEN.map(x=>({v:x.naam,t:x.naam,s:(x.cat==='CBD'?'CBD · ':'')+x.mg+' mg per stuk',ic:x.cat==='CBD'?'drop':'box'}))},
+{key:'stuks',q:'Hoeveel stuks zijn het?',type:'num',unit:'stuks'},
+{key:'inzet',q:'Welke grondstof heb je gebruikt?',h:'Vul per partij in hoeveel gram erin is gegaan.',type:'inzet'},
+{key:'overig',q:'Overige ingrediënten?',h:'Lotnummers van bijvoorbeeld boter of bloem. Mag leeg blijven.',type:'text',ph:'Roomboter L2450 · Bloem L8840',opt:true},
+{key:'_sum',q:'Klopt dit?',type:'sum',rows:()=>[['Product',d.product],['Aantal',d.stuks+' stuks'],['Grondstof',(d.inzet||[]).map(i=>i.g+' g '+i.lot).join(', ')]],
+na:()=>{ const th=theoretisch({inzet:d.inzet,stuks:+d.stuks,cat:p().cat}); return `Maximaal <b>${nl(th)} mg ${p().cat==='CBD'?'CBD':'THC'}</b> per stuk uit deze grondstof (etiket ${p().mg} mg). Neem daarna 5 stuks als monster.`; }}
+];}
+return [
+{key:'batch',q:'Welke batch lever je?',type:'choice',skip:WIZ.skipBatch,opts:()=>S.batches.filter(b=>b.status==='Vrijgegeven'&&b.stuks-geleverd(b.id)>0).map(b=>({v:b.id,t:b.product,s:b.id+' · '+(b.stuks-geleverd(b.id))+' op voorraad',ic:'box'}))},
+{key:'klant',q:'Naar welke coffeeshop?',type:'choice',nieuw:'Nieuwe coffeeshop',opts:()=>KLANTEN.map(k=>({v:k,t:k,ic:'shop'}))},
+{key:'stuks',q:'Hoeveel stuks?',h:()=>d.batch?(batch(d.batch).stuks-geleverd(d.batch))+' op voorraad.':'',type:'num',unit:'stuks',max:()=>batch(d.batch).stuks-geleverd(d.batch)},
+{key:'bon',q:'Pakbonnummer?',h:'Mag leeg blijven.',type:'text',ph:'0430',opt:true},
+{key:'_sum',q:'Klopt dit?',type:'sum',rows:()=>[['Product',(batch(d.batch)||{}).product+' · '+d.batch],['Coffeeshop',d.klant==='__nieuw'?d._nieuw+' (nieuw)':d.klant],['Aantal',d.stuks+' stuks'],['Pakbon',d.bon||'–']],
+extra:`<label style="display:flex;gap:8px;align-items:center;margin-top:12px;font-weight:500"><input type="checkbox" id="wz-blind" style="width:auto;margin:0" ${d.blind?'checked':''} onchange="WIZ.d.blind=this.checked">Blinde controle aanvragen bij deze coffeeshop</label>`}
+];
+}
+function wizRender(){
+const st=wizSteps().filter(s=>!s.skip), s=st[WIZ.i], d=WIZ.d, last=WIZ.i===st.length-1;
+const h=typeof s.h==='function'?s.h():s.h;
+let body='';
+if(s.type==='choice'){
+const o=s.opts(); if(s.nieuw) o.push({v:'__nieuw',t:s.nieuw,s:'Voeg toe aan de lijst',ic:'plus'});
+body=`<div class="wz-opts">${o.map(x=>`<button class="wz-o ${d[s.key]===x.v?'on':''}" onclick="WIZ.d['${s.key}']=this.dataset.v;wizRender()" data-v="${esc(x.v)}"><div class="ic">${ico(x.ic||'box')}</div><div><b>${esc(x.t)}</b>${x.s?`<small>${esc(x.s)}</small>`:''}</div></button>`).join('')}</div>${d[s.key]==='__nieuw'?`<input id="wz-nieuw" style="margin-top:12px;max-width:340px" placeholder="Naam" value="${esc(d._nieuw||'')}" oninput="WIZ.d._nieuw=this.value">`:''}`;
+} else if(s.type==='num'){
+body=`<div class="wz-unit"><input id="wz-in" class="wz-big" type="number" min="1" inputmode="decimal" value="${esc(d[s.key]??'')}" oninput="WIZ.d['${s.key}']=this.value"><span>${s.unit}</span></div>`;
+} else if(s.type==='text'){
+body=`<input id="wz-in" class="wz-big" style="max-width:420px;font-size:18px" placeholder="${esc(s.ph||'')}" value="${esc(d[s.key]||'')}" oninput="WIZ.d['${s.key}']=this.value">`;
+} else if(s.type==='inzet'){
+const p=PRODUCTEN.find(x=>x.naam===d.product)||{}, vrij=S.lots.filter(l=>l.status==='Vrijgegeven'&&restG(l.id)>0&&typeCat(l.type)===p.cat);
+const cur=id=>((d.inzet||[]).find(i=>i.lot===id)||{}).g||'';
+body=vrij.length?`<div class="lotpick">${vrij.map(l=>`<label><div>${esc(l.type)}${l.soort?' · '+esc(l.soort):''}<small>${l.id} · ${nl(restG(l.id),0)} g over · THC ${lotResultaat(l.id)?nl(lotResultaat(l.id)[p.cat==='CBD'?'cbd':'thc'])+' %':'–'}</small></div><input type="number" min="0" placeholder="gram" data-lot="${l.id}" value="${cur(l.id)}" oninput="wizInzet()"><span class="muted">g</span></label>`).join('')}</div><div class="wz-calc" id="wz-calc"></div>`:`<div class="k-empty">Geen vrijgegeven ${p.cat==='CBD'?'CBD-':''}grondstof voor dit product.</div>`;
+} else if(s.type==='sum'){
+body=`<div class="pn-card wz-sum" style="margin:0">${s.rows().map(r=>pnRow(r[0],esc(r[1]))).join('')}</div>${s.na?`<div class="wz-calc">${s.na()}</div>`:''}${s.extra||''}`;
+}
+modal(`<div class="wz-top"><div class="wz-k"><b>${WTITEL[WIZ.kind]}</b><span>Stap ${WIZ.i+1} van ${st.length}</span></div><div class="wz-prog">${st.map((x,i)=>`<i class="${i<=WIZ.i?'on':''}"></i>`).join('')}</div></div>
+<div class="wz-body"><h2 class="wz-q">${s.q}</h2>${h?`<p class="wz-h">${h}</p>`:'<div style="height:12px"></div>'}${body}<div class="wz-err" id="wz-err" role="alert"></div></div>
+<div class="wz-foot"><button class="btn ghost" onclick="${WIZ.i?'wizTerug()':'wizStart()'}">${WIZ.i?'Terug':'Annuleren'}</button><button class="btn" onclick="wizVerder()">${last?'Vastleggen':'Volgende'}</button></div>`);
+$('#modal').classList.add('wz');
+const inp=$('#wz-in')||$('#wz-nieuw'); if(inp){ inp.focus(); inp.onkeydown=e=>{ if(e.key==='Enter') wizVerder(); }; }
+if(s.type==='inzet') wizInzet();
+}
+function wizInzet(){
+const d=WIZ.d, p=PRODUCTEN.find(x=>x.naam===d.product)||{};
+d.inzet=[...document.querySelectorAll('.lotpick input')].map(e=>({lot:e.dataset.lot,g:+e.value||0})).filter(i=>i.g>0);
+const c=$('#wz-calc'); if(!c) return;
+if(!d.inzet.length){ c.innerHTML='Vul bij minstens één partij het aantal gram in.'; return; }
+const th=theoretisch({inzet:d.inzet,stuks:+d.stuks,cat:p.cat}), over=d.inzet.filter(i=>i.g>restG(i.lot));
+c.innerHTML=`Maximaal <b>${nl(th)} mg</b> ${p.cat==='CBD'?'CBD':'THC'} per stuk · etiket ${p.mg} mg${th<p.mg*0.9?'<br><span style="color:var(--bad)">Te weinig grondstof voor de etiketdosering.</span>':''}${over.length?`<br><span style="color:var(--bad)">Meer dan er over is van ${over.map(i=>i.lot).join(', ')}.</span>`:''}`;
+}
+function wizTerug(){ WIZ.i--; wizRender(); }
+function wizVerder(){
+const st=wizSteps().filter(s=>!s.skip), s=st[WIZ.i], d=WIZ.d, err=t=>{ $('#wz-err').textContent=t; return false; };
+if(s.type==='choice'){ if(!d[s.key]) return err('Kies een van de opties.'); if(d[s.key]==='__nieuw'&&!(d._nieuw||'').trim()) return err('Vul een naam in.'); }
+if(s.type==='num'){ const v=+d[s.key]; if(!(v>0)) return err('Vul een getal groter dan 0 in.'); if(s.max&&v>s.max()) return err('Er zijn maar '+s.max()+' op voorraad.'); }
+if(s.type==='inzet'){ wizInzet(); if(!(d.inzet||[]).length) return err('Vul bij minstens één partij het aantal gram in.'); if(d.inzet.some(i=>i.g>restG(i.lot))) return err('Je gebruikt meer dan er over is.'); }
+if(WIZ.i<st.length-1){ WIZ.i++; return wizRender(); }
+const k=WIZ.kind, n=d.leverancier==='__nieuw'||d.klant==='__nieuw';
+let ok;
+if(k==='grondstof') ok=doe('intake',{leverancier:d.leverancier==='__nieuw'?'':d.leverancier,nieuweLeverancier:d.leverancier==='__nieuw'?d._nieuw:'',type:d.type,soort:d.soort||'',gram:+d.gram,verp:+d.verp,ref:''});
+else if(k==='batch') ok=doe('batch',{product:d.product,stuks:+d.stuks,inzet:d.inzet,overig:d.overig||''});
+else ok=doe('levering',{batch:d.batch,klant:d.klant==='__nieuw'?'':d.klant,nieuweKlant:d.klant==='__nieuw'?d._nieuw:'',stuks:+d.stuks,bon:d.bon||'',blind:!!d.blind});
+Promise.resolve(ok).then(r=>{ if(r){ WIZ=null; $('#modal').classList.remove('wz'); } });
+}
+const _closeModal=closeModal; closeModal=function(){ _closeModal(); const m=$('#modal'); if(m) m.classList.remove('wz'); };
+const _modal=modal; modal=function(h){ const m=$('#modal'); if(m) m.classList.remove('wz'); _modal(h); };
+/* ---------- overzichten ---------- */
+const OVS=[['leveringen','Leveringen'],['analyses','Analyses'],['qr','QR-codes'],['grondstof','Grondstoffen'],['productie','Batches']];
+function zonderKop(h){ return h.replace(/<h1>[^<]*<\/h1>/,''); }
+function overzichtenView(){
+const tabs=OVS.concat(OV==='traceren'?[['traceren','Dossier']]:[]);
+let inh='';
+if(OV==='leveringen') inh=zonderKop(leveringen());
+else if(OV==='analyses') inh=analysesView();
+else if(OV==='qr') inh=qrView();
+else if(OV==='grondstof') inh=zonderKop(grondstof());
+else if(OV==='productie') inh=zonderKop(productie());
+else if(OV==='traceren') inh=zonderKop(traceren());
+return `<div class="kv-head"><div><h1>Overzichten</h1><p class="sub">Alle details per onderwerp. Klik op een ID voor het volledige dossier.</p></div></div>
+<div class="seg" style="margin-bottom:18px">${tabs.map(([v,t])=>`<button class="${OV===v?'on':''}" onclick="OV='${v}';render()">${t}</button>`).join('')}</div>${inh}`;
+}
+function analysesView(){
+const seg=`<div style="margin-bottom:14px"><div class="seg noprint">${[['item','Per grondstof en product'],['tabel','Alle monsters']].map(([v,t])=>`<button class="${AVIEW===v?'on':''}" onclick="AVIEW='${v}';render()">${t}</button>`).join('')}</div></div>`;
+if(AVIEW==='tabel') return seg+zonderKop(analyses());
+const lots=S.lots.filter(l=>monstersVan(l.id).length).slice().reverse();
+const prods=[...new Set(S.batches.map(b=>b.product))];
+const grp=(titel,sub,st,id,rows)=>`<div class="grp"><div class="grp-h"><b>${titel}</b><span class="sm">${sub}</span><span class="sp"></span>${st?stHTML(st):''}${id?`<button class="btn ghost" style="padding:5px 10px;font-size:12.5px" onclick="openPaneel('${id}')">Details</button>`:''}</div>${rows}</div>`;
+return seg+`<h2 style="margin:6px 0 10px">Grondstoffen</h2>${lots.map(l=>grp(esc(l.type)+(l.soort?' · '+esc(l.soort):''),l.id,stLot(l),l.id,monstersVan(l.id).map(resultLine).join(''))).join('')||'<div class="k-empty">Nog geen analyses.</div>'}
+<h2 style="margin:22px 0 10px">Producten</h2>${prods.map(p=>{ const bs=S.batches.filter(b=>b.product===p).slice().reverse(); return grp(esc(p),bs.length+(bs.length===1?' batch':' batches'),null,null,bs.map(b=>`<div style="margin:8px 0 2px;display:flex;gap:8px;align-items:center;flex-wrap:wrap"><a class="id" onclick="openPaneel('${b.id}')">${b.id}</a><span class="sm muted">${dmy(b.datum)}</span>${stHTML(stBatch(b))}</div>${monstersVan(b.id).map(resultLine).join('')||'<div class="minirow muted">Nog geen monster.</div>'}`).join('')); }).join('')}`;
+}
+function qrView(){
+const bs=S.batches.filter(b=>b.code).slice().reverse();
+setTimeout(drawQRs,0);
+return `<div class="noprint" style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px"><p class="sub" style="margin:0">De QR-code van elke batch opent het productpaspoort. Print ze als etiket of kopieer de link.</p><button class="btn" onclick="printQR()">${ico('qr')} Etiketten printen</button></div>
+<div class="qrgrid">${bs.map(b=>`<div class="qrc"><div class="q" data-qr="${b.id}"></div><b>${esc(b.product)}</b><div class="sm">${b.id} · ${dmy(b.datum)}</div>${stHTML(stBatch(b))}<div class="acts"><button class="btn ghost" onclick="openPaspoort('${b.id}')">Paspoort</button><button class="btn ghost" onclick="kopieer('${b.id}')">Link kopiëren</button></div></div>`).join('')||'<div class="k-empty">Nog geen batches.</div>'}</div>`;
+}
+function drawQRs(){ document.querySelectorAll('[data-qr]').forEach(el=>{ if(el.innerHTML||typeof qrcode==='undefined') return; try{ const q=qrcode(0,'M'); q.addData(qrUrl(el.dataset.qr)); q.make(); el.innerHTML=q.createSvgTag({cellSize:4,margin:1,scalable:true}); }catch(e){} }); }
+function printQR(){ document.body.classList.add('print-qr'); setTimeout(()=>{ window.print(); document.body.classList.remove('print-qr'); },50); }
+function uitslagVoor(ref){ const m=S.monsters.filter(x=>x.ref===ref&&(!x.oordeel||(x.type==='Grondstof'&&!x.pcr))).slice(-1)[0]; fResultaat(); if(m&&$('#r_m')){ $('#r_m').value=m.id; resultVelden(); } }
+function uitslagenView(){
+const open=S.monsters.filter(m=>!m.oordeel||(m.type==='Grondstof'&&!m.pcr&&typeCat((lot(m.ref)||{}).type)!=='CBD'));
+return `<div class="kv-head"><div><h1>Uitslagen invoeren</h1><p class="sub">Monsters die op een uitslag van Allora Labs wachten.</p></div></div>
+<div class="uitsl">${open.map(m=>{ const gl=m.type==='Grondstof', o=gl?lot(m.ref):batch(m.ref); return `<div class="kc" style="cursor:default"><div class="kc-top"><div class="kc-ic">${ico(gl?'leaf':'box')}</div><div class="kc-t"><b>${esc(gl?o.type+(o.soort?' · '+o.soort:''):o.product)}</b><span>${m.ref} · monster ${m.id} · ${dmy(m.datum)}</span></div></div><div class="kc-foot">${stHTML({k:'wait',t:m.oordeel?'PCR aanvullen':'Wacht op uitslag'})}<button class="kc-act" onclick="uitslagVoor('${m.ref}')">Uitslag invoeren</button></div></div>`; }).join('')||'<div class="k-empty">Er wachten geen monsters.</div>'}</div>`;
+}
+/* ---------- nieuwe render ---------- */
+function render(){
+if(!S) return;
+document.body.classList.toggle('pp-mode',!!PASPOORT);
+if(PASPOORT){ $('#main').innerHTML=paspoortPagina(); window.scrollTo(0,0); return; }
+if(TAB==='traceren'){ OV='traceren'; TAB='overzichten'; }
+if(['grondstof','productie','analyses','leveringen'].indexOf(TAB)>=0){ OV=TAB; TAB='overzichten'; }
+if(!TAB||TAB==='overzicht') TAB='keten';
+if(TAB==='uitslagen'&&ROLE!=='allora') TAB='keten';
+const ua=document.querySelector('#nav [data-tab=uitslagen]'); if(ua) ua.style.display=ROLE==='allora'?'':'none';
+document.querySelectorAll('#nav button[data-tab]').forEach(b=>b.classList.toggle('on',b.dataset.tab===TAB));
+if(RTAB!==TAB+OV){ RTAB=TAB+OV; window.scrollTo(0,0); }
+const f={keten:ketenView,overzichten:overzichtenView,logboek:logboek,uitleg:uitleg,uitslagen:uitslagenView}[TAB]||ketenView;
+$('#main').innerHTML=f();
+if(TAB==='keten') requestAnimationFrame(tekenLijnen);
+if(TAB==='overzichten'&&OV==='traceren') drawQR();
+if(PANEEL) toonPaneel(PANEEL);
+}
+let RTAB='';
+
 /* ---------- Opstarten ---------- */
-document.querySelectorAll('#nav button').forEach(b=>b.onclick=()=>{TAB=b.dataset.tab;PASPOORT=null;render();});
+document.querySelectorAll('#nav button[data-tab]').forEach(b=>b.onclick=()=>{TAB=b.dataset.tab;PASPOORT=null;render();});
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden&&S&&TOKEN&&!BUSY&&!$('#modalbg').classList.contains('show')) call('getState',TOKEN).then(st=>{setState(st);render();}).catch(()=>{}); });
 if(P_CODE) toonPaspoortPubliek(); else if(TOKEN) laad(); else toonLogin();
 </script>
