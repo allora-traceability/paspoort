@@ -40,7 +40,7 @@ function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){retur
 function nl(n,d){if(d===undefined)d=1;if(n===null||n===undefined||n===''||isNaN(n))return '–';return Number(n).toFixed(d).replace('.',',');}
 function dmy(s){return s?s.slice(8,10)+'-'+s.slice(5,7)+'-'+s.slice(0,4):'–';}
 var DOC='<svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>';
-function rapUrl(P,src,k){ if(!src||!src.rapport) return ''; if(src.link) return src.link; if(P.demo&&P.code) return 'rapport.html?p='+encodeURIComponent(P.code)+'&r='+encodeURIComponent(src.rapport)+'&k='+k; return ''; }
+function rapUrl(P,src,k){ if(!src||!src.rapport) return ''; if(src.link) return src.link; if(P.demo&&P.code) return 'rapport.html?p='+encodeURIComponent(P.code)+'&r='+encodeURIComponent(src.rapport)+'&k='+k+(KC?'&c='+KC:''); return ''; }
 function rl(P,src,k,txt){ var u=rapUrl(P,src,k); return u?'<a class="rl" href="'+esc(u)+'" target="_blank" rel="noopener">'+txt+DOC+'</a>':txt; }
 function render(P){
   var m=P.m, cbd=P.cat==='CBD', ok=P.status==='Vrijgegeven', blok=P.status==='Geblokkeerd';
@@ -72,6 +72,8 @@ function docs(P){
 }
 function fout(t){document.getElementById('m').innerHTML='<div class="msg"><b>Productpaspoort niet gevonden</b>'+esc(t)+'</div>';}
 var code=(new URLSearchParams(location.search).get('p')||'').replace(/[^A-Za-z0-9]/g,'');
+var KC=(new URLSearchParams(location.search).get('k')||'').replace(/[^A-Za-z0-9-]/g,'').toLowerCase();
+function laadP(){ fetch(API+'?api=paspoort&p='+code,{credentials:'omit',redirect:'follow'}).then(function(r){return r.json();}).then(function(P){if(P.error)fout(P.error);else render(P);}).catch(function(){fout('Geen verbinding. Probeer het opnieuw.');}); }
 if(!code){fout('Geen code in de link. Scan de QR-code op de verpakking.');}
-else fetch(API+'?api=paspoort&p='+code,{credentials:'omit',redirect:'follow'}).then(function(r){return r.json();}).then(function(P){if(P.error)fout(P.error);else render(P);}).catch(function(){fout('Geen verbinding. Probeer het opnieuw.');});
+else fetch('klanten.json',{cache:'no-store'}).then(function(r){return r.json();}).then(function(all){ var c=all[KC||'demo']; if(!c) return fout('Deze link hoort bij geen bekende producent.'); if(c.api) API=c.api; laadP(); }).catch(function(){ if(KC) fout('Geen verbinding. Probeer het opnieuw.'); else laadP(); });
 </script></body></html>
