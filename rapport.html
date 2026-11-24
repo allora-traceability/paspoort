@@ -30,7 +30,7 @@ var LOGO="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAABXCAMAAAB2tvo6AAAA
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 function nl(n,d){if(d===undefined)d=1;if(n===null||n===undefined||n===''||isNaN(n))return '–';return Number(n).toFixed(d).replace('.',',');}
 function dmy(s){return s?s.slice(8,10)+'-'+s.slice(5,7)+'-'+s.slice(0,4):'–';}
-var Q=new URLSearchParams(location.search), code=(Q.get('p')||'').replace(/[^A-Za-z0-9]/g,''), rap=Q.get('r')||'', k=Q.get('k')==='pcr'?'pcr':'pot';
+var Q=new URLSearchParams(location.search), KC=(Q.get('c')||'').replace(/[^A-Za-z0-9-]/g,'').toLowerCase(), code=(Q.get('p')||'').replace(/[^A-Za-z0-9]/g,''), rap=Q.get('r')||'', k=Q.get('k')==='pcr'?'pcr':'pot';
 function fout(t){document.getElementById('m').innerHTML='<div class="msg"><b style="display:block;color:#14233a;font-size:18px;margin-bottom:4px">Rapport niet gevonden</b>'+esc(t)+'</div>';}
 function meta(a){return '<div class="meta">'+a.map(function(x){return '<div><span>'+x[0]+'</span><b>'+x[1]+'</b></div>';}).join('')+'</div>';}
 function render(P){
@@ -55,7 +55,7 @@ function render(P){
   }
   document.title=titel+' · '+rap;
   document.getElementById('m').innerHTML=
-   '<div class="bar"><a href="./?p='+esc(code)+'">← Terug naar het productpaspoort</a><button onclick="print()">Opslaan als PDF</button></div>'+
+   '<div class="bar"><a href="./?p='+esc(code)+(KC?'&k='+esc(KC):'')+'">← Terug naar het productpaspoort</a><button onclick="print()">Opslaan als PDF</button></div>'+
    (P.demo?'<div class="vb"><div><b>Voorbeeldrapport.</b> In gebruik opent hier het originele PDF-rapport van Allora Labs.</div></div>':'')+
    '<div class="doc">'+(P.demo?'<div class="wm">VOORBEELD</div>':'')+'<div class="hd"><img src="'+LOGO+'" alt="Allora Labs"><div class="r"><b>'+esc(rap)+'</b>Testrapport · '+dmy(src.oDatum)+'</div></div>'+
    '<h1>'+titel+'</h1><p class="sub">'+ond+'</p>'+
@@ -63,5 +63,6 @@ function render(P){
    body+'<div class="ft"><span>Allora Labs · ISO 9001-gecertificeerd laboratorium</span><span>Resultaten gelden alleen voor het onderzochte monster.</span></div></div>';
 }
 if(!code||!rap) fout('De link is onvolledig.');
-else fetch(API+'?api=paspoort&p='+code,{credentials:'omit',redirect:'follow'}).then(function(r){return r.json();}).then(function(P){if(P.error)fout(P.error);else render(P);}).catch(function(){fout('Geen verbinding. Probeer het opnieuw.');});
+else { var laadP=function(){ fetch(API+'?api=paspoort&p='+code,{credentials:'omit',redirect:'follow'}).then(function(r){return r.json();}).then(function(P){if(P.error)fout(P.error);else render(P);}).catch(function(){fout('Geen verbinding. Probeer het opnieuw.');}); };
+  fetch('klanten.json',{cache:'no-store'}).then(function(r){return r.json();}).then(function(all){ var c=all[KC||'demo']; if(!c) return fout('Deze link hoort bij geen bekende producent.'); if(c.api) API=c.api; laadP(); }).catch(function(){ if(KC) fout('Geen verbinding. Probeer het opnieuw.'); else laadP(); }); }
 </script></body></html>
