@@ -1,0 +1,7 @@
+{
+  "_uitleg": "Klantcode -> server (api) en opties. Codes zijn willekeurig en noemen nooit de klantnaam. Zonder code in de link wordt 'demo' gebruikt. Opties: blindeControle (true/false), verbergTabs (bijv. [\"uitleg\"]), script (true = laadt klanten/<code>.js).",
+  "demo": {
+    "api": "https://script.google.com/macros/s/AKfycby3ve1slVCUcRsuCM6uDAbTBXGx3azDjC3LAHFwtGLEtrZDSwml5VyjriW03ZytH-LQ/exec",
+    "opties": {}
+  }
+}
