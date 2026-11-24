@@ -451,6 +451,10 @@ body.print-lbl #lblprint.lf-a4 .lbl{break-after:auto;page-break-after:auto;break
 
 .rap-st{justify-self:start}.rap-res{font-variant-numeric:tabular-nums}
 @media(max-width:1100px) and (min-width:981px){.rap{grid-template-columns:34px 120px minmax(0,1fr) minmax(0,1fr) 124px 176px;gap:10px}}
+.rap-acts{display:grid!important;grid-template-columns:max-content 80px;justify-content:end;gap:6px}
+.rap-acts .rbtn{justify-content:center}
+.rap-acts .rbtn:nth-child(2){width:100%;box-sizing:border-box}
+@media(max-width:560px){.rap-acts{justify-content:start}}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
 </head>
@@ -1348,7 +1352,7 @@ return rapBase()+'rapport.html?r='+encodeURIComponent(m.rapport)+'&k='+kind+'#d=
 function rapKnoppen(m){
 const pot=rapportLink(m,'pot'), pcr=m.pcr&&!(m.type!=='Grondstof'&&m.cbdmg!=null)?rapportLink(m,'pcr'):'';
 if(!pot) return m.oordeel?'<span class="sm muted">Rapport volgt</span>':'';
-return `<a class="btn ghost rbtn" href="${esc(pot)}" target="_blank" rel="noopener">${ico('clip')}Analyse</a>${pcr?`<a class="btn ghost rbtn" href="${esc(pcr)}" target="_blank" rel="noopener">${ico('dna')}PCR</a>`:''}`;
+return `<a class="btn ghost rbtn" href="${esc(pot)}" target="_blank" rel="noopener">${ico('clip')}Analyse</a>${pcr?`<a class="btn ghost rbtn" href="${esc(pcr)}" target="_blank" rel="noopener">${ico('dna')}PCR</a>`:'<span class="rbtn-leeg"></span>'}`;
 }
 function rapResultaat(m){
 if(!m.oordeel) return 'Wacht op uitslag lab';
