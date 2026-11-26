@@ -7,7 +7,7 @@
 <style>
 :root{
 --bg:#f5f3ee; --card:#fff; --ink:#1d2a2e; --muted:#6b7679; --line:#e4e0d6;
---brand:#14233a; --brand2:#0e1a2c; --gold:#1f6fd1; --gold-soft:#e6effb;
+--brand:#0077C8; --brand2:#0e1a2c; --gold:#0077C8; --gold-soft:#e6effb;
 --ok:#2f7d4f; --ok-soft:#e3f2e8; --warn:#b7791f; --warn-soft:#fbf1dc;
 --bad:#b8402f; --bad-soft:#f8e3df; --info:#2f5f9e; --info-soft:#e2ebf7; --grey-soft:#eceae4;
 --radius:12px;
@@ -119,7 +119,7 @@ header{background:#fff;color:var(--ink);border-bottom:1px solid var(--line)}
 .by img{height:34px}
 .role{background:var(--grey-soft)} .role button{color:var(--ink)} .role button.on{background:var(--brand);color:#fff}
 @media(max-width:700px){.by span{display:none}.by img{height:26px}.logo img.gf{height:36px}.logo .tt{display:none}}
-.cs-hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:34px;align-items:center;background:linear-gradient(135deg,#eef4fc,#fff);border:1px solid var(--line);border-radius:18px;padding:clamp(20px,4vw,44px)}
+.cs-hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,.8fr);gap:34px;align-items:center;background:linear-gradient(135deg,#eef6fb,#fff);border:1px solid var(--line);border-radius:18px;padding:clamp(20px,4vw,44px)}
 @media(max-width:860px){.cs-hero{grid-template-columns:minmax(0,1fr)}}
 .cs-kicker{color:var(--gold);font-weight:700;font-size:13px;margin-bottom:6px}
 .cs-title{font-size:clamp(28px,4vw,42px);line-height:1.08;margin:0 0 14px;text-wrap:balance}
@@ -161,15 +161,15 @@ body.auth nav{display:none}
 body.busy{cursor:progress} body.busy .modal .btn{opacity:.6;pointer-events:none}
 
 /* ===== Allora-huisstijl ===== */
-:root{--bg:#f5f7fb;--card:#fff;--ink:#14233a;--muted:#4a5568;--line:#dde4ee;--gold:#1f6fd1;--gold-soft:#e8f1fc;--grey-soft:#eef2f7;--radius:14px}
-body{font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:15px}
-h1,h2,.kpi .n,.cs-title,.pp-prod,.act b{font-family:'Space Grotesk','Inter',sans-serif}
+:root{--bg:#f7f7f7;--card:#fff;--ink:#676B6D;--muted:#676B6D;--line:#d9dadb;--gold:#0077C8;--gold-soft:#e6f1fa;--grey-soft:#eef2f7;--radius:14px}
+body{font-family:'Lato',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:15px}
+h1,h2,.kpi .n,.cs-title,.pp-prod,.act b{font-family:'Share Tech','Lato',sans-serif}
 h1{font-size:26px;font-weight:700;letter-spacing:-.01em}
 h2{font-size:18px;font-weight:600}
 header{background:#fff;border-bottom:0;padding:14px 28px}
 .logo img.gf{height:38px}
-.logo .tt{font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;color:var(--ink)}
-.logo .tt small{font-family:'Inter',sans-serif;font-weight:500;font-size:12px}
+.logo .tt{font-family:'Share Tech',sans-serif;font-weight:600;font-size:15px;color:var(--ink)}
+.logo .tt small{font-family:'Lato',sans-serif;font-weight:500;font-size:12px}
 nav{background:#fff;border-bottom:1px solid var(--line);padding:0 20px;gap:4px}
 nav button{color:var(--muted);font-weight:500;padding:12px 12px;border-bottom:2px solid transparent}
 nav button:hover{color:var(--ink)}
@@ -196,9 +196,9 @@ main{max-width:1200px;padding:28px 28px 8px}
 .act span{font-size:13px}
 .ico{width:22px;height:22px;fill:none;stroke:var(--gold);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;display:block}
 .hero{background:var(--brand);color:#fff;border-radius:18px;padding:28px 32px;margin-bottom:22px}
-.hero .kick{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#7fb3ff;margin-bottom:8px}
+.hero .kick{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#d4ebf8;margin-bottom:8px}
 .hero h1{color:#fff;font-size:30px;margin:0 0 8px}
-.hero .sub{color:#c9d6ea;margin:0;max-width:70ch}
+.hero .sub{color:#e6f1fa;margin:0;max-width:70ch}
 .pillar{background:var(--bg);border-radius:12px;padding:14px}
 .btn{border-radius:10px;font-family:inherit}
 .btn.ghost{border-color:var(--line);background:#fff}
@@ -215,14 +215,14 @@ th{color:var(--muted);font-size:11.5px;letter-spacing:.06em}
 .login{max-width:400px;margin:56px auto;padding:30px}
 .login h1{font-size:28px}
 .cs-hero{background:var(--brand);border:0;color:#fff}
-.cs-kicker{color:#7fb3ff;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.cs-kicker{color:#d4ebf8;font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
 .cs-title{color:#fff}
-.cs-lead{color:#c9d6ea}
+.cs-lead{color:#e6f1fa}
 .cs-badges span{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);color:#fff;font-weight:500}
 .phone{border-color:#0b1424;color:var(--ink)}
 .flow-step{border-radius:14px}
 .flow-ic{width:40px;height:40px;border-radius:10px;background:var(--gold-soft);display:grid;place-items:center;margin-bottom:10px}
-.flow-step b{font-family:'Space Grotesk',sans-serif;font-weight:600}
+.flow-step b{font-family:'Share Tech',sans-serif;font-weight:600}
 .flow-arrow{font-size:18px}
 footer{padding:28px}
 .demo-tag{background:var(--gold)}
@@ -246,9 +246,9 @@ nav .btn-add .ico{stroke:#fff;width:18px;height:18px}
 .zoek .ico{position:absolute;left:10px;top:9px;width:18px;height:18px;stroke:var(--muted)}
 .todo-band{background:var(--brand);color:#fff;border-radius:18px;padding:20px 24px;margin-bottom:20px;display:flex;gap:20px;align-items:center;flex-wrap:wrap}
 .todo-band .tb-t{flex:1;min-width:220px}
-.todo-band .tb-k{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#7fb3ff;margin-bottom:4px}
+.todo-band .tb-k{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#d4ebf8;margin-bottom:4px}
 .todo-band h2{color:#fff;margin:0;font-size:21px}
-.todo-band .tb-s{color:#c9d6ea;font-size:14px;margin-top:2px}
+.todo-band .tb-s{color:#e6f1fa;font-size:14px;margin-top:2px}
 .todo-band .tb-acts{display:flex;gap:8px;flex-wrap:wrap}
 .tb-chip{display:inline-flex;align-items:center;gap:8px;background:#fff;color:var(--ink);border:0;border-radius:10px;padding:9px 13px;font:inherit;font-size:13.5px;font-weight:600;cursor:pointer}
 .tb-chip:hover{background:var(--gold-soft)}
@@ -259,9 +259,9 @@ nav .btn-add .ico{stroke:#fff;width:18px;height:18px}
 .kl path{fill:none;stroke-width:2;stroke:#c3cfdf;transition:opacity .15s,stroke .15s}
 .kl path.l-ok{stroke:#9fd0b2}.kl path.l-wait{stroke:#f0cf8f}.kl path.l-todo{stroke:#9cc3ef}.kl path.l-bad{stroke:#eaa79c}.kl path.l-done{stroke:#a9b8cf}
 .kcol{display:flex;flex-direction:column;gap:12px;position:relative;z-index:1;min-width:0}
-.kh{display:flex;align-items:center;gap:8px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;color:var(--ink);margin-bottom:4px}
+.kh{display:flex;align-items:center;gap:8px;font-family:'Share Tech',sans-serif;font-weight:600;font-size:15px;color:var(--ink);margin-bottom:4px}
 .kh .ico{width:18px;height:18px}
-.kh span{margin-left:auto;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:var(--muted);background:var(--bg);border-radius:999px;padding:2px 9px}
+.kh span{margin-left:auto;font-family:'Lato',sans-serif;font-size:12px;font-weight:600;color:var(--muted);background:var(--bg);border-radius:999px;padding:2px 9px}
 .kc{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;cursor:pointer;transition:border-color .15s,box-shadow .15s,opacity .15s;position:relative}
 .kc:hover{border-color:var(--gold);box-shadow:0 6px 18px rgba(20,35,58,.08)}
 .kc:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
@@ -269,7 +269,7 @@ nav .btn-add .ico{stroke:#fff;width:18px;height:18px}
 .kc-ic{flex:none;width:34px;height:34px;border-radius:9px;background:var(--gold-soft);display:grid;place-items:center}
 .kc-ic .ico{width:18px;height:18px}
 .kc-t{min-width:0}
-.kc-t b{display:block;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:15px;line-height:1.25;color:var(--ink)}
+.kc-t b{display:block;font-family:'Share Tech',sans-serif;font-weight:600;font-size:15px;line-height:1.25;color:var(--ink)}
 .kc-t span{display:block;font-size:12.5px;color:var(--muted);margin-top:1px}
 .kc-bar{height:6px;border-radius:99px;background:var(--grey-soft);margin:11px 0 4px;overflow:hidden}
 .kc-bar i{display:block;height:100%;border-radius:99px;background:var(--gold)}
@@ -281,7 +281,7 @@ nav .btn-add .ico{stroke:#fff;width:18px;height:18px}
 .st-wait{background:var(--warn-soft);color:var(--warn)}.st-wait .ico{stroke:var(--warn)}
 .st-todo{background:var(--gold-soft);color:var(--gold)}.st-todo .ico{stroke:var(--gold)}
 .st-bad{background:var(--bad-soft);color:var(--bad)}.st-bad .ico{stroke:var(--bad)}
-.st-done{background:var(--grey-soft);color:#3d4f6b}.st-done .ico{stroke:#3d4f6b}
+.st-done{background:var(--grey-soft);color:#676B6D}.st-done .ico{stroke:#676B6D}
 .kc-act{border:0;background:var(--ink);color:#fff;font:inherit;font-size:12.5px;font-weight:600;border-radius:8px;padding:6px 11px;cursor:pointer}
 .kc-act:hover{background:var(--gold)}
 .kc.k-bad{border-color:#efc4bc}
@@ -303,15 +303,15 @@ nav .btn-add .ico{stroke:#fff;width:18px;height:18px}
 .pn-in{position:absolute;top:0;right:0;bottom:0;width:min(480px,100%);background:var(--bg);transform:translateX(100%);transition:transform .25s ease;display:flex;flex-direction:column}
 .pn.open{pointer-events:auto}.pn.open .pn-bg{opacity:1}.pn.open .pn-in{transform:none;box-shadow:-12px 0 40px rgba(20,35,58,.18)}
 .pn-head{background:var(--brand);color:#fff;padding:20px 22px 22px;position:relative}
-.pn-head .k{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#7fb3ff}
+.pn-head .k{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#d4ebf8}
 .pn-head h2{color:#fff;font-size:23px;margin:6px 0 2px;padding-right:40px}
-.pn-head .s{color:#c9d6ea;font-size:13.5px}
+.pn-head .s{color:#e6f1fa;font-size:13.5px}
 .pn-head .st{margin-top:12px}
 .pn-x{position:absolute;right:14px;top:14px;width:36px;height:36px;border-radius:10px;border:0;background:rgba(255,255,255,.12);cursor:pointer;display:grid;place-items:center}
 .pn-x .ico{stroke:#fff;width:18px;height:18px}
 .pn-body{flex:1;overflow:auto;padding:16px 18px 24px}
 .pn-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:12px}
-.pn-card h3{font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;margin:0 0 8px}
+.pn-card h3{font-family:'Share Tech',sans-serif;font-size:15px;font-weight:600;margin:0 0 8px}
 .pn-row{display:flex;justify-content:space-between;gap:12px;padding:6px 0;font-size:13.5px;border-bottom:1px solid var(--line)}
 .pn-row:last-child{border-bottom:0}.pn-row span{color:var(--muted)}.pn-row b{font-weight:600;text-align:right}
 .pn-chk{display:flex;gap:10px;align-items:flex-start;padding:6px 0;font-size:13.5px}
@@ -335,7 +335,7 @@ nav .btn-add .ico{stroke:#fff;width:18px;height:18px}
 .wz-prog i{flex:1;height:4px;border-radius:99px;background:var(--grey-soft)}
 .wz-prog i.on{background:var(--gold)}
 .wz-body{padding:20px 24px 8px;min-height:230px}
-.wz-q{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:24px;line-height:1.2;margin:0 0 6px;color:var(--ink)}
+.wz-q{font-family:'Share Tech',sans-serif;font-weight:700;font-size:24px;line-height:1.2;margin:0 0 6px;color:var(--ink)}
 .wz-h{color:var(--muted);font-size:14px;margin:0 0 16px}
 .wz-opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
 .wz-o{display:flex;gap:10px;align-items:center;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:12px;font:inherit;cursor:pointer;position:relative;min-height:58px}
@@ -351,14 +351,14 @@ nav .btn-add .ico{stroke:#fff;width:18px;height:18px}
 .wz-unit span{font-size:16px;color:var(--muted);font-weight:500}
 .wz-err{color:var(--bad);font-size:13px;margin-top:10px;min-height:18px}
 .wz-calc{background:var(--bg);border-radius:12px;padding:12px 14px;margin-top:14px;font-size:14px}
-.wz-calc b{font-family:'Space Grotesk',sans-serif;font-size:20px}
+.wz-calc b{font-family:'Share Tech',sans-serif;font-size:20px}
 .wz-sum .pn-row{font-size:14px}
 .wz-foot{display:flex;justify-content:space-between;gap:10px;padding:16px 24px 20px}
 .wz-start{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
 .wz-start .wz-o{flex-direction:column;align-items:flex-start;min-height:132px;padding:16px}
 .wz-start .wz-o .ic{width:42px;height:42px;border-radius:11px}
 .wz-start .wz-o .ic .ico{width:22px;height:22px}
-.wz-start .wz-o b{font-family:'Space Grotesk',sans-serif;font-size:16px;margin-top:6px}
+.wz-start .wz-o b{font-family:'Share Tech',sans-serif;font-size:16px;margin-top:6px}
 .wz-more{display:flex;gap:16px;margin-top:16px;font-size:13.5px}
 .wz-more a{color:var(--gold);cursor:pointer;font-weight:500}
 .lotpick{display:flex;flex-direction:column;gap:8px}
@@ -371,14 +371,14 @@ nav .btn-add .ico{stroke:#fff;width:18px;height:18px}
 .ov-sec{margin-top:18px}
 .grp{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:12px}
 .grp-h{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
-.grp-h b{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600}
+.grp-h b{font-family:'Share Tech',sans-serif;font-size:16px;font-weight:600}
 .grp-h .sm{color:var(--muted);font-size:13px}
 .grp-h .sp{flex:1}
 .qrgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:14px}
 .qrc{background:#fff;border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
 .qrc .q{width:150px;height:150px}
 .qrc .q svg{width:100%;height:100%}
-.qrc b{font-family:'Space Grotesk',sans-serif;font-size:16px}
+.qrc b{font-family:'Share Tech',sans-serif;font-size:16px}
 .qrc .sm{font-size:12.5px;color:var(--muted)}
 .qrc .acts{display:flex;gap:6px;margin-top:6px}
 .qrc .acts .btn{padding:6px 10px;font-size:12.5px}
@@ -394,7 +394,7 @@ nav .btn-add .ico{stroke:#fff;width:18px;height:18px}
 
 .raps{display:flex;flex-direction:column;gap:8px}
 .rap{display:grid;grid-template-columns:34px 140px minmax(0,1.2fr) minmax(0,1.3fr) 124px 176px;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px}
-.rap-id b,.rap-wat b{display:block;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14.5px}
+.rap-id b,.rap-wat b{display:block;font-family:'Share Tech',sans-serif;font-weight:600;font-size:14.5px}
 .rap-id span,.rap-wat span{display:block;font-size:12.5px;color:var(--muted)}
 .rap-res{font-size:13.5px}
 .rap-acts{display:flex;gap:6px;justify-content:flex-end}
@@ -411,13 +411,13 @@ nav .btn-add .ico{stroke:#fff;width:18px;height:18px}
 .qr-arch input{width:auto;margin:0}
 .qr-uitleg{display:flex;gap:10px;align-items:flex-start;margin:0 0 14px;max-width:760px}
 .tag{display:inline-block;flex:none;font-size:11.5px;font-weight:600;padding:3px 8px;border-radius:999px;letter-spacing:.01em}
-.tag-pub{background:#e6f0fc;color:#1f6fd1}
+.tag-pub{background:#e6f0fc;color:#0077C8}
 .tag-int{background:#fff3df;color:#9a5b00}
 .qrl{display:flex;flex-direction:column;gap:8px}
 .qrr{display:grid;grid-template-columns:58px minmax(0,1fr) auto auto;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 14px}
 .qrr .q{width:58px;height:58px;padding:4px;border:1px solid var(--line);border-radius:8px;background:#fff}
 .qrr .q svg,.pn-qr .q svg{width:100%;height:100%;display:block}
-.qrr-t b{display:block;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:14.5px}
+.qrr-t b{display:block;font-family:'Share Tech',sans-serif;font-weight:600;font-size:14.5px}
 .qrr-t span{display:block;font-size:12.5px;color:var(--muted)}
 .qrr-a{display:flex;gap:6px;justify-content:flex-end}
 .pn-qr-t{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
@@ -428,14 +428,14 @@ nav .btn-add .ico{stroke:#fff;width:18px;height:18px}
 @media(max-width:560px){.lbl-seg{grid-template-columns:1fr}}
 .btn.rbtn:not(.ghost){color:#fff}.btn.rbtn:not(.ghost) .ico{stroke:#fff!important}
 .lbl-prev{margin-top:16px;padding:18px;background:var(--bg);border:1px dashed var(--line);border-radius:12px;display:flex;flex-direction:column;align-items:center;gap:8px}
-.lbl{width:var(--lw);height:var(--lh);box-sizing:border-box;background:#fff;color:#14233a;display:flex;gap:2.2mm;align-items:center;padding:1.8mm 2.2mm;overflow:hidden;font-family:Inter,system-ui,sans-serif;border-radius:1.5mm;box-shadow:0 0 0 1px #c9d3e1}
+.lbl{width:var(--lw);height:var(--lh);box-sizing:border-box;background:#fff;color:#676B6D;display:flex;gap:2.2mm;align-items:center;padding:1.8mm 2.2mm;overflow:hidden;font-family:Lato,system-ui,sans-serif;border-radius:1.5mm;box-shadow:0 0 0 1px #c9d3e1}
 .lbl .lq{height:calc(var(--lh) - 3.6mm);aspect-ratio:1;flex:none}
 .lbl .lq svg{width:100%;height:100%;display:block}
 .lbl .lt{min-width:0;display:flex;flex-direction:column;gap:.6mm;line-height:1.15}
-.lbl .lk{font-size:6.2pt;font-weight:600;color:#1f6fd1}
+.lbl .lk{font-size:6.2pt;font-weight:600;color:#0077C8}
 .lbl-int .lk{color:#9a5b00}
-.lbl b{font-family:'Space Grotesk',sans-serif;font-size:9pt;font-weight:700;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-.lbl .ls{font-size:6.6pt;color:#3d4f6b}
+.lbl b{font-family:'Share Tech',sans-serif;font-size:9pt;font-weight:700;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.lbl .ls{font-size:6.6pt;color:#676B6D}
 .lbl-int{border-left:2.2mm solid #f0a020;padding-left:1.8mm}
 .lf-l54 .lbl b{font-size:8pt}.lf-l54 .lbl .ls{font-size:6pt}.lf-l54 .lbl .lk{font-size:5.6pt}
 .lf-a4 .lbl{padding:2.5mm 3mm}.lf-a4 .lbl b{font-size:10.5pt}.lf-a4 .lbl .ls{font-size:7.5pt}.lf-a4 .lbl .lk{font-size:7pt}
@@ -456,21 +456,26 @@ body.print-lbl #lblprint.lf-a4 .lbl{break-after:auto;page-break-after:auto;break
 .rap-acts .rbtn:nth-child(2){width:100%;box-sizing:border-box}
 @media(max-width:560px){.rap-acts{justify-content:start}}
 /* paspoort huisstijl + coffeeshops */
-.pp-merk{border-bottom:0}.pp-merk img{height:34px;max-width:150px;object-fit:contain}.pp-mn{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700}
+.pp-merk{border-bottom:0}.pp-merk img{height:34px;max-width:150px;object-fit:contain}.pp-mn{font-family:'Share Tech',sans-serif;font-size:18px;font-weight:700}
 .mv{display:flex;align-items:center;justify-content:space-between;gap:10px;border-radius:12px;padding:10px 14px;min-height:54px}
-.mv img{height:30px;max-width:140px;object-fit:contain}.mv-l{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px}
+.mv img{height:30px;max-width:140px;object-fit:contain}.mv-l{font-family:'Share Tech',sans-serif;font-weight:700;font-size:16px}
 .mv-t{text-align:right;font-size:11px;font-weight:700;line-height:1.3}.mv-t small{font-weight:500;opacity:.85}
 .mv-neu{background:#fff;border:1px solid var(--line);color:var(--ink)}.mv-neu .mv-t{color:var(--gold)}.mv-neu .mv-l{color:var(--ink)}
 .shops{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
 .pas-r{display:flex;align-items:center;gap:12px;margin-top:12px}.pas-sw{width:28px;height:28px;border-radius:8px;flex:none;border:1px solid var(--line)}
 .vg{padding:2px 0 6px}.vg-h{font-weight:700;font-size:15px;margin:2px 0 8px}
 .pp .vg-h{font-size:12px;font-weight:700;color:var(--muted);margin:0 0 8px}
+/* Allora Labs huisstijl */
+body{letter-spacing:.025em;font-synthesis:none}
+h1,h2{color:var(--gold)}
+:root{--info:#355A9E;--info-soft:#e6ebf4;--grey-soft:#f0f0f1}
+.filter button.on,.seg button.on,.kc-act{background:var(--gold);border-color:var(--gold)}
 </style>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Share+Tech&display=swap">
 </head>
 <body>
 <header>
-<div class="logo"><img class="gf" src="data:image/png;base64,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" alt="Allora Labs"><div class="tt">Traceability<small>Lijst II-verificatie voor edibles</small></div></div>
+<div class="logo"><img class="gf" src="data:image/png;base64,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" alt="Allora Labs"><div class="tt">Traceability<small>Lijst II-verificatie voor edibles</small></div></div>
 <div class="spacer"></div>
 <div class="userbox" id="userbox"></div>
 </header>
@@ -770,7 +775,7 @@ const flow=[
 ['box','Productie','Elke batch edibles is gekoppeld aan de geteste grondstof en het recept per stuk.'],
 ['dna','PCR-test eindproduct','Allora Labs test elke batch: THC per stuk én cannabis-RNA. Dat laatste toont aan dat er plantmateriaal in zit.'],
 ['qr','QR-code op de verpakking','Elke verpakking draagt de QR-code van zijn batch. Neutraal, of in de huisstijl van uw coffeeshop.'],
-['shop','In de coffeeshop','Scan de QR: het paspoort toont de keten, de labuitslag en hoe uw klant het product veilig gebruikt.']
+['shop','In de coffeeshop','Scan de QR: het paspoort toont de keten, de labuitslag en hoe uw klant het product verantwoord gebruikt.']
 ];
 return `<div class="cs-hero">
 <div>
@@ -810,7 +815,7 @@ const stat = ok?`<div class="pp-stat ok"><div class="pp-big">✓</div><div><b>${
 const tijd=[['Grondstof ontvangen',P.lots.map(x=>dmy(x.datum)).join(', ')],['Grondstof getest',P.lots.map(x=>x.oDatum?dmy(x.oDatum):'–').join(', ')],['Geproduceerd',dmy(P.datum)],['Eindproduct getest',m&&m.oDatum?dmy(m.oDatum):'–']];
 const mb=ch('Massabalans');
 return `<div class="pp ${mini?'mini':''}">
-${P.demo||(S&&S.demo)?'<div style="background:var(--gold);color:#fff;text-align:center;font-size:12px;font-weight:700;padding:4px">DEMO · voorbeeldgegevens</div>':''}<div class="pp-head"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAABXCAMAAAB2tvo6AAAAkFBMVEUgW6UgVqMhWqgJmNYJmd8Hmt0Fn+EhVqNpaWkQfM0UecQSesMoLmwrPYwrPIkrPIwAAP8YWnNQUFBQUFASe8MkJCQtP5IA//9QUFAAAABNTU1QUFBKSktMTExNTU1MTExMTExLS0tNTU1UVFQBqOkDpOcpOYstO4o8PDwbaLQiV6cNic4Ph9AZZrEaZ7ENh80iq3OyAAAAMHRSTlMkl+sg8Z1fXhIi+JcHKVuPAQTTXWEHzAGoAPX+FU3OcbEwjwyPNx6qB/z7MfyUMJSun1f7AAAHZklEQVR42tWba2OiOhCGERVtV+u2e26EXMG21Lrd///vziQK5ApCK5WcD0sheHjIvJnMZIjS6zWCECL+8wz+4RnFX/c/i64Ikmcoy70g2QkETQQEnhTRYvogGMm2nj4IUSBk+iAgEe4VycRASnhQeGSPSCYGggGipBkSUwch0qzAvMjUQfIsIyeaaYNIiYh0jTJejAoSWe1DtehDHt+p9q7avGpdP1wonRfU87TXA3lczaz2u2pw/EO2P+e2rNo+uUAiqVckVwPZzmar6Gev2+7myX4/7/AirOEZBWQ7exhy589k+dxiWfw08QoQyUggL6/bgfcmy3mrF5GPWXpEciWQ3cPgm5OkSyJekVwHZPu6GXzzPDwk7CSR+qmvD/Lw8Im7w1MXPOVpAe8RyXVAdttP3B20LUyr1aLHk1wH5PXlE3c/7wMXRDPruiKZEkgtEZ9IpgTCm+W7FEk5VZBGIurYeuAJgQh9YeKIZEIgTNcFyyyRTAiE6xGuFMn620Ci1SUL4gCIlAj2CmZ8kFl8OMyigSCWN8+tDMSYIJs4jg9xHA0DYabrsP4cF2QGIIe32d0gEG4Ogb3cGlfsm1V8eHtbDQExJaJiEuPvsWetCEDiuwEgzoLXEsno0+8KQFYDQBzHYYlkdJAofuvQux+E23lSa4jGd4gwJPer3iC2RByRjA/yASA/7vqCeGJCUyTjgzzO4vv73iBaLOJXzTestVZxfP9XXxDubiWsjUEaHyQCt3i/iPqBuBKxz32LRuL7Y9IPxJdbNEcpCFLgwnkFGJfNsX6haPoW0KsV5DeI/f74px+IRyLWST+IYJxC4znRz7Inqt4AJjl/qncoxC+jL356+q/Dj8gROc57geS+3TZjmHwgAvZNzw1RVli/hhmVl8/mKXK9L1a/Tjs9O4AkfUB8ErHOuiAb9WhIvmUER4gLAwQokSw+UEkMzPS+gEBUorkNZPb2NosAZBn1APFKxBSJA4K5fCAmQA9YEDk2dZQvQYhik5frvrkocFmqvlDYUrSDRGr1++N4PL73AGFurtf2JDbIhqunqedqAnmXikRusyD52stmuwLluknKe2kryApAovSv43Gx7AHilYg5UDZInlkFEhhe9Enj6hpCzT6k2zdXBRYtIBHEIzP4ZwEk84tBnADdIxILRJZ6WOxgP+eEhXzwjOPmfThFIUXeAbKCCFGuGP8ASHIxSEAihkhMEJnldoxRniT1iAh9H8zTtx1kdjioNfxdi225IAGJGBdMEKK/cX2K5hUI05Y6yFsS0gYSAcdvdbA4LkK25YIEJGIMlQniLY5QidbidFWbzXOfs03XtA0ELOtwikWSxSJkWw5ISUP1fRu4UnpAQqI680H9RK7/uvc1sRaQbXy2rDR9hxFZFpeByPf+syv7aICs7TykOWzGGKg6He9oh0EiSAfNzofLRci2HBASkoguEgNE+Oseq/OG4YVmkrYlisxrVQ49bFsOiCw2y/2tKUK7FITbmmvpGwKRA1LnHd4XoSGxQbCcCbNAq2ecniMiPjMiq8ayoMZhGRoSG0Sg9ib8Gklba1mErhGOe2nk8TXWE0HStvb/XgACMzonoVabuzNr4bZZSwMpQrNWFgLZ/hPHWi4+aFs2iN8n2BZ+qR8Rjl/y+xE5K4dG5CV60dfud5G/QssCwbQtDK8nT9ezews41axsgogBnj0dsGPlbuB6PYkJgn1rLayttYSxmOy/1hoAQgIzUGPK5LLVb8mrV+Lkv53Vr6w5/GqQVok0nJ3xSMFrNnvt5vbtjEf6g5S0PVNV1XDZICrqY1rey4wQhfP+jQgRdUaIvUFEYNlkFp4GYnYkY3bIVck4HJkxux1zqZgdUmB4fe7blXzoC9Ihkdr03CwKtrIoVITDAtkXNX2bLMr2y0A6JFKT+vJahFu5qpb4RnBfXmv38FX1WjDVUNHaHZZici6qPk3SQ6a0EDlX82hOdE+RI58vl1lJ6EqrTCP8bvSw+wTI/tnK03b0hx6FTNUKfMrYms6txNg+lbpnzn0hT1wU2o3RyydE8rycp7fSovRhtxlcm5mkNwSy2a0eh3Hsb4hDVmJHu+6iE69dJevbAoEiB1kcb3+p8KG+VIiqzxTMjxWSZD/ArkpcevRvdAAFr63NH7y+/LMLKGryf66gjrWvFeqPFZLnATon9JfDwY2Na+nm9O0RldCmv/D3flDpgmTuJxjGfi/LIHXBjeo7mufUH+B+J4jr+WGxpKWqmPR+ZTNIBZIImLH01kEwypnmuiuQv+tlaH4L3+peAMIyoj8sQ8q0eLOmoQRPAaSgYEW8WTvKJC78l+VFExHSnOGbBxFy9ahNAQxiC4xF3sgdMxU53TpInlHOaZNFOesFUz2HgQnPyG2DyOScCpCECZJyM+lziea/FYRkrCyKUtSmw05fz8Csuz4bFr5RECZUOxnO+izzNa0cB2gErhJaARO5+y7/FrcGcmpP2LQYVmmAZcj4mr8kMmhEF0hkXBBw0aqdfYNg6+q8qEJY7fLpkmA5Exf89v/7tr2Etqqh2AAAAABJRU5ErkJggg==" alt="Allora Labs"><div class="pp-lbl">Productpaspoort<br><span style="color:var(--muted);font-weight:500">Traceability door Allora Labs</span></div></div>
+${P.demo||(S&&S.demo)?'<div style="background:var(--gold);color:#fff;text-align:center;font-size:12px;font-weight:700;padding:4px">DEMO · voorbeeldgegevens</div>':''}<div class="pp-head"><img src="data:image/png;base64,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" alt="Allora Labs"><div class="pp-lbl">Productpaspoort<br><span style="color:var(--muted);font-weight:500">Traceability door Allora Labs</span></div></div>
 ${stat}
 <div class="pp-sec"><div class="pp-prod">${esc(P.product)}</div><div class="pp-sub">Batch ${esc(P.id)} · geproduceerd ${dmy(P.datum)}</div></div>
 <div class="pp-sec"><div class="pp-h">Bewijs</div>
@@ -1108,19 +1113,19 @@ var li = cbd ? [
 'Bewaar afgesloten, koel en droog, buiten bereik van kinderen en huisdieren: het lijkt op '+snoep+'.'
 ];
 var hulp = cbd ? '' : '<div class="vg-hulp"><b>Valt het verkeerd?</b>Zoek een rustige plek, eet of drink iets zoets en blijf niet alleen. Meestal is het ergste binnen een paar uur voorbij. Bij ernstige klachten: bel 112.</div>';
-return '<div class="vg"><div class="vg-h">Veilig gebruik</div><div class="vg-ps">'+ph+'</div><ul class="vg-l">'+li.map(function(t){return '<li>'+t+'</li>';}).join('')+'</ul>'+hulp+
+return '<div class="vg"><div class="vg-h">Verantwoord gebruik</div><div class="vg-ps">'+ph+'</div><ul class="vg-l">'+li.map(function(t){return '<li>'+t+'</li>';}).join('')+'</ul>'+hulp+
 '<div class="vg-info">Meer informatie: <a href="https://www.drugsinfo.nl" target="_blank" rel="noopener">drugsinfo.nl</a> of de Drugs Infolijn 0900-1995.</div></div>';
 }
 var VG_CSS='.vg-ps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 8px;margin:4px 0 12px}'+
-'.vg-p{display:flex;flex-direction:column;align-items:center;text-align:center;gap:5px;font-size:11.5px;line-height:1.25;color:#14233a}'+
+'.vg-p{display:flex;flex-direction:column;align-items:center;text-align:center;gap:5px;font-size:11.5px;line-height:1.25;color:#676B6D}'+
 '.vg-i{width:40px;height:40px;border-radius:50%;border:2px solid #b8402f;display:grid;place-items:center;color:#b8402f;background:#fff}'+
 '.vg-i svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.vg-i .sl{stroke-width:2.2}'+
 '.vg-18{font-weight:800;font-size:13px;letter-spacing:-.02em}'+
 '.vg-l{margin:0;padding-left:18px;font-size:13.5px;line-height:1.5}.vg-l li{margin:4px 0}'+
 '.vg-hulp{margin-top:10px;background:#fbf1dc;border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.45}.vg-hulp b{display:block;margin-bottom:2px}'+
-'.vg-info{margin-top:10px;font-size:12.5px;color:#4a5568}';
+'.vg-info{margin-top:10px;font-size:12.5px;color:#676B6D}';
 /* huisstijl: tekstkleur bij een lichte of donkere achtergrond */
-function merkFg(hex){ var m=/^#([0-9a-f]{6})$/i.exec(hex||''); if(!m) return '#ffffff'; var n=parseInt(m[1],16), r=n>>16&255, g=n>>8&255, b=n&255; return (0.299*r+0.587*g+0.114*b)>160?'#14233a':'#ffffff'; }
+function merkFg(hex){ var m=/^#([0-9a-f]{6})$/i.exec(hex||''); if(!m) return '#ffffff'; var n=parseInt(m[1],16), r=n>>16&255, g=n>>8&255, b=n&255; return (0.299*r+0.587*g+0.114*b)>160?'#676B6D':'#ffffff'; }
 
 /* ===== UI v2: Mijn keten, zijpaneel, stap-voor-stap toevoegen, overzichten ===== */
 let OV='shops', KF='actief', KQ='', PANEEL=null, WIZ=null, AVIEW='rap';
@@ -1232,7 +1237,7 @@ ${kol('leaf','Grondstof',lots.length,lots.map(kaartLot).join(''),KF==='archief'?
 ${kol('box','Producten',bs.length,bs.map(kaartBatch).join(''),'Nog geen batches. Maak er een met + Toevoegen.')}
 ${kol('shop','Coffeeshops',shops.length,shops.map(s=>kaartShop(s,bs)).join(''),'Nog niets geleverd.')}
 </div>
-<div class="legend"><span><i style="background:var(--ok)"></i>Vrijgegeven</span><span><i style="background:var(--warn)"></i>Wacht op lab</span><span><i style="background:var(--gold)"></i>Jouw volgende stap</span><span><i style="background:var(--bad)"></i>Geblokkeerd of afgekeurd</span><span><i style="background:#3d4f6b"></i>Afgerond</span></div>`;
+<div class="legend"><span><i style="background:var(--ok)"></i>Vrijgegeven</span><span><i style="background:var(--warn)"></i>Wacht op lab</span><span><i style="background:var(--gold)"></i>Jouw volgende stap</span><span><i style="background:var(--bad)"></i>Geblokkeerd of afgekeurd</span><span><i style="background:#676B6D"></i>Afgerond</span></div>`;
 }
 function tekenLijnen(){
 const k=$('#keten'), svg=$('#kl'); if(!k||!svg) return;
@@ -1506,7 +1511,7 @@ function lblFmt(){ let f='l62'; try{ f=localStorage.getItem('allora-lbl')||'l62'
 function labelHTML(id,soort){
 const va=variant(id), gl=id.indexOf('GL')===0, o=va?va.b:gl?lot(id):batch(id); if(!o) return '';
 let k,t,s;
-if(soort==='pp'){ const mk=va?klantObj(va.v.klant):null; k=mk?esc(mk.merk||mk.naam):'Productpaspoort'; t=esc(o.product); s=`Batch ${o.id}<br>Scan voor herkomst, labtest en veilig gebruik`; }
+if(soort==='pp'){ const mk=va?klantObj(va.v.klant):null; k=mk?esc(mk.merk||mk.naam):'Productpaspoort'; t=esc(o.product); s=`Batch ${o.id}<br>Scan voor herkomst, labtest en verantwoord gebruik`; }
 else if(gl){ k='Intern · '+esc(o.type); t=esc(o.soort||o.type); s=`${o.id}<br>Ontvangen ${dmy(o.datum)}${o.gram!=null?' · '+nl(o.gram,0)+' g':''}`; }
 else { k='Intern · Batch'; t=esc(o.product); s=`${o.id}<br>Gemaakt ${dmy(o.datum)}${zonderAantal(o)?'':' · '+o.stuks+' stuks'}`; }
 return `<div class="lbl lbl-${soort}"><div class="lq">${qrSvg(lblUrl(id,soort))}</div><div class="lt"><div class="lk">${k}</div><b>${t}</b><div class="ls">${s}</div></div></div>`;
@@ -1567,7 +1572,7 @@ if(PANEEL) toonPaneel(PANEEL);
 let RTAB='';
 /* ---------- Coffeeshops: paspoort neutraal of in eigen huisstijl ---------- */
 document.head.insertAdjacentHTML('beforeend','<style>'+VG_CSS+'</style>');
-function ppMerkKop(M){ return `<div class="pp-head pp-merk" style="background:${esc(M.kleur||'#14233a')};color:${merkFg(M.kleur)}">${M.logo?`<img src="${esc(M.logo)}" alt="${esc(M.naam)}">`:`<b class="pp-mn">${esc(M.naam)}</b>`}<div class="pp-lbl" style="color:inherit">Productpaspoort<br><span style="font-weight:500;opacity:.85">Geverifieerd door Allora Labs</span></div></div>`; }
+function ppMerkKop(M){ return `<div class="pp-head pp-merk" style="background:${esc(M.kleur||'#0077C8')};color:${merkFg(M.kleur)}">${M.logo?`<img src="${esc(M.logo)}" alt="${esc(M.naam)}">`:`<b class="pp-mn">${esc(M.naam)}</b>`}<div class="pp-lbl" style="color:inherit">Productpaspoort<br><span style="font-weight:500;opacity:.85">Geverifieerd door Allora Labs</span></div></div>`; }
 const _ppHTML=paspoortHTML;
 paspoortHTML=function(P,mini){
 let h=_ppHTML(P,mini);
@@ -1583,12 +1588,12 @@ return `<div class="pp-page"><div class="pp-bar qr-hide"><button class="btn ghos
 function merkVoorbeeld(k){
 const al=(document.querySelector('img[alt="Allora Labs"]')||{}).src;
 if(!k||!k.huisstijl) return `<div class="mv mv-neu">${al?`<img src="${esc(al)}" alt="">`:'<span class="mv-l">Allora Labs</span>'}<span class="mv-t">Productpaspoort<br><small>Traceability door Allora Labs</small></span></div><div class="sm muted" style="margin-top:6px">Neutraal paspoort: de producent en de coffeeshop staan er niet op.</div>`;
-return `<div class="mv" style="background:${esc(k.kleur||'#14233a')};color:${merkFg(k.kleur)}">${k.logo?`<img src="${esc(k.logo)}" alt="">`:`<span class="mv-l">${esc(k.merk||k.naam)}</span>`}<span class="mv-t">Productpaspoort<br><small>Geverifieerd door Allora Labs</small></span></div><div class="sm muted" style="margin-top:6px">Het paspoort toont de naam${k.logo?' en het logo':''} van de coffeeshop. De producent staat er niet op.</div>`;
+return `<div class="mv" style="background:${esc(k.kleur||'#0077C8')};color:${merkFg(k.kleur)}">${k.logo?`<img src="${esc(k.logo)}" alt="">`:`<span class="mv-l">${esc(k.merk||k.naam)}</span>`}<span class="mv-t">Productpaspoort<br><small>Geverifieerd door Allora Labs</small></span></div><div class="sm muted" style="margin-top:6px">Het paspoort toont de naam${k.logo?' en het logo':''} van de coffeeshop. De producent staat er niet op.</div>`;
 }
 function pasKaart(b){
 const shops=S.klanten.filter(k=>k.huisstijl);
 const rij=k=>{ const v=pasVan(b.id).find(x=>x.klant===k.naam);
-if(!v) return `<div class="pas-r"><div class="pas-sw" style="background:${esc(k.kleur||'#14233a')}"></div><div style="flex:1"><b>${esc(k.naam)}</b><div class="sm muted">Nog geen paspoort in deze huisstijl.</div></div><button class="btn ghost rbtn" onclick="maakPas('${b.id}','${esc(k.naam)}')">Aanmaken</button></div>`;
+if(!v) return `<div class="pas-r"><div class="pas-sw" style="background:${esc(k.kleur||'#0077C8')}"></div><div style="flex:1"><b>${esc(k.naam)}</b><div class="sm muted">Nog geen paspoort in deze huisstijl.</div></div><button class="btn ghost rbtn" onclick="maakPas('${b.id}','${esc(k.naam)}')">Aanmaken</button></div>`;
 return `<div class="pn-qr" style="margin-top:12px"><div class="q" data-qr="P:${v.code}" data-qrk="pp"></div><div class="pn-qr-t"><span class="tag tag-pub">${esc(k.naam)} · openbaar</span><div class="sm muted">Paspoort in de huisstijl van ${esc(k.merk||k.naam)}.</div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn rbtn" onclick="labelDialog(['P:${v.code}'],'pp')">${ico('qr')}Labels printen</button><button class="btn ghost rbtn" onclick="sluitPaneel();openPaspoort('P:${v.code}')">Paspoort</button><button class="btn ghost rbtn" onclick="kopieerUrl(ppUrl('${v.code}'))">Link</button></div></div></div>`; };
 return `<div class="pn-card"><h3>Paspoort per coffeeshop</h3>${shops.length?`<div class="sm muted">Coffeeshops die hun eigen huisstijl op het paspoort willen. De anderen gebruiken het neutrale paspoort hierboven.</div>${shops.map(rij).join('')}`:`<div class="sm muted">Alle coffeeshops gebruiken nu het neutrale paspoort.</div>`}<div style="margin-top:10px"><a class="id" onclick="sluitPaneel();TAB='overzichten';OV='shops';render()">Coffeeshops en huisstijl beheren</a></div></div>`;
 }
