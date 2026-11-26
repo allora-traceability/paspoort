@@ -455,6 +455,16 @@ body.print-lbl #lblprint.lf-a4 .lbl{break-after:auto;page-break-after:auto;break
 .rap-acts .rbtn{justify-content:center}
 .rap-acts .rbtn:nth-child(2){width:100%;box-sizing:border-box}
 @media(max-width:560px){.rap-acts{justify-content:start}}
+/* paspoort huisstijl + coffeeshops */
+.pp-merk{border-bottom:0}.pp-merk img{height:34px;max-width:150px;object-fit:contain}.pp-mn{font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:700}
+.mv{display:flex;align-items:center;justify-content:space-between;gap:10px;border-radius:12px;padding:10px 14px;min-height:54px}
+.mv img{height:30px;max-width:140px;object-fit:contain}.mv-l{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px}
+.mv-t{text-align:right;font-size:11px;font-weight:700;line-height:1.3}.mv-t small{font-weight:500;opacity:.85}
+.mv-neu{background:#fff;border:1px solid var(--line);color:var(--ink)}.mv-neu .mv-t{color:var(--gold)}.mv-neu .mv-l{color:var(--ink)}
+.shops{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.pas-r{display:flex;align-items:center;gap:12px;margin-top:12px}.pas-sw{width:28px;height:28px;border-radius:8px;flex:none;border:1px solid var(--line)}
+.vg{padding:2px 0 6px}.vg-h{font-weight:700;font-size:15px;margin:2px 0 8px}
+.pp .vg-h{font-size:12px;font-weight:700;color:var(--muted);margin:0 0 8px}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
 </head>
@@ -488,7 +498,11 @@ const batch = id=>S.batches.find(b=>b.id===id);
 const monstersVan = id=>S.monsters.filter(m=>m.ref===id);
 const leverStatus = naam=>(S.leveranciers.find(l=>l.naam===naam)||{}).status||'Nieuw';
 const gebruiktG = lotId=>S.batches.reduce((s,b)=>s+b.inzet.filter(i=>i.lot===lotId).reduce((a,i)=>a+Number(i.g),0),0);
-const restG = lotId=>{ const l=lot(lotId); return l? Math.round((l.gram-gebruiktG(lotId))*100)/100 : 0; };
+const restG = lotId=>{ const l=lot(lotId); if(!l) return 0; if(l.gram==null) return l.status==='Opgebruikt'?0:Infinity; return Math.round((l.gram-gebruiktG(lotId))*100)/100; };
+/* THC (coffeeshop): geen hoeveelheden. Grondstof zonder gram, batch zonder stuks. */
+const lotCat = l=>((S.grondstoftypes||[]).find(g=>g.naam===(l&&l.type))||{cat:'THC'}).cat;
+const zonderAantal = b=>!!b&&b.cat!=='CBD'&&(b.stuks===null||b.stuks===undefined||b.stuks==='');
+const inzetTxt = i=>i.mgStuk!=null&&i.mgStuk!==''?nl(i.mgStuk,0)+' mg '+i.lot+' per stuk':i.g+' g '+i.lot;
 const geleverd = bId=>S.leveringen.filter(x=>x.batch===bId).reduce((s,x)=>s+Number(x.stuks),0);
 const voorraad = bId=>{ const b=batch(bId); return b? b.stuks-geleverd(bId):0; };
 const lotResultaat = lotId=>monstersVan(lotId).filter(m=>m.oordeel==='Conform').slice(-1)[0];
@@ -497,10 +511,13 @@ let n = verp<=4 ? verp : Math.ceil(1+Math.sqrt(verp));
 if(leverStatus(lev)==='Nieuw' && verp>4) n=Math.min(verp,Math.ceil(n*CFG.strengFactor));
 return n;
 }
-const vereistVoor = ref=>{ if(ref.indexOf('GL')===0){const l=lot(ref);return vereistGrondstof(l.verp,l.leverancier);} return CFG.stuksEindproduct; };
+function vereistTHC(lev){ const n=CFG.monstersTHC||3; return leverStatus(lev)==='Nieuw'?Math.ceil(n*CFG.strengFactor):n; }
+const vereistVoor = ref=>{ if(ref.indexOf('GL')===0){const l=lot(ref); if(l.gram==null||lotCat(l)!=='CBD') return vereistTHC(l.leverancier); return vereistGrondstof(l.verp,l.leverancier);} return CFG.stuksEindproduct; };
 const isCBD = b=>b&&b.cat==='CBD';
 function theoretisch(b){
 let mg=0, compleet=true; const k=isCBD(b)?'cbd':'thc';
+const perStuk=b.inzet.length&&b.inzet.every(i=>i.mgStuk!=null&&i.mgStuk!=='');
+if(perStuk){ b.inzet.forEach(i=>{ const r=lotResultaat(i.lot); if(r&&r[k]!=null) mg+= Number(i.mgStuk)*(r[k]/100); else compleet=false; }); return compleet? mg : null; }
 b.inzet.forEach(i=>{ const r=lotResultaat(i.lot); if(r&&r[k]!=null) mg+= i.g*(r[k]/100)*1000; else compleet=false; });
 return compleet&&b.stuks? mg/b.stuks : null;
 }
@@ -535,7 +552,7 @@ checks.push({s:lotsOk?'ok':'bad',t:'Grondstof vrijgegeven',d:b.inzet.map(i=>i.lo
 if(!m){
 const msg = pending? 'Monster '+pending.id+' wacht op resultaat Allora Labs.' : 'Nog geen monster genomen.';
 checks.push({s:'wait',t:'PCR eindproduct: cannabis-RNA aangetoond',d:msg});
-checks.push({s:'wait',t:'Massabalans grondstof → product',d: th? 'Maximaal '+nl(th)+' mg THC/stuk op basis van '+b.inzet.map(i=>i.g+' g '+i.lot).join(' + ')+'.':'—'});
+checks.push({s:'wait',t:'Massabalans grondstof → product',d: th? 'Maximaal '+nl(th)+' mg THC/stuk op basis van '+b.inzet.map(inzetTxt).join(' + ')+'.':'—'});
 checks.push({s:'wait',t:'Dosering binnen ±'+Math.round(CFG.labelTolerantie*100)+' % van etiket',d:'Etiket: '+b.label+' mg/stuk'});
 return {checks:checks,klaar:false,ok:false,m:m,th:th};
 }
@@ -553,13 +570,13 @@ const ok = checks.every(c=>c.s==='ok');
 const wacht = !ok && !checks.some(c=>c.s==='bad');
 return {checks:checks,klaar:!wacht,ok:ok,m:m,th:th,ratio:ratio};
 }
-return {isCBD,lot,batch,monstersVan,leverStatus,gebruiktG,restG,geleverd,voorraad,lotResultaat,vereistGrondstof,vereistVoor,theoretisch,dossier};
+return {isCBD,lotCat,zonderAantal,inzetTxt,vereistTHC,lot,batch,monstersVan,leverStatus,gebruiktG,restG,geleverd,voorraad,lotResultaat,vereistGrondstof,vereistVoor,theoretisch,dossier};
 }
 /* ===== Einde gedeelde logica ===== */
 /* Gegevens voor het openbare productpaspoort (geen leveranciers, geen coffeeshops) */
-function paspoortData(S,CFG,b){
+function paspoortData(S,CFG,b,code){
 const L=maakLogica(S,CFG), d=L.dossier(b), m=d.m||null;
-return {id:b.id, code:b.code||'', product:b.product, datum:b.datum, status:b.status, cat:b.cat||'THC', label:b.label, cbdThcMax:CFG.cbdThcMax,
+return {id:b.id, code:code||b.code||'', product:b.product, datum:b.datum, status:b.status, cat:b.cat||'THC', label:b.label, cbdThcMax:CFG.cbdThcMax,
 lots:b.inzet.map(i=>{ const l=L.lot(i.lot)||{}, r=L.lotResultaat(i.lot)||{}; return {type:l.type||'', datum:l.datum||'', oDatum:r.oDatum||'', thc:r.thc, cbd:r.cbd, cbn:r.cbn, pcr:r.pcr||'', ct:r.ct, rapport:r.rapport||'', link:r.link||''}; }),
 m: m?{mg:m.mg, cbdmg:m.cbdmg, pcr:m.pcr||'', ct:m.ct, oDatum:m.oDatum||'', rapport:m.rapport||'', link:m.link||''}:null,
 checks:d.checks.map(c=>({s:c.s,t:c.t}))};
@@ -670,7 +687,7 @@ const c=(arr,st)=>arr.filter(x=>x.status===st).length;
 const lev30=S.leveringen.filter(x=>(new Date(today())-new Date(x.datum))/864e5<=30).reduce((s,x)=>s+x.stuks,0);
 const wacht=S.monsters.filter(m=>!m.oordeel);
 const todo=[];
-L.filter(l=>l.status==='Quarantaine').forEach(l=>{ if(!monstersVan(l.id).some(m=>!m.oordeel)) todo.push(`${idl(l.id)} in quarantaine: monster nemen (${vereistGrondstof(l.verp,l.leverancier)} verpakkingen).`); });
+L.filter(l=>l.status==='Quarantaine').forEach(l=>{ if(!monstersVan(l.id).some(m=>!m.oordeel)) todo.push(`${idl(l.id)} in quarantaine: monster nemen (${vereistVoor(l.id)} ${l.gram==null?'monsters':'verpakkingen'}).`); });
 wacht.forEach(m=>todo.push(`${idl(m.ref)} wacht op resultaat Allora Labs (${m.id}).`));
 S.monsters.filter(m=>!m.oordeel&&m.genomen<m.vereist).forEach(m=>todo.push(`<b>Bemonstering onvolledig:</b> ${m.id} heeft ${m.genomen} van ${m.vereist} stuks.`));
 S.monsters.filter(m=>!m.oordeel&&!(BEMONSTERAARS.find(x=>x.naam===m.door)||{}).cert).forEach(m=>todo.push(`<b>Niet-gecertificeerde bemonsteraar:</b> ${m.id} (${esc(m.door)}).`));
@@ -712,7 +729,7 @@ const rows=S.lots.filter(l=>f==='alle'||l.status===f).slice().reverse();
 return `<h1>Grondstof</h1><p class="sub">Elke partij krijgt bij binnenkomst een ID en blijft in quarantaine tot Allora Labs het resultaat vrijgeeft.</p>
 ${filterBar('grondstof',[['alle','Alle'],['Quarantaine','Quarantaine'],['Vrijgegeven','Vrijgegeven'],['Afgekeurd','Afgekeurd']])}
 <div class="card tablewrap"><table><thead><tr><th>ID</th><th>Ontvangen</th><th>Leverancier</th><th>Type</th><th>Omschrijving</th><th>Gewicht</th><th>Verp.</th><th>Bemonstering</th><th>THC</th><th>PCR</th><th>Status</th><th>Rest</th></tr></thead><tbody>
-${rows.map(l=>{const r=lotResultaat(l.id)||monstersVan(l.id).filter(m=>m.oordeel).slice(-1)[0];const ls=leverStatus(l.leverancier);return `<tr><td>${idl(l.id)}</td><td>${dmy(l.datum)}</td><td>${esc(l.leverancier)}<div class="small muted">${ls}</div></td><td>${esc(l.type||'')}<div class="small muted">${typeLabel(l.type)}</div></td><td>${esc(l.soort)}</td><td>${l.gram} g</td><td>${l.verp}</td><td>${vereistGrondstof(l.verp,l.leverancier)} verp.${ls==='Nieuw'?' <span class="small muted">(streng)</span>':''}</td><td>${r?nl(r.thc)+' %':'–'}</td><td>${r?(r.pcr||(typeCat(l.type)==='CBD'?'<span class="muted">n.v.t.</span>':'<span class="muted">Nog in te voeren</span>')):'–'}</td><td>${chip(l.status)}</td><td>${restG(l.id)} g</td></tr>`;}).join('')||'<tr><td colspan="12" class="empty">Geen partijen.</td></tr>'}
+${rows.map(l=>{const r=lotResultaat(l.id)||monstersVan(l.id).filter(m=>m.oordeel).slice(-1)[0];const ls=leverStatus(l.leverancier);return `<tr><td>${idl(l.id)}</td><td>${dmy(l.datum)}</td><td>${esc(l.leverancier)}<div class="small muted">${ls}</div></td><td>${esc(l.type||'')}<div class="small muted">${typeLabel(l.type)}</div></td><td>${esc(l.soort)}</td><td>${l.gram==null?'<span class="muted">–</span>':l.gram+' g'}</td><td>${l.verp==null?'–':l.verp}</td><td>${vereistVoor(l.id)} ${l.gram==null?'monsters':'verp.'}${ls==='Nieuw'?' <span class="small muted">(streng)</span>':''}</td><td>${r?nl(r.thc)+' %':'–'}</td><td>${r?(r.pcr||(typeCat(l.type)==='CBD'?'<span class="muted">n.v.t.</span>':'<span class="muted">Nog in te voeren</span>')):'–'}</td><td>${chip(l.status)}</td><td>${l.gram==null?'–':restG(l.id)+' g'}</td></tr>`;}).join('')||'<tr><td colspan="12" class="empty">Geen partijen.</td></tr>'}
 </tbody></table></div>`;
 }
 function productie(){
@@ -721,7 +738,7 @@ const rows=S.batches.filter(b=>f==='alle'||(f==='open'?['In afwachting','Bemonst
 return `<h1>Productie</h1><p class="sub">Elke batch is gekoppeld aan de partijen grondstof die erin zitten. Vrijgave volgt automatisch als het Lijst II-dossier compleet is.</p>
 ${filterBar('productie',[['alle','Alle'],['open','In afwachting'],['Vrijgegeven','Vrijgegeven'],['Geblokkeerd','Geblokkeerd']])}
 <div class="card tablewrap"><table><thead><tr><th>ID</th><th>Datum</th><th>Product</th><th>Stuks</th><th>Grondstof ingezet</th><th>Max. uit grondstof</th><th>Gemeten</th><th>PCR</th><th>Status</th><th>Voorraad</th></tr></thead><tbody>
-${rows.map(b=>{const d=dossier(b);return `<tr><td>${idl(b.id)}</td><td>${dmy(b.datum)}</td><td>${esc(b.product)}${isCBD(b)?' <span class="chip c-Bemonsterd">CBD</span>':''}</td><td>${b.stuks}</td><td>${b.inzet.map(i=>`${i.g} g ${idl(i.lot)}`).join('<br>')}</td><td>${d.th?nl(d.th)+' mg '+(isCBD(b)?'CBD':'THC'):'–'}</td><td>${d.m?(isCBD(b)?nl(d.m.cbdmg)+' mg CBD':nl(d.m.mg)+' mg THC'):'–'}</td><td>${isCBD(b)?'<span class="muted small">n.v.t. (CBD)</span>':(d.m?(d.m.pcr||'–'):'–')}</td><td>${chip(b.status)}</td><td>${b.stuks-geleverd(b.id)}</td></tr>`;}).join('')||'<tr><td colspan="10" class="empty">Geen batches.</td></tr>'}
+${rows.map(b=>{const d=dossier(b);return `<tr><td>${idl(b.id)}</td><td>${dmy(b.datum)}</td><td>${esc(b.product)}${isCBD(b)?' <span class="chip c-Bemonsterd">CBD</span>':''}</td><td>${b.stuks==null?'–':b.stuks}</td><td>${b.inzet.map(i=>`${inzetKort(i)} ${idl(i.lot)}`).join('<br>')}</td><td>${d.th?nl(d.th)+' mg '+(isCBD(b)?'CBD':'THC'):'–'}</td><td>${d.m?(isCBD(b)?nl(d.m.cbdmg)+' mg CBD':nl(d.m.mg)+' mg THC'):'–'}</td><td>${isCBD(b)?'<span class="muted small">n.v.t. (CBD)</span>':(d.m?(d.m.pcr||'–'):'–')}</td><td>${chip(b.status)}</td><td>${zonderAantal(b)?'–':b.stuks-geleverd(b.id)}</td></tr>`;}).join('')||'<tr><td colspan="10" class="empty">Geen batches.</td></tr>'}
 </tbody></table></div>`;
 }
 function analyses(){
@@ -750,10 +767,10 @@ function uitleg(){
 const vb = S.batches.find(b=>b.status==='Vrijgegeven');
 const flow=[
 ['leaf','Lijst II-grondstof','Hasj, ijswaterhasj, wiet of kief. Elke partij krijgt een ID en wordt door Allora Labs getest voordat hij gebruikt mag worden.'],
-['box','Productie','Elke batch edibles is gekoppeld aan de geteste grondstof en de hoeveelheid die erin is gegaan.'],
+['box','Productie','Elke batch edibles is gekoppeld aan de geteste grondstof en het recept per stuk.'],
 ['dna','PCR-test eindproduct','Allora Labs test elke batch: THC per stuk én cannabis-RNA. Dat laatste toont aan dat er plantmateriaal in zit.'],
-['qr','QR-code op de verpakking','Elke verpakking draagt de QR-code van zijn batch.'],
-['shop','In de coffeeshop','Scan de QR en het productpaspoort laat de hele keten zien. Ook bij een inspectie.']
+['qr','QR-code op de verpakking','Elke verpakking draagt de QR-code van zijn batch. Neutraal, of in de huisstijl van uw coffeeshop.'],
+['shop','In de coffeeshop','Scan de QR: het paspoort toont de keten, de labuitslag en hoe uw klant het product veilig gebruikt.']
 ];
 return `<div class="cs-hero">
 <div>
@@ -844,16 +861,16 @@ return `<div class="grid two">
 <div class="card">
 <div class="tracehead">
 <div style="flex:1;min-width:220px"><h2 style="margin-bottom:6px">${b.id} ${chip(b.status)}</h2>
-<dl class="kv"><dt>Product</dt><dd>${esc(b.product)}</dd><dt>Geproduceerd</dt><dd>${dmy(b.datum)}</dd><dt>Stuks</dt><dd>${b.stuks} (voorraad ${b.stuks-geleverd(b.id)})</dd><dt>Overige ingrediënten</dt><dd>${esc(b.overig)||'–'}</dd></dl>
+<dl class="kv"><dt>Product</dt><dd>${esc(b.product)}</dd><dt>Geproduceerd</dt><dd>${dmy(b.datum)}</dd>${zonderAantal(b)?'':`<dt>Stuks</dt><dd>${b.stuks} (voorraad ${b.stuks-geleverd(b.id)})</dd>`}<dt>Overige ingrediënten</dt><dd>${esc(b.overig)||'–'}</dd></dl>
 </div>
 <div style="text-align:center"><div class="qr" id="qr" title="QR-code voor het etiket" onclick="openPaspoort('${b.id}')" style="cursor:pointer"></div><button class="btn ghost" style="padding:6px 10px;font-size:12px;margin-top:6px" onclick="openPaspoort('${b.id}')">Productpaspoort</button><br><button class="btn ghost" style="padding:6px 10px;font-size:12px;margin-top:6px" onclick="kopieer('${b.id}')">Link voor etiket kopiëren</button></div>
 </div>
 <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
 <div class="chain">
-${stepHTML('leaf','Herkomst: grondstof',b.inzet.map(i=>{const l=lot(i.lot);return `<div class="minirow">${idl(i.lot)} · ${esc(l.soort)} · ${esc(l.type||'')} · ${i.g} g ingezet · ${esc(l.leverancier)} · ontvangen ${dmy(l.datum)} ${chip(l.status)}</div>${resultLine(lotResultaat(i.lot)||monstersVan(i.lot).slice(-1)[0])}`;}).join(''))}
-${stepHTML('box','Productie',`<div class="minirow">${dmy(b.datum)} · ${b.stuks} × ${esc(b.product)} · max. ${d.th?nl(d.th)+' mg':'–'} ${isCBD(b)?'CBD':'THC'}/stuk uit de grondstof</div>`)}
+${stepHTML('leaf','Herkomst: grondstof',b.inzet.map(i=>{const l=lot(i.lot);return `<div class="minirow">${idl(i.lot)} · ${esc(l.soort)} · ${esc(l.type||'')} · ${inzetKort(i)} ingezet · ${esc(l.leverancier)} · ontvangen ${dmy(l.datum)} ${chip(l.status)}</div>${resultLine(lotResultaat(i.lot)||monstersVan(i.lot).slice(-1)[0])}`;}).join(''))}
+${stepHTML('box','Productie',`<div class="minirow">${dmy(b.datum)} · ${b.stuks!=null?b.stuks+' × ':''}${esc(b.product)} · max. ${d.th?nl(d.th)+' mg':'–'} ${isCBD(b)?'CBD':'THC'}/stuk uit de grondstof</div>`)}
 ${stepHTML('flask','Analyse eindproduct',resultLine(monstersVan(b.id).slice(-1)[0]))}
-${stepHTML('truck','Bestemming',lev.length?lev.map(x=>`<div class="minirow">${dmy(x.datum)} · ${esc(x.klant)} · ${x.stuks} stuks · pakbon ${esc(x.bon)}${x.blind?' · blinde controle':''}</div>`).join(''):'<div class="minirow muted">Nog niet geleverd.</div>',true)}
+${stepHTML('truck','Bestemming',lev.length?lev.map(x=>`<div class="minirow">${dmy(x.datum)} · ${esc(x.klant)} · ${x.stuks} stuks · pakbon ${esc(x.bon)}${x.blind?' · blinde controle':''}</div>`).join(''):(pasVan(b.id).length?pasVan(b.id).map(v=>`<div class="minirow">Paspoort in huisstijl van ${esc(v.klant)}</div>`).join(''):`<div class="minirow muted">${zonderAantal(b)?'Neutraal paspoort.':'Nog niet geleverd.'}</div>`),true)}
 </div>
 </div>
 <div class="card">
@@ -868,25 +885,25 @@ ${bar}
 function traceLot(l){
 const bs=S.batches.filter(b=>b.inzet.some(i=>i.lot===l.id));
 const lev=S.leveringen.filter(x=>bs.some(b=>b.id===x.batch));
-const shops=[...new Set(lev.map(x=>x.klant))];
+const shops=[...new Set(lev.map(x=>x.klant).concat((S.paspoorten||[]).filter(v=>bs.some(b=>b.id===v.batch)).map(v=>v.klant)))];
 return `<div class="grid two">
 <div class="card">
 <div class="tracehead">
 <div style="flex:1;min-width:220px"><h2 style="margin-bottom:6px">${l.id} ${chip(l.status)}</h2>
-<dl class="kv"><dt>Grondstof</dt><dd>${esc(l.type||'')} (${typeLabel(l.type)}) · ${esc(l.soort)}</dd><dt>Leverancier</dt><dd>${esc(l.leverancier)} (${leverStatus(l.leverancier)})</dd><dt>Ontvangen</dt><dd>${dmy(l.datum)} · ${l.gram} g · ${l.verp} verp.</dd><dt>Restant</dt><dd>${restG(l.id)} g</dd></dl></div>
+<dl class="kv"><dt>Grondstof</dt><dd>${esc(l.type||'')} (${typeLabel(l.type)}) · ${esc(l.soort)}</dd><dt>Leverancier</dt><dd>${esc(l.leverancier)} (${leverStatus(l.leverancier)})</dd><dt>Ontvangen</dt><dd>${dmy(l.datum)}${l.gram==null?'':` · ${l.gram} g · ${l.verp} verp.`}</dd>${l.gram==null?'':`<dt>Restant</dt><dd>${restG(l.id)} g</dd>`}</dl></div>
 <div class="qr" id="qr"></div>
 </div>
 <hr style="border:0;border-top:1px solid var(--line);margin:16px 0">
 <div class="chain">
 ${stepHTML('flask','Analyse grondstof',monstersVan(l.id).map(resultLine).join('')||resultLine(null))}
-${stepHTML('box','Gebruikt in batches',bs.length?bs.map(b=>`<div class="minirow">${idl(b.id)} · ${esc(b.product)} · ${b.inzet.filter(i=>i.lot===l.id).reduce((s,i)=>s+i.g,0)} g · ${chip(b.status)}</div>`).join(''):'<div class="minirow muted">Nog niet gebruikt.</div>')}
+${stepHTML('box','Gebruikt in batches',bs.length?bs.map(b=>`<div class="minirow">${idl(b.id)} · ${esc(b.product)} · ${b.inzet.filter(i=>i.lot===l.id).map(inzetKort).join(', ')} · ${chip(b.status)}</div>`).join(''):'<div class="minirow muted">Nog niet gebruikt.</div>')}
 ${stepHTML('truck','Bestemming',lev.length?lev.map(x=>`<div class="minirow">${dmy(x.datum)} · ${esc(x.klant)} · ${x.stuks} stuks uit ${x.batch}</div>`).join(''):'<div class="minirow muted">Geen leveringen.</div>',true)}
 </div>
 </div>
 <div class="card">
 <h2>Terugroepoverzicht</h2>
 <p class="small muted" style="margin-top:-6px">Als er iets mis is met deze partij: wie moet gebeld worden?</p>
-<dl class="kv"><dt>Batches</dt><dd>${bs.length}</dd><dt>Stuks geleverd</dt><dd>${lev.reduce((s,x)=>s+x.stuks,0)}</dd><dt>Stuks op voorraad</dt><dd>${bs.reduce((s,b)=>s+b.stuks-geleverd(b.id),0)}</dd></dl>
+<dl class="kv"><dt>Batches</dt><dd>${bs.length}</dd>${l.gram==null?'</dl>':`<dt>Stuks geleverd</dt><dd>${lev.reduce((s,x)=>s+x.stuks,0)}</dd><dt>Stuks op voorraad</dt><dd>${bs.reduce((s,b)=>s+b.stuks-geleverd(b.id),0)}</dd></dl>`}
 <div style="margin-top:12px">${shops.length?shops.map(s=>`<div class="minirow">${esc(s)}</div>`).join(''):'<div class="empty">Geen coffeeshops betrokken.</div>'}</div>
 </div>
 </div>`;
@@ -1058,13 +1075,64 @@ function corrVelden(){ const id=$('#c_id').value, k=id.split('-')[0]; $('#c_v').
 function corrHuidig(){ const r=corrRec($('#c_id').value), f=$('#c_v').value, cur=r?r[f]:''; $('#c_h').innerHTML='Huidige waarde: <b>'+esc(cur===null||cur===''?'(leeg)':cur)+'</b>'; $('#c_w').value=cur??''; }
 function saveCorrectie(){ if(!$('#c_r').value.trim()) return toast('Geef een reden.'); doe('correctie',{id:$('#c_id').value,veld:$('#c_v').value,waarde:$('#c_w').value,reden:$('#c_r').value}); }
 
+/* ===== Paspoort: veilig gebruik + huisstijl coffeeshop (gedeeld door app en openbare paspoortpagina) ===== */
+var VG_IC={
+car:'<path d="M4 15l1.8-5.2A2 2 0 0 1 7.7 8.5h8.6a2 2 0 0 1 1.9 1.3L20 15v3H4z"/><circle cx="8" cy="18" r="1.6"/><circle cx="16" cy="18" r="1.6"/>',
+preg:'<circle cx="11" cy="4.5" r="2"/><path d="M9.5 8.5h2.5a5 5 0 0 1 0 10h-1.5V21M9.5 8.5V21"/>',
+glass:'<path d="M7 3h10l-1 7a4 4 0 0 1-8 0z"/><path d="M12 14v6M8.5 21h7"/>',
+kid:'<rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',
+clock:'<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>',
+med:'<rect x="4" y="9" width="16" height="7" rx="3.5"/><path d="M12 9v7"/>'
+};
+function vgIcon(k,slash){ return '<svg viewBox="0 0 24 24" aria-hidden="true">'+VG_IC[k]+(slash?'<path class="sl" d="M4 4l16 16"/>':'')+'</svg>'; }
+function vgNum(n,d){ if(n===null||n===undefined||n===''||isNaN(n)) return '–'; return Number(n).toFixed(d===undefined?1:d).replace('.',','); }
+function vgEsc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+function veiligHTML(P){
+var cbd=P.cat==='CBD', m=P.m, snoep=/gumm|snoep|drop|choc|bonbon/i.test(P.product||'')?'snoep':'gewoon gebak of snoep';
+var pict = cbd
+? [['18+','18+',''],['preg','Niet bij zwangerschap of borstvoeding',1],['med','Medicijnen? Eerst overleggen',0],['kid','Buiten bereik van kinderen',0]]
+: [['18+','18+',''],['car','Niet rijden of machines bedienen',1],['preg','Niet bij zwangerschap of borstvoeding',1],['glass','Niet met alcohol of andere middelen',1],['kid','Buiten bereik van kinderen',0],['clock','Werkt pas na 30 tot 90 minuten',0]];
+var ph=pict.map(function(p){ return '<div class="vg-p"><div class="vg-i'+(p[0]==='18+'?' vg-18':'')+'">'+(p[0]==='18+'?'18+':vgIcon(p[0],p[2]===1))+'</div><span>'+p[1]+'</span></div>'; }).join('');
+var li = cbd ? [
+'Bevat '+vgEsc(P.label)+' mg CBD per stuk'+(m&&m.cbdmg!=null?' (gemeten: '+vgNum(m.cbdmg)+' mg)':'')+'. THC blijft onder '+vgNum(P.cbdThcMax,2)+' mg per stuk.',
+'Niet gebruiken bij zwangerschap of borstvoeding.',
+'Gebruik je medicijnen? Overleg eerst met je arts of apotheker: CBD kan de werking van medicijnen beïnvloeden.',
+'CBD kan slaperig maken. Let daarop in het verkeer.',
+'Bewaar afgesloten, koel en droog, buiten bereik van kinderen en huisdieren.'
+] : [
+'Eén stuk bevat '+vgEsc(P.label)+' mg THC'+(m&&m.mg!=null?' (gemeten: '+vgNum(m.mg)+' mg)':'')+'. Begin met een klein stukje en wacht de werking af.',
+'Eten werkt pas na 30 tot 90 minuten, het sterkst na 2 tot 3 uur, en kan 4 tot 12 uur aanhouden. Neem niet meer binnen 2 uur.',
+'Niet gebruiken onder de 18, bij zwangerschap of borstvoeding, of bij hart- en vaatziekten, (aanleg voor) psychose of andere psychische klachten. Gebruik je medicijnen? Overleg eerst met je arts of apotheker.',
+'Niet autorijden, fietsen of machines bedienen na gebruik, ook niet als je je weer goed voelt.',
+'Niet combineren met alcohol of andere middelen.',
+'Bewaar afgesloten, koel en droog, buiten bereik van kinderen en huisdieren: het lijkt op '+snoep+'.'
+];
+var hulp = cbd ? '' : '<div class="vg-hulp"><b>Valt het verkeerd?</b>Zoek een rustige plek, eet of drink iets zoets en blijf niet alleen. Meestal is het ergste binnen een paar uur voorbij. Bij ernstige klachten: bel 112.</div>';
+return '<div class="vg"><div class="vg-h">Veilig gebruik</div><div class="vg-ps">'+ph+'</div><ul class="vg-l">'+li.map(function(t){return '<li>'+t+'</li>';}).join('')+'</ul>'+hulp+
+'<div class="vg-info">Meer informatie: <a href="https://www.drugsinfo.nl" target="_blank" rel="noopener">drugsinfo.nl</a> of de Drugs Infolijn 0900-1995.</div></div>';
+}
+var VG_CSS='.vg-ps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 8px;margin:4px 0 12px}'+
+'.vg-p{display:flex;flex-direction:column;align-items:center;text-align:center;gap:5px;font-size:11.5px;line-height:1.25;color:#14233a}'+
+'.vg-i{width:40px;height:40px;border-radius:50%;border:2px solid #b8402f;display:grid;place-items:center;color:#b8402f;background:#fff}'+
+'.vg-i svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.vg-i .sl{stroke-width:2.2}'+
+'.vg-18{font-weight:800;font-size:13px;letter-spacing:-.02em}'+
+'.vg-l{margin:0;padding-left:18px;font-size:13.5px;line-height:1.5}.vg-l li{margin:4px 0}'+
+'.vg-hulp{margin-top:10px;background:#fbf1dc;border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.45}.vg-hulp b{display:block;margin-bottom:2px}'+
+'.vg-info{margin-top:10px;font-size:12.5px;color:#4a5568}';
+/* huisstijl: tekstkleur bij een lichte of donkere achtergrond */
+function merkFg(hex){ var m=/^#([0-9a-f]{6})$/i.exec(hex||''); if(!m) return '#ffffff'; var n=parseInt(m[1],16), r=n>>16&255, g=n>>8&255, b=n&255; return (0.299*r+0.587*g+0.114*b)>160?'#14233a':'#ffffff'; }
+
 /* ===== UI v2: Mijn keten, zijpaneel, stap-voor-stap toevoegen, overzichten ===== */
-let OV='leveringen', KF='actief', KQ='', PANEEL=null, WIZ=null, AVIEW='rap';
+let OV='shops', KF='actief', KQ='', PANEEL=null, WIZ=null, AVIEW='rap';
 const ST_IC={ok:'check',wait:'clock',todo:'arrowr',bad:'x',done:'check'};
 const stHTML = s=>`<span class="st st-${s.k}">${ico(ST_IC[s.k])}${esc(s.t)}</span>`;
 function groet(){ const h=new Date().getHours(); return h<12?'Goedemorgen':h<18?'Goedemiddag':'Goedenavond'; }
 function bLots(b){ return b.inzet.map(i=>i.lot).filter((v,i,a)=>a.indexOf(v)===i); }
-function bShops(b){ return S.leveringen.filter(x=>x.batch===b.id).map(x=>x.klant).filter((v,i,a)=>a.indexOf(v)===i); }
+const pasVan = bId=>(S.paspoorten||[]).filter(v=>v.batch===bId);
+const inzetKort = i=>i.mgStuk!=null&&i.mgStuk!==''?nl(i.mgStuk,0)+' mg/stuk':i.g+' g';
+const klantObj = naam=>S.klanten.find(k=>k.naam===naam)||{};
+const isCBDtype = t=>!!t&&typeCat(t)==='CBD';
+function bShops(b){ return S.leveringen.filter(x=>x.batch===b.id).map(x=>x.klant).concat(pasVan(b.id).map(v=>v.klant)).filter((v,i,a)=>a.indexOf(v)===i); }
 function stLot(l){
 if(l.status==='Afgekeurd') return {k:'bad',t:'Afgekeurd'};
 if(l.status==='Quarantaine'){
@@ -1078,13 +1146,14 @@ function stBatch(b){
 if(b.status==='Geblokkeerd') return {k:'bad',t:'Geblokkeerd'};
 if(b.status==='In afwachting') return {k:'todo',t:'Nog niet getest',act:`fMonster('${b.id}')`,actT:'Monster nemen'};
 if(b.status==='Bemonsterd') return ROLE==='allora'?{k:'wait',t:'Wacht op uitslag lab',act:`uitslagVoor('${b.id}')`,actT:'Uitslag invoeren'}:{k:'wait',t:'Wacht op uitslag lab'};
+if(zonderAantal(b)) return {k:'ok',t:'Vrijgegeven',act:`labelDialog(['${b.id}'],'pp')`,actT:'Labels printen'};
 if(b.stuks-geleverd(b.id)<=0) return {k:'done',t:'Alles geleverd'};
 return {k:'ok',t:'Vrijgegeven',act:`wizStart('levering','${b.id}')`,actT:'Leveren'};
 }
 function lotArch(l){
 const bs=S.batches.filter(b=>b.inzet.some(i=>i.lot===l.id));
-const klaar=l.status==='Afgekeurd'||(l.status==='Vrijgegeven'&&restG(l.id)<=0);
-return klaar&&bs.every(b=>b.status==='Geblokkeerd'||(b.status==='Vrijgegeven'&&b.stuks-geleverd(b.id)<=0));
+const klaar=l.status==='Afgekeurd'||l.status==='Opgebruikt'||(l.status==='Vrijgegeven'&&restG(l.id)<=0);
+return klaar&&bs.every(b=>b.status==='Geblokkeerd'||(b.status==='Vrijgegeven'&&(zonderAantal(b)||b.stuks-geleverd(b.id)<=0)));
 }
 const batchArch = b=>bLots(b).every(id=>lot(id)&&lotArch(lot(id)));
 function zoekMatch(txt){ return !KQ||txt.toLowerCase().indexOf(KQ.toLowerCase())>=0; }
@@ -1117,10 +1186,10 @@ return [...r];
 }
 function kaartLot(l){
 const s=stLot(l), rest=restG(l.id), pct=l.gram?Math.max(0,Math.min(100,rest/l.gram*100)):0;
-const res=lotResultaat(l.id);
+const res=lotResultaat(l.id), zonder=l.gram==null;
 return `<div class="kc k-${s.k} ${lotArch(l)?'arch':''}" tabindex="0" data-id="${l.id}" onclick="openPaneel('${l.id}')" onkeydown="if(event.key==='Enter')openPaneel('${l.id}')">
 <div class="kc-top"><div class="kc-ic">${ico(typeCat(l.type)==='CBD'?'drop':'leaf')}</div><div class="kc-t"><b>${esc(l.type)}${l.soort?' · '+esc(l.soort):''}</b><span>${l.id} · ${esc(l.leverancier)}</span></div></div>
-<div class="kc-bar"><i style="width:${pct}%"></i></div><div class="kc-bl">${nl(rest,0)} g van ${nl(l.gram,0)} g over${res&&res.thc!=null?' · THC '+nl(res.thc)+' %':''}</div>
+${zonder?`<div class="kc-bl">${res&&res.thc!=null?'THC '+nl(res.thc)+' %':'Nog geen uitslag'}</div>`:`<div class="kc-bar"><i style="width:${pct}%"></i></div><div class="kc-bl">${nl(rest,0)} g van ${nl(l.gram,0)} g over${res&&res.thc!=null?' · THC '+nl(res.thc)+' %':''}</div>`}
 <div class="kc-foot">${stHTML(s)}${s.act?`<button class="kc-act" onclick="event.stopPropagation();${s.act}">${s.actT}</button>`:''}</div></div>`;
 }
 function kaartBatch(b){
@@ -1128,16 +1197,16 @@ const s=stBatch(b), gel=geleverd(b.id), pct=b.stuks?Math.min(100,gel/b.stuks*100
 const meet = m?(isCBD(b)?nl(m.cbdmg)+' mg CBD':nl(m.mg)+' mg THC')+' per stuk':'Etiket '+b.label+' mg';
 return `<div class="kc k-${s.k} ${batchArch(b)?'arch':''}" tabindex="0" data-id="${b.id}" onclick="openPaneel('${b.id}')" onkeydown="if(event.key==='Enter')openPaneel('${b.id}')">
 <div class="kc-top"><div class="kc-ic">${ico(isCBD(b)?'drop':'box')}</div><div class="kc-t"><b>${esc(b.product)}</b><span>${b.id} · ${dmy(b.datum)}</span></div></div>
-<div class="kc-bar"><i style="width:${pct}%;background:${s.k==='bad'?'var(--bad)':'var(--gold)'}"></i></div><div class="kc-bl">${gel} van ${b.stuks} geleverd · ${meet}</div>
+${zonderAantal(b)?`<div class="kc-bl">${meet}${m&&m.pcr?' · PCR '+esc(m.pcr):''}</div>`:`<div class="kc-bar"><i style="width:${pct}%;background:${s.k==='bad'?'var(--bad)':'var(--gold)'}"></i></div><div class="kc-bl">${gel} van ${b.stuks} geleverd · ${meet}</div>`}
 <div class="kc-foot">${stHTML(s)}${s.act?`<button class="kc-act" onclick="event.stopPropagation();${s.act}">${s.actT}</button>`:''}</div></div>`;
 }
 function kaartShop(naam,bs){
-const lev=S.leveringen.filter(x=>x.klant===naam&&bs.some(b=>b.id===x.batch));
+const lev=S.leveringen.filter(x=>x.klant===naam&&bs.some(b=>b.id===x.batch)), pas=(S.paspoorten||[]).filter(v=>v.klant===naam&&bs.some(b=>b.id===v.batch));
 const st=lev.reduce((s,x)=>s+Number(x.stuks),0);
-const prods=[...new Set(lev.map(x=>(batch(x.batch)||{}).product))];
-const laatst=lev.map(x=>x.datum).sort().slice(-1)[0];
+const prods=[...new Set(lev.map(x=>x.batch).concat(pas.map(v=>v.batch)).map(id=>(batch(id)||{}).product))];
+const laatst=lev.map(x=>x.datum).concat(pas.map(v=>v.datum)).sort().slice(-1)[0], k=klantObj(naam);
 return `<div class="kc" tabindex="0" data-id="S:${esc(naam)}" onclick="openPaneel('S:${esc(naam)}')" onkeydown="if(event.key==='Enter')openPaneel('S:${esc(naam)}')">
-<div class="kc-top"><div class="kc-ic">${ico('shop')}</div><div class="kc-t"><b>${esc(naam)}</b><span>${st} stuks · laatst ${dmy(laatst)}</span></div></div>
+<div class="kc-top"><div class="kc-ic">${ico('shop')}</div><div class="kc-t"><b>${esc(naam)}</b><span>${k.huisstijl?'Eigen huisstijl':'Neutraal paspoort'}${st?' · '+st+' stuks (CBD)':''} · ${dmy(laatst)}</span></div></div>
 <div class="ks-chips">${prods.map(p=>`<span>${esc(p)}</span>`).join('')}</div></div>`;
 }
 function todoItems(){
@@ -1200,27 +1269,32 @@ return pnRow(`${dmy(m.datum)}${m.rapport?' · '+esc(m.rapport):''}`,r)+(rapportL
 }
 function paneelHTML(id){
 if(id.indexOf('S:')===0){
-const naam=id.slice(2), lev=S.leveringen.filter(x=>x.klant===naam).slice().reverse(); if(!lev.length) return '';
+const naam=id.slice(2), lev=S.leveringen.filter(x=>x.klant===naam).slice().reverse(), pas=(S.paspoorten||[]).filter(v=>v.klant===naam).slice().reverse(), k=klantObj(naam);
+if(!k.naam&&!lev.length) return '';
 const st=lev.reduce((s,x)=>s+Number(x.stuks),0);
-return pnHead('Coffeeshop',esc(naam),`${lev.length} leveringen · ${st} stuks`)+`<div class="pn-body"><div class="pn-card"><h3>Leveringen</h3>${lev.map(x=>`<div class="pn-link" onclick="openPaneel('${x.batch}')"><span>${dmy(x.datum)} · ${esc((batch(x.batch)||{}).product)}<br><small class="muted">${x.batch} · pakbon ${esc(x.bon||'–')}</small></span><b>${x.stuks} st.</b></div>`).join('')}</div></div>`;
+return pnHead('Coffeeshop',esc(naam),k.huisstijl?'Paspoort in eigen huisstijl':'Neutraal paspoort')+`<div class="pn-body">
+<div class="pn-card"><h3>Paspoort</h3>${merkVoorbeeld(k)}<div style="margin-top:10px"><button class="btn ghost rbtn" onclick="fKlant('${esc(naam)}')">${ico('pen')}Huisstijl aanpassen</button></div></div>
+${pas.length?`<div class="pn-card"><h3>Producten met eigen paspoort</h3>${pas.map(v=>`<div class="pn-link" onclick="openPaneel('${v.batch}')"><span>${esc((batch(v.batch)||{}).product)}<br><small class="muted">${v.batch} · sinds ${dmy(v.datum)}</small></span>${batch(v.batch)?stHTML(stBatch(batch(v.batch))):''}</div>`).join('')}</div>`:''}
+${lev.length?`<div class="pn-card"><h3>Leveringen (CBD)</h3>${lev.map(x=>`<div class="pn-link" onclick="openPaneel('${x.batch}')"><span>${dmy(x.datum)} · ${esc((batch(x.batch)||{}).product)}<br><small class="muted">${x.batch} · pakbon ${esc(x.bon||'–')}</small></span><b>${x.stuks} st.</b></div>`).join('')}${pnRow('Totaal',st+' stuks')}</div>`:''}</div>`;
 }
 if(id.indexOf('GL')===0){
 const l=lot(id); if(!l) return ''; const s=stLot(l), bs=S.batches.filter(b=>b.inzet.some(i=>i.lot===id));
 return pnHead('Grondstof · '+typeLabel(l.type),esc(l.type)+(l.soort?' · '+esc(l.soort):''),`${l.id} · ontvangen ${dmy(l.datum)}`,s)+`<div class="pn-body">
-<div class="pn-card"><h3>Gegevens</h3>${pnRow('Leverancier',esc(l.leverancier))}${pnRow('Gewicht',nl(l.gram,0)+' g · '+l.verp+' verpakkingen')}${pnRow('Nog over',nl(restG(id),0)+' g')}</div>
+<div class="pn-card"><h3>Gegevens</h3>${pnRow('Leverancier',esc(l.leverancier))}${l.gram==null?pnRow('Hoeveelheid','Niet vastgelegd (THC)'):pnRow('Gewicht',nl(l.gram,0)+' g · '+l.verp+' verpakkingen')+pnRow('Nog over',nl(restG(id),0)+' g')}</div>
 ${analyseKaart(id)}
-<div class="pn-card"><h3>Gebruikt in</h3>${bs.length?bs.map(b=>`<div class="pn-link" onclick="openPaneel('${b.id}')"><span>${esc(b.product)}<br><small class="muted">${b.id} · ${b.inzet.filter(i=>i.lot===id).reduce((a,i)=>a+Number(i.g),0)} g</small></span>${stHTML(stBatch(b))}</div>`).join(''):'<div class="sm muted">Nog niet gebruikt.</div>'}</div>
+<div class="pn-card"><h3>Gebruikt in</h3>${bs.length?bs.map(b=>`<div class="pn-link" onclick="openPaneel('${b.id}')"><span>${esc(b.product)}<br><small class="muted">${b.id} · ${b.inzet.filter(i=>i.lot===id).map(inzetKort).join(', ')}</small></span>${stHTML(stBatch(b))}</div>`).join(''):'<div class="sm muted">Nog niet gebruikt.</div>'}</div>
 <div class="pn-card"><h3>Label voor de verpakking</h3><div class="pn-qr"><div class="q" data-qr="${id}" data-qrk="int"></div><div class="pn-qr-t"><span class="tag tag-int">Intern</span><div class="sm muted">Scan met je telefoon om deze partij te openen.</div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn rbtn" onclick="labelDialog(['${id}'],'int')">${ico('qr')}Label printen</button><button class="btn ghost rbtn" onclick="kopieerUrl(intUrl('${id}'))">Link</button></div></div></div></div></div>
-<div class="pn-acts">${s.act?`<button class="btn" onclick="sluitPaneel();${s.act}">${s.actT}</button>`:''}<button class="btn ghost" onclick="sluitPaneel();goTrace('${id}')">Volledig dossier</button></div>`;
+<div class="pn-acts">${s.act?`<button class="btn" onclick="sluitPaneel();${s.act}">${s.actT}</button>`:''}${l.gram==null&&l.status==='Vrijgegeven'?`<button class="btn ghost" onclick="lotOp('${id}')">Partij is op</button>`:''}<button class="btn ghost" onclick="sluitPaneel();goTrace('${id}')">Volledig dossier</button></div>`;
 }
 const b=batch(id); if(!b) return ''; const s=stBatch(b), d=dossier(b), lev=S.leveringen.filter(x=>x.batch===id).slice().reverse(), vr=b.stuks-geleverd(id);
 const dotIc={ok:'check',bad:'x',wait:'clock'};
-return pnHead(isCBD(b)?'Product · CBD':'Product · Lijst II',esc(b.product),`${b.id} · gemaakt ${dmy(b.datum)} · ${b.stuks} stuks`,s)+`<div class="pn-body">
+return pnHead(isCBD(b)?'Product · CBD':'Product · Lijst II',esc(b.product),`${b.id} · gemaakt ${dmy(b.datum)}${zonderAantal(b)?'':' · '+b.stuks+' stuks'}`,s)+`<div class="pn-body">
 <div class="pn-card"><h3>${isCBD(b)?'CBD-dossier':'Lijst II-dossier'}</h3>${d.checks.map(c=>`<div class="pn-chk"><div class="d ${c.s}">${ico(dotIc[c.s]||'clock')}</div><div>${esc(c.t)}<small>${esc(c.d)}</small></div></div>`).join('')}</div>
-<div class="pn-card"><h3>Grondstof</h3>${b.inzet.map(i=>{const l=lot(i.lot)||{};return `<div class="pn-link" onclick="openPaneel('${i.lot}')"><span>${esc(l.type||'')} · ${esc(l.soort||'')}<br><small class="muted">${i.lot} · ${i.g} g</small></span>${l.id?stHTML(stLot(l)):''}</div>`;}).join('')}</div>
+<div class="pn-card"><h3>Grondstof</h3>${b.inzet.map(i=>{const l=lot(i.lot)||{};return `<div class="pn-link" onclick="openPaneel('${i.lot}')"><span>${esc(l.type||'')} · ${esc(l.soort||'')}<br><small class="muted">${i.lot} · ${inzetKort(i)}</small></span>${l.id?stHTML(stLot(l)):''}</div>`;}).join('')}</div>
 ${analyseKaart(id)}
-<div class="pn-card"><h3>Geleverd</h3>${pnRow('Op voorraad',vr+' van '+b.stuks)}${lev.map(x=>`<div class="pn-link" onclick="openPaneel('S:${esc(x.klant)}')"><span>${esc(x.klant)}<br><small class="muted">${dmy(x.datum)} · pakbon ${esc(x.bon||'–')}</small></span><b>${x.stuks} st.</b></div>`).join('')}</div>
-<div class="pn-card"><h3>Labels</h3>${b.code?`<div class="pn-qr"><div class="q" data-qr="${id}" data-qrk="pp"></div><div class="pn-qr-t"><span class="tag tag-pub">Verpakking · openbaar</span><div class="sm muted">Opent het productpaspoort.</div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn rbtn" onclick="labelDialog(['${id}'],'pp')">${ico('qr')}Labels printen</button><button class="btn ghost rbtn" onclick="sluitPaneel();openPaspoort('${id}')">Paspoort</button><button class="btn ghost rbtn" onclick="kopieer('${id}')">Link</button></div></div></div>`:''}<div class="pn-qr" style="margin-top:12px"><div class="q" data-qr="${id}" data-qrk="int"></div><div class="pn-qr-t"><span class="tag tag-int">Batch · intern</span><div class="sm muted">Voor de bak of doos in opslag.</div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn ghost rbtn" onclick="labelDialog(['${id}'],'int')">${ico('qr')}Label printen</button><button class="btn ghost rbtn" onclick="kopieerUrl(intUrl('${id}'))">Link</button></div></div></div></div></div>
+${zonderAantal(b)?'':`<div class="pn-card"><h3>Geleverd</h3>${pnRow('Op voorraad',vr+' van '+b.stuks)}${lev.map(x=>`<div class="pn-link" onclick="openPaneel('S:${esc(x.klant)}')"><span>${esc(x.klant)}<br><small class="muted">${dmy(x.datum)} · pakbon ${esc(x.bon||'–')}</small></span><b>${x.stuks} st.</b></div>`).join('')}</div>`}
+<div class="pn-card"><h3>Labels</h3>${b.code?`<div class="pn-qr"><div class="q" data-qr="${id}" data-qrk="pp"></div><div class="pn-qr-t"><span class="tag tag-pub">Verpakking · openbaar</span><div class="sm muted">Opent het productpaspoort.</div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn rbtn" onclick="labelDialog(['${id}'],'pp')">${ico('qr')}Labels printen</button><button class="btn ghost rbtn" onclick="sluitPaneel();openPaspoort('${id}')">Paspoort</button><button class="btn ghost rbtn" onclick="kopieer('${id}')">Link</button></div></div></div>`:''}<div class="pn-qr" style="margin-top:12px"><div class="q" data-qr="${id}" data-qrk="int"></div><div class="pn-qr-t"><span class="tag tag-int">Batch · intern</span><div class="sm muted">Voor de bak of doos in opslag.</div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn ghost rbtn" onclick="labelDialog(['${id}'],'int')">${ico('qr')}Label printen</button><button class="btn ghost rbtn" onclick="kopieerUrl(intUrl('${id}'))">Link</button></div></div></div></div>
+${b.code?pasKaart(b):''}</div>
 <div class="pn-acts">${s.act?`<button class="btn" onclick="sluitPaneel();${s.act}">${s.actT}</button>`:''}<button class="btn ghost" onclick="sluitPaneel();goTrace('${id}')">Volledig dossier</button></div>`;
 }
 /* ---------- + Toevoegen: stap voor stap ---------- */
@@ -1231,14 +1305,14 @@ if(!kind){
 modal(`<div class="wz-top"><div class="wz-k"><b>Toevoegen</b></div></div><div class="wz-body"><h2 class="wz-q">Wat wil je vastleggen?</h2><p class="wz-h">Kies wat er is gebeurd. Je krijgt daarna steeds één vraag.</p>
 <div class="wz-start">
 <button class="wz-o" onclick="wizStart('grondstof')"><div class="ic">${ico('leaf')}</div><div><b>Grondstof ontvangen</b><small>Hasj, wiet, kief of CBD binnengekomen</small></div></button>
-<button class="wz-o" onclick="wizStart('batch')"><div class="ic">${ico('box')}</div><div><b>Batch gemaakt</b><small>Edibles geproduceerd van vrijgegeven grondstof</small></div></button>
-<button class="wz-o" onclick="wizStart('levering')"><div class="ic">${ico('truck')}</div><div><b>Levering</b><small>Producten naar een coffeeshop gebracht</small></div></button></div>
+<button class="wz-o" onclick="wizStart('batch')"><div class="ic">${ico('box')}</div><div><b>Batch gemaakt</b><small>Edibles of CBD-producten gemaakt van vrijgegeven grondstof</small></div></button>
+${S.batches.some(b=>isCBD(b))?`<button class="wz-o" onclick="wizStart('levering')"><div class="ic">${ico('truck')}</div><div><b>Levering CBD</b><small>CBD-producten naar een coffeeshop of winkel gebracht</small></div></button>`:''}</div>
 <div class="wz-more"><a onclick="closeModal();fMonster()">Monster genomen</a>${ROLE==='allora'?'<a onclick="closeModal();fResultaat()">Uitslag invoeren</a>':''}<a onclick="closeModal();fCorrectie()">Iets corrigeren</a></div></div>
 <div class="wz-foot"><span></span><button class="btn ghost" onclick="closeModal()">Annuleren</button></div>`);
 $('#modal').classList.add('wz'); return;
 }
 if(kind==='batch'&&!S.lots.some(l=>l.status==='Vrijgegeven'&&restG(l.id)>0)) return toast('Er is nog geen vrijgegeven grondstof. Eerst moet Allora Labs de grondstof goedkeuren.');
-if(kind==='levering'&&!S.batches.some(b=>b.status==='Vrijgegeven'&&b.stuks-geleverd(b.id)>0)) return toast('Er is nog geen vrijgegeven batch op voorraad.');
+if(kind==='levering'&&!S.batches.some(b=>b.status==='Vrijgegeven'&&!zonderAantal(b)&&b.stuks-geleverd(b.id)>0)) return toast('Er is geen vrijgegeven CBD-batch op voorraad. Voor THC-edibles worden geen leveringen vastgelegd.');
 WIZ={kind,i:0,d:{}};
 if(kind==='levering'&&pre){ WIZ.d.batch=pre; WIZ.d.stuks=batch(pre).stuks-geleverd(pre); WIZ.skipBatch=true; }
 wizRender();
@@ -1249,23 +1323,23 @@ if(WIZ.kind==='grondstof') return [
 {key:'leverancier',q:'Van welke leverancier komt het?',type:'choice',nieuw:'Nieuwe leverancier',opts:()=>S.leveranciers.map(l=>({v:l.naam,t:l.naam,s:l.status==='Nieuw'?'Nog niet goedgekeurd':'Goedgekeurd',ic:'truck'}))},
 {key:'type',q:'Wat voor grondstof is het?',type:'choice',opts:()=>GRONDSTOFTYPES.map(g=>({v:g.naam,t:g.naam,s:typeLabel(g.naam),ic:g.cat==='CBD'?'drop':'leaf'}))},
 {key:'soort',q:'Hoe wil je deze partij noemen?',h:'Bijvoorbeeld het lotnummer of de naam van de leverancier. Mag leeg blijven.',type:'text',ph:'Lot E',opt:true},
-{key:'gram',q:'Hoeveel gram is het in totaal?',type:'num',unit:'gram'},
-{key:'verp',q:'In hoeveel verpakkingen zit het?',h:'Dit bepaalt hoeveel verpakkingen bemonsterd moeten worden.',type:'num',unit:'verpakkingen'},
-{key:'_sum',q:'Klopt dit?',type:'sum',rows:()=>[['Leverancier',d.leverancier==='__nieuw'?d._nieuw+' (nieuw)':d.leverancier],['Grondstof',d.type+(d.soort?' · '+d.soort:'')],['Gewicht',d.gram+' g in '+d.verp+' verpakkingen']],
-na:()=>`De partij gaat in quarantaine. Neem daarna een monster uit <b>${vereistGrondstof(+d.verp,d.leverancier==='__nieuw'?'':d.leverancier)}</b> van de ${d.verp} verpakkingen.`}
+{key:'gram',q:'Hoeveel gram is het in totaal?',type:'num',unit:'gram',skip:!isCBDtype(d.type)},
+{key:'verp',q:'In hoeveel verpakkingen zit het?',h:'Dit bepaalt hoeveel verpakkingen bemonsterd moeten worden.',type:'num',unit:'verpakkingen',skip:!isCBDtype(d.type)},
+{key:'_sum',q:'Klopt dit?',type:'sum',rows:()=>[['Leverancier',d.leverancier==='__nieuw'?d._nieuw+' (nieuw)':d.leverancier],['Grondstof',d.type+(d.soort?' · '+d.soort:'')]].concat(isCBDtype(d.type)?[['Gewicht',d.gram+' g in '+d.verp+' verpakkingen']]:[['Hoeveelheid','Wordt bij THC niet vastgelegd']]),
+na:()=>isCBDtype(d.type)?`De partij gaat in quarantaine. Neem daarna een monster uit <b>${vereistGrondstof(+d.verp,d.leverancier==='__nieuw'?'':d.leverancier)}</b> van de ${d.verp} verpakkingen.`:`De partij gaat in quarantaine. Neem daarna <b>${vereistTHC(d.leverancier==='__nieuw'?'':d.leverancier)} monsters</b> van verschillende plekken uit de partij.`}
 ];
 if(WIZ.kind==='batch'){
 const p=()=>PRODUCTEN.find(x=>x.naam===d.product)||{};
 return [
 {key:'product',q:'Welk product heb je gemaakt?',type:'choice',opts:()=>PRODUCTEN.map(x=>({v:x.naam,t:x.naam,s:(x.cat==='CBD'?'CBD · ':'')+x.mg+' mg per stuk',ic:x.cat==='CBD'?'drop':'box'}))},
-{key:'stuks',q:'Hoeveel stuks zijn het?',type:'num',unit:'stuks'},
-{key:'inzet',q:'Welke grondstof heb je gebruikt?',h:'Vul per partij in hoeveel gram erin is gegaan.',type:'inzet'},
+{key:'stuks',q:'Hoeveel stuks zijn het?',type:'num',unit:'stuks',skip:p().cat!=='CBD'},
+{key:'inzet',q:'Welke grondstof heb je gebruikt?',h:()=>p().cat==='CBD'?'Vul per partij in hoeveel gram erin is gegaan.':'Vul per partij in hoeveel mg grondstof er in één stuk zit, uit je recept. Totale hoeveelheden worden niet vastgelegd.',type:'inzet'},
 {key:'overig',q:'Overige ingrediënten?',h:'Lotnummers van bijvoorbeeld boter of bloem. Mag leeg blijven.',type:'text',ph:'Roomboter L2450 · Bloem L8840',opt:true},
-{key:'_sum',q:'Klopt dit?',type:'sum',rows:()=>[['Product',d.product],['Aantal',d.stuks+' stuks'],['Grondstof',(d.inzet||[]).map(i=>i.g+' g '+i.lot).join(', ')]],
-na:()=>{ const th=theoretisch({inzet:d.inzet,stuks:+d.stuks,cat:p().cat}); return `Maximaal <b>${nl(th)} mg ${p().cat==='CBD'?'CBD':'THC'}</b> per stuk uit deze grondstof (etiket ${p().mg} mg). Neem daarna 5 stuks als monster.`; }}
+{key:'_sum',q:'Klopt dit?',type:'sum',rows:()=>[['Product',d.product]].concat(p().cat==='CBD'?[['Aantal',d.stuks+' stuks']]:[]).concat([['Grondstof',(d.inzet||[]).map(i=>inzetKort(i)+' '+i.lot).join(', ')]]),
+na:()=>{ const th=theoretisch({inzet:d.inzet,stuks:+d.stuks,cat:p().cat}); return `Maximaal <b>${nl(th)} mg ${p().cat==='CBD'?'CBD':'THC'}</b> per stuk uit deze grondstof (etiket ${p().mg} mg). Neem daarna ${CFG.stuksEindproduct} stuks als monster.`; }}
 ];}
 return [
-{key:'batch',q:'Welke batch lever je?',type:'choice',skip:WIZ.skipBatch,opts:()=>S.batches.filter(b=>b.status==='Vrijgegeven'&&b.stuks-geleverd(b.id)>0).map(b=>({v:b.id,t:b.product,s:b.id+' · '+(b.stuks-geleverd(b.id))+' op voorraad',ic:'box'}))},
+{key:'batch',q:'Welke batch lever je?',type:'choice',skip:WIZ.skipBatch,opts:()=>S.batches.filter(b=>b.status==='Vrijgegeven'&&!zonderAantal(b)&&b.stuks-geleverd(b.id)>0).map(b=>({v:b.id,t:b.product,s:b.id+' · '+(b.stuks-geleverd(b.id))+' op voorraad',ic:'box'}))},
 {key:'klant',q:'Naar welke coffeeshop?',type:'choice',nieuw:'Nieuwe coffeeshop',opts:()=>KLANTEN.map(k=>({v:k,t:k,ic:'shop'}))},
 {key:'stuks',q:'Hoeveel stuks?',h:()=>d.batch?(batch(d.batch).stuks-geleverd(d.batch))+' op voorraad.':'',type:'num',unit:'stuks',max:()=>batch(d.batch).stuks-geleverd(d.batch)},
 {key:'bon',q:'Pakbonnummer?',h:'Mag leeg blijven.',type:'text',ph:'0430',opt:true},
@@ -1286,8 +1360,8 @@ body=`<div class="wz-unit"><input id="wz-in" class="wz-big" type="number" min="1
 body=`<input id="wz-in" class="wz-big" style="max-width:420px;font-size:18px" placeholder="${esc(s.ph||'')}" value="${esc(d[s.key]||'')}" oninput="WIZ.d['${s.key}']=this.value">`;
 } else if(s.type==='inzet'){
 const p=PRODUCTEN.find(x=>x.naam===d.product)||{}, vrij=S.lots.filter(l=>l.status==='Vrijgegeven'&&restG(l.id)>0&&typeCat(l.type)===p.cat);
-const cur=id=>((d.inzet||[]).find(i=>i.lot===id)||{}).g||'';
-body=vrij.length?`<div class="lotpick">${vrij.map(l=>`<label><div>${esc(l.type)}${l.soort?' · '+esc(l.soort):''}<small>${l.id} · ${nl(restG(l.id),0)} g over · THC ${lotResultaat(l.id)?nl(lotResultaat(l.id)[p.cat==='CBD'?'cbd':'thc'])+' %':'–'}</small></div><input type="number" min="0" placeholder="gram" data-lot="${l.id}" value="${cur(l.id)}" oninput="wizInzet()"><span class="muted">g</span></label>`).join('')}</div><div class="wz-calc" id="wz-calc"></div>`:`<div class="k-empty">Geen vrijgegeven ${p.cat==='CBD'?'CBD-':''}grondstof voor dit product.</div>`;
+const cbd=p.cat==='CBD', cur=id=>{ const i=(d.inzet||[]).find(i=>i.lot===id)||{}; return (cbd?i.g:i.mgStuk)||''; };
+body=vrij.length?`<div class="lotpick">${vrij.map(l=>`<label><div>${esc(l.type)}${l.soort?' · '+esc(l.soort):''}<small>${l.id}${l.gram!=null?' · '+nl(restG(l.id),0)+' g over':''} · ${cbd?'CBD':'THC'} ${lotResultaat(l.id)?nl(lotResultaat(l.id)[cbd?'cbd':'thc'])+' %':'–'}</small></div><input type="number" min="0" placeholder="${cbd?'gram':'mg/stuk'}" data-lot="${l.id}" value="${cur(l.id)}" oninput="wizInzet()"><span class="muted">${cbd?'g':'mg/stuk'}</span></label>`).join('')}</div><div class="wz-calc" id="wz-calc"></div>`:`<div class="k-empty">Geen vrijgegeven ${p.cat==='CBD'?'CBD-':''}grondstof voor dit product.</div>`;
 } else if(s.type==='sum'){
 body=`<div class="pn-card wz-sum" style="margin:0">${s.rows().map(r=>pnRow(r[0],esc(r[1]))).join('')}</div>${s.na?`<div class="wz-calc">${s.na()}</div>`:''}${s.extra||''}`;
 }
@@ -1300,10 +1374,11 @@ if(s.type==='inzet') wizInzet();
 }
 function wizInzet(){
 const d=WIZ.d, p=PRODUCTEN.find(x=>x.naam===d.product)||{};
-d.inzet=[...document.querySelectorAll('.lotpick input')].map(e=>({lot:e.dataset.lot,g:+e.value||0})).filter(i=>i.g>0);
+const cbd=p.cat==='CBD';
+d.inzet=[...document.querySelectorAll('.lotpick input')].map(e=>cbd?{lot:e.dataset.lot,g:+e.value||0}:{lot:e.dataset.lot,mgStuk:+e.value||0}).filter(i=>(cbd?i.g:i.mgStuk)>0);
 const c=$('#wz-calc'); if(!c) return;
-if(!d.inzet.length){ c.innerHTML='Vul bij minstens één partij het aantal gram in.'; return; }
-const th=theoretisch({inzet:d.inzet,stuks:+d.stuks,cat:p.cat}), over=d.inzet.filter(i=>i.g>restG(i.lot));
+if(!d.inzet.length){ c.innerHTML=cbd?'Vul bij minstens één partij het aantal gram in.':'Vul bij minstens één partij de mg grondstof per stuk in.'; return; }
+const th=theoretisch({inzet:d.inzet,stuks:+d.stuks,cat:p.cat}), over=cbd?d.inzet.filter(i=>i.g>restG(i.lot)):[];
 c.innerHTML=`Maximaal <b>${nl(th)} mg</b> ${p.cat==='CBD'?'CBD':'THC'} per stuk · etiket ${p.mg} mg${th<p.mg*0.9?'<br><span style="color:var(--bad)">Te weinig grondstof voor de etiketdosering.</span>':''}${over.length?`<br><span style="color:var(--bad)">Meer dan er over is van ${over.map(i=>i.lot).join(', ')}.</span>`:''}`;
 }
 function wizTerug(){ WIZ.i--; wizRender(); }
@@ -1311,24 +1386,25 @@ function wizVerder(){
 const st=wizSteps().filter(s=>!s.skip), s=st[WIZ.i], d=WIZ.d, err=t=>{ $('#wz-err').textContent=t; return false; };
 if(s.type==='choice'){ if(!d[s.key]) return err('Kies een van de opties.'); if(d[s.key]==='__nieuw'&&!(d._nieuw||'').trim()) return err('Vul een naam in.'); }
 if(s.type==='num'){ const v=+d[s.key]; if(!(v>0)) return err('Vul een getal groter dan 0 in.'); if(s.max&&v>s.max()) return err('Er zijn maar '+s.max()+' op voorraad.'); }
-if(s.type==='inzet'){ wizInzet(); if(!(d.inzet||[]).length) return err('Vul bij minstens één partij het aantal gram in.'); if(d.inzet.some(i=>i.g>restG(i.lot))) return err('Je gebruikt meer dan er over is.'); }
+if(s.type==='inzet'){ wizInzet(); if(!(d.inzet||[]).length) return err('Vul bij minstens één partij de hoeveelheid in.'); if(d.inzet.some(i=>i.g!=null&&i.g>restG(i.lot))) return err('Je gebruikt meer dan er over is.'); }
 if(WIZ.i<st.length-1){ WIZ.i++; return wizRender(); }
 const k=WIZ.kind, n=d.leverancier==='__nieuw'||d.klant==='__nieuw';
 let ok;
 if(k==='grondstof') ok=doe('intake',{leverancier:d.leverancier==='__nieuw'?'':d.leverancier,nieuweLeverancier:d.leverancier==='__nieuw'?d._nieuw:'',type:d.type,soort:d.soort||'',gram:+d.gram,verp:+d.verp,ref:''});
-else if(k==='batch') ok=doe('batch',{product:d.product,stuks:+d.stuks,inzet:d.inzet,overig:d.overig||''});
+else if(k==='batch') ok=doe('batch',{product:d.product,stuks:+d.stuks||null,inzet:d.inzet,overig:d.overig||''});
 else ok=doe('levering',{batch:d.batch,klant:d.klant==='__nieuw'?'':d.klant,nieuweKlant:d.klant==='__nieuw'?d._nieuw:'',stuks:+d.stuks,bon:d.bon||'',blind:!!d.blind});
 Promise.resolve(ok).then(r=>{ if(r){ WIZ=null; $('#modal').classList.remove('wz'); const nw=k==='grondstof'?S.lots[S.lots.length-1]:k==='batch'?S.batches[S.batches.length-1]:null; if(nw) openPaneel(nw.id); } });
 }
 const _closeModal=closeModal; closeModal=function(){ _closeModal(); const m=$('#modal'); if(m) m.classList.remove('wz'); };
 const _modal=modal; modal=function(h){ const m=$('#modal'); if(m) m.classList.remove('wz'); _modal(h); };
 /* ---------- overzichten ---------- */
-const OVS=[['leveringen','Leveringen'],['analyses','Analyses'],['qr','QR-codes'],['grondstof','Grondstoffen'],['productie','Batches']];
+const OVS=[['shops','Coffeeshops'],['analyses','Analyses'],['qr','QR-codes'],['grondstof','Grondstoffen'],['productie','Batches'],['leveringen','Leveringen (CBD)']];
 function zonderKop(h){ return h.replace(/<h1>[^<]*<\/h1>/,''); }
 function overzichtenView(){
 const tabs=OVS.concat(OV==='traceren'?[['traceren','Dossier']]:[]);
 let inh='';
-if(OV==='leveringen') inh=zonderKop(leveringen());
+if(OV==='shops') inh=shopsView();
+else if(OV==='leveringen') inh=zonderKop(leveringen());
 else if(OV==='analyses') inh=analysesView();
 else if(OV==='qr') inh=qrView();
 else if(OV==='grondstof') inh=zonderKop(grondstof());
@@ -1391,7 +1467,9 @@ return seg+`<h2 style="margin:6px 0 10px">Grondstoffen</h2>${lots.map(l=>grp(esc
 /* ---------- QR-codes en labels ---------- */
 let QV='pp', QQ='', QA=false;
 function intUrl(id){ const kq=(typeof KCODE!=='undefined'&&KCODE)?'&k='+KCODE:''; return String(S.appUrl||location.href).split('?')[0].split('#')[0]+'?id='+encodeURIComponent(id)+kq; }
-function lblUrl(id,soort){ return soort==='pp'?qrUrl(id):intUrl(id); }
+function ppUrl(code){ const kq=(typeof KCODE!=='undefined'&&KCODE)?'&k='+KCODE:''; return String(S.paspoortUrl||S.appUrl||location.href).split('?')[0].split('#')[0]+'?p='+code+kq; }
+function variant(id){ const v=(S.paspoorten||[]).find(x=>'P:'+x.code===id); return v?{v,b:batch(v.batch)}:null; }
+function lblUrl(id,soort){ if(id.indexOf('P:')===0) return ppUrl(id.slice(2)); return soort==='pp'?qrUrl(id):intUrl(id); }
 function qrSvg(u){ try{ const q=qrcode(0,'M'); q.addData(u); q.make(); return q.createSvgTag({cellSize:4,margin:0,scalable:true}); }catch(e){ return ''; } }
 function kopieerUrl(u){ try{ navigator.clipboard.writeText(u).then(()=>toast('Link gekopieerd'),()=>prompt('Kopieer de link:',u)); }catch(e){ prompt('Kopieer de link:',u); } }
 function drawQRs(){ if(typeof qrcode==='undefined') return; document.querySelectorAll('[data-qr]').forEach(el=>{ if(el.innerHTML) return; el.innerHTML=qrSvg(lblUrl(el.dataset.qr,el.dataset.qrk||'pp')); }); }
@@ -1399,7 +1477,12 @@ const QSOORT={pp:['Verpakking','Opent het productpaspoort. Voor op elke verpakki
 function qrItems(){
 const q=QQ.toLowerCase(), hit=s=>!q||s.toLowerCase().indexOf(q)>=0;
 if(QV==='gl') return S.lots.filter(l=>(QA||!lotArch(l))&&hit([l.id,l.type,l.soort,l.leverancier].join(' '))).slice().reverse().map(l=>({id:l.id,soort:'int',t:esc(l.type)+(l.soort?' · '+esc(l.soort):''),s:l.id+' · ontvangen '+dmy(l.datum),st:stLot(l),ic:typeCat(l.type)==='CBD'?'drop':'leaf'}));
-return S.batches.filter(b=>(QV==='pb'||b.code)&&(QA||!batchArch(b))&&hit([b.id,b.product].join(' '))).slice().reverse().map(b=>({id:b.id,soort:QV==='pp'?'pp':'int',t:esc(b.product),s:b.id+' · gemaakt '+dmy(b.datum),st:stBatch(b),ic:'box'}));
+const out=[];
+S.batches.filter(b=>(QV==='pb'||b.code)&&(QA||!batchArch(b))&&hit([b.id,b.product].concat(pasVan(b.id).map(v=>v.klant)).join(' '))).slice().reverse().forEach(b=>{
+out.push({id:b.id,soort:QV==='pp'?'pp':'int',t:esc(b.product),s:b.id+' · gemaakt '+dmy(b.datum)+(QV==='pp'?' · neutraal':''),st:stBatch(b),ic:'box'});
+if(QV==='pp') pasVan(b.id).forEach(v=>out.push({id:'P:'+v.code,soort:'pp',t:esc(b.product),s:b.id+' · huisstijl '+esc(v.klant),st:stBatch(b),ic:'shop'}));
+});
+return out;
 }
 function qrLijst(){
 const it=qrItems();
@@ -1421,20 +1504,20 @@ const LFMT={l62:{t:'Labelprinter',s:'62 × 29 mm (Brother)',w:62,h:29},l54:{t:'L
 let LBL=null;
 function lblFmt(){ let f='l62'; try{ f=localStorage.getItem('allora-lbl')||'l62'; }catch(e){} return LFMT[f]?f:'l62'; }
 function labelHTML(id,soort){
-const gl=id.indexOf('GL')===0, o=gl?lot(id):batch(id); if(!o) return '';
+const va=variant(id), gl=id.indexOf('GL')===0, o=va?va.b:gl?lot(id):batch(id); if(!o) return '';
 let k,t,s;
-if(soort==='pp'){ k='Productpaspoort'; t=esc(o.product); s=`Batch ${o.id}<br>Scan voor herkomst en labtest`; }
-else if(gl){ k='Intern · '+esc(o.type); t=esc(o.soort||o.type); s=`${o.id}<br>Ontvangen ${dmy(o.datum)} · ${nl(o.gram,0)} g`; }
-else { k='Intern · Batch'; t=esc(o.product); s=`${o.id}<br>Gemaakt ${dmy(o.datum)} · ${o.stuks} stuks`; }
+if(soort==='pp'){ const mk=va?klantObj(va.v.klant):null; k=mk?esc(mk.merk||mk.naam):'Productpaspoort'; t=esc(o.product); s=`Batch ${o.id}<br>Scan voor herkomst, labtest en veilig gebruik`; }
+else if(gl){ k='Intern · '+esc(o.type); t=esc(o.soort||o.type); s=`${o.id}<br>Ontvangen ${dmy(o.datum)}${o.gram!=null?' · '+nl(o.gram,0)+' g':''}`; }
+else { k='Intern · Batch'; t=esc(o.product); s=`${o.id}<br>Gemaakt ${dmy(o.datum)}${zonderAantal(o)?'':' · '+o.stuks+' stuks'}`; }
 return `<div class="lbl lbl-${soort}"><div class="lq">${qrSvg(lblUrl(id,soort))}</div><div class="lt"><div class="lk">${k}</div><b>${t}</b><div class="ls">${s}</div></div></div>`;
 }
 function labelDialog(ids,soort){
-ids=ids.filter(id=>lot(id)||batch(id)); if(!ids.length) return toast('Geen labels om te printen.');
-const een=ids.length===1, o=een?(lot(ids[0])||batch(ids[0])):null;
+ids=ids.filter(id=>lot(id)||batch(id)||variant(id)); if(!ids.length) return toast('Geen labels om te printen.');
+const een=ids.length===1, o=een?(lot(ids[0])||batch(ids[0])||variant(ids[0]).b):null;
 LBL={ids,soort,fmt:lblFmt(),n:een&&soort==='int'&&ids[0].indexOf('GL')===0?(o.verp||1):1};
 sluitPaneel(); modal(`<h2>Labels printen</h2><p class="sub" style="margin-top:-4px">${een?'1 label':ids.length+' labels'} · ${soort==='pp'?'verpakking (opent het productpaspoort)':'intern (opent de app)'}</p>
 <label>Printer</label><div class="seg lbl-seg">${Object.entries(LFMT).map(([k,f])=>`<button data-f="${k}" class="${LBL.fmt===k?'on':''}" onclick="lblKies('${k}')"><b>${f.t}</b><small>${f.s}</small></button>`).join('')}</div>
-<label>${een?'Aantal labels':'Aantal per item'}</label><input id="lbl_n" type="number" min="1" max="500" value="${LBL.n}" style="max-width:120px">
+${soort==='pp'&&een&&!variant(ids[0])&&pasVan(ids[0]).length?`<div class="muted" style="font-size:12.5px;margin:-4px 0 8px">Dit is het neutrale paspoort. Labels in de huisstijl van een coffeeshop print je vanuit het product.</div>`:''}<label>${een?'Aantal labels':'Aantal per item'}</label><input id="lbl_n" type="number" min="1" max="500" value="${LBL.n}" style="max-width:120px">
 ${een&&soort==='int'&&ids[0].indexOf('GL')===0?'<div class="muted" style="margin-top:4px;font-size:12.5px">Standaard één per verpakking.</div>':''}
 <div class="lbl-prev" id="lbl_prev"></div>
 <div class="acts" style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px"><button class="btn ghost" onclick="closeModal()">Annuleren</button><button class="btn" onclick="lblPrint()">${ico('qr')}Printen</button></div>`);
@@ -1482,6 +1565,81 @@ if(TAB==='overzichten'&&OV==='traceren') drawQR();
 if(PANEEL) toonPaneel(PANEEL);
 }
 let RTAB='';
+/* ---------- Coffeeshops: paspoort neutraal of in eigen huisstijl ---------- */
+document.head.insertAdjacentHTML('beforeend','<style>'+VG_CSS+'</style>');
+function ppMerkKop(M){ return `<div class="pp-head pp-merk" style="background:${esc(M.kleur||'#14233a')};color:${merkFg(M.kleur)}">${M.logo?`<img src="${esc(M.logo)}" alt="${esc(M.naam)}">`:`<b class="pp-mn">${esc(M.naam)}</b>`}<div class="pp-lbl" style="color:inherit">Productpaspoort<br><span style="font-weight:500;opacity:.85">Geverifieerd door Allora Labs</span></div></div>`; }
+const _ppHTML=paspoortHTML;
+paspoortHTML=function(P,mini){
+let h=_ppHTML(P,mini);
+if(P.merk) h=h.replace(/<div class="pp-head">[\s\S]*?<\/div><\/div>/, ppMerkKop(P.merk));
+if(!mini) h=h.replace(/<\/div>\s*$/, '<div class="pp-sec">'+veiligHTML(P)+'</div></div>');
+return h;
+};
+function paspoortPagina(){
+const va=variant(PASPOORT), b=va?va.b:batch(PASPOORT); let P=null;
+if(b){ P=paspoortData(S,CFG,b,va?va.v.code:b.code); if(va){ const k=klantObj(va.v.klant); if(k.huisstijl) P.merk={naam:k.merk||k.naam,kleur:k.kleur,logo:k.logo}; } }
+return `<div class="pp-page"><div class="pp-bar qr-hide"><button class="btn ghost" onclick="sluitPaspoort()">← Terug naar de app</button><span class="small muted">Zo ziet de klant of inspecteur het na het scannen</span></div>${P?paspoortHTML(P,false):'<div class="k-empty">Onbekend product.</div>'}</div>`;
+}
+function merkVoorbeeld(k){
+const al=(document.querySelector('img[alt="Allora Labs"]')||{}).src;
+if(!k||!k.huisstijl) return `<div class="mv mv-neu">${al?`<img src="${esc(al)}" alt="">`:'<span class="mv-l">Allora Labs</span>'}<span class="mv-t">Productpaspoort<br><small>Traceability door Allora Labs</small></span></div><div class="sm muted" style="margin-top:6px">Neutraal paspoort: de producent en de coffeeshop staan er niet op.</div>`;
+return `<div class="mv" style="background:${esc(k.kleur||'#14233a')};color:${merkFg(k.kleur)}">${k.logo?`<img src="${esc(k.logo)}" alt="">`:`<span class="mv-l">${esc(k.merk||k.naam)}</span>`}<span class="mv-t">Productpaspoort<br><small>Geverifieerd door Allora Labs</small></span></div><div class="sm muted" style="margin-top:6px">Het paspoort toont de naam${k.logo?' en het logo':''} van de coffeeshop. De producent staat er niet op.</div>`;
+}
+function pasKaart(b){
+const shops=S.klanten.filter(k=>k.huisstijl);
+const rij=k=>{ const v=pasVan(b.id).find(x=>x.klant===k.naam);
+if(!v) return `<div class="pas-r"><div class="pas-sw" style="background:${esc(k.kleur||'#14233a')}"></div><div style="flex:1"><b>${esc(k.naam)}</b><div class="sm muted">Nog geen paspoort in deze huisstijl.</div></div><button class="btn ghost rbtn" onclick="maakPas('${b.id}','${esc(k.naam)}')">Aanmaken</button></div>`;
+return `<div class="pn-qr" style="margin-top:12px"><div class="q" data-qr="P:${v.code}" data-qrk="pp"></div><div class="pn-qr-t"><span class="tag tag-pub">${esc(k.naam)} · openbaar</span><div class="sm muted">Paspoort in de huisstijl van ${esc(k.merk||k.naam)}.</div><div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn rbtn" onclick="labelDialog(['P:${v.code}'],'pp')">${ico('qr')}Labels printen</button><button class="btn ghost rbtn" onclick="sluitPaneel();openPaspoort('P:${v.code}')">Paspoort</button><button class="btn ghost rbtn" onclick="kopieerUrl(ppUrl('${v.code}'))">Link</button></div></div></div>`; };
+return `<div class="pn-card"><h3>Paspoort per coffeeshop</h3>${shops.length?`<div class="sm muted">Coffeeshops die hun eigen huisstijl op het paspoort willen. De anderen gebruiken het neutrale paspoort hierboven.</div>${shops.map(rij).join('')}`:`<div class="sm muted">Alle coffeeshops gebruiken nu het neutrale paspoort.</div>`}<div style="margin-top:10px"><a class="id" onclick="sluitPaneel();TAB='overzichten';OV='shops';render()">Coffeeshops en huisstijl beheren</a></div></div>`;
+}
+async function maakPas(bId,klant){ const r=await doe('paspoort',{batch:bId,klant:klant}); if(r) openPaneel(bId); }
+function lotOp(id){
+sluitPaneel(); const l=lot(id);
+modal(`<h2>Partij ${id} is op</h2><p class="sub">${esc(l.type)}${l.soort?' · '+esc(l.soort):''}. De partij gaat naar het archief en kan niet meer in een nieuwe batch. Batches en uitslagen blijven bewaard.</p><div class="acts" style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px"><button class="btn ghost" onclick="closeModal()">Annuleren</button><button class="btn" onclick="closeModal();doe('opgebruikt',{id:'${id}'}).then(r=>{ if(r) openPaneel('${id}'); })">Partij afsluiten</button></div>`);
+}
+let KL=null;
+function fKlant(naam){
+sluitPaneel();
+const k=naam?klantObj(naam):{};
+KL={naam:k.naam||'',nieuw:!k.naam,huisstijl:!!k.huisstijl,merk:k.merk||k.naam||'',kleur:k.kleur||'#ffffff',logo:k.logo||''};
+klRender();
+}
+function klRender(){
+modal(`<h2>${KL.nieuw?'Coffeeshop toevoegen':esc(KL.naam)}</h2><p class="sub" style="margin-top:-4px">Kies hoe het productpaspoort eruitziet voor deze coffeeshop.</p>
+${KL.nieuw?`<label>Naam coffeeshop</label><input id="kl_n" value="${esc(KL.naam)}" oninput="KL.naam=this.value;if(!KL._m){KL.merk=this.value;}">`:''}
+<label>Paspoort</label><div class="seg lbl-seg"><button class="${KL.huisstijl?'':'on'}" onclick="KL.huisstijl=false;klRender()"><b>Neutraal</b><small>Traceability door Allora Labs</small></button><button class="${KL.huisstijl?'on':''}" onclick="KL.huisstijl=true;klRender()"><b>Eigen huisstijl</b><small>Naam, kleur en logo van de coffeeshop</small></button></div>
+${KL.huisstijl?`<label>Naam op het paspoort</label><input value="${esc(KL.merk)}" oninput="KL.merk=this.value;KL._m=true;klPrev()">
+<div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end"><div><label>Kleur</label><input type="color" value="${esc(KL.kleur)}" oninput="KL.kleur=this.value;klPrev()" style="width:64px;height:40px;padding:2px"></div>
+<div style="flex:1;min-width:200px"><label>Logo <span class="muted" style="font-weight:400">(png of jpg, mag leeg)</span></label><input type="file" accept="image/png,image/jpeg,image/webp" onchange="klLogo(this.files[0])">${KL.logo?'<a class="id" style="font-size:12.5px" onclick="KL.logo=\'\';klRender()">Logo verwijderen</a>':''}</div></div>`:''}
+<label>Voorbeeld</label><div id="kl_prev"></div>
+<div class="wz-err" id="kl_err" role="alert"></div>
+<div class="acts" style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px"><button class="btn ghost" onclick="closeModal()">Annuleren</button><button class="btn" onclick="klSave()">Opslaan</button></div>`);
+klPrev();
+}
+function klPrev(){ const p=$('#kl_prev'); if(p) p.innerHTML=merkVoorbeeld({naam:KL.naam,huisstijl:KL.huisstijl,merk:KL.merk,kleur:KL.kleur,logo:KL.logo}); }
+function klLogo(f){
+if(!f) return; const e=$('#kl_err'), rd=new FileReader();
+rd.onload=()=>{ const img=new Image(); img.onload=()=>{
+let w=img.width,h=img.height,sc=Math.min(1,360/w,140/h), url='';
+for(let t=0;t<6;t++){ const c=document.createElement('canvas'); c.width=Math.max(1,Math.round(w*sc)); c.height=Math.max(1,Math.round(h*sc)); const x=c.getContext('2d'); x.drawImage(img,0,0,c.width,c.height);
+url=c.toDataURL('image/png'); if(url.length>44000){ const j=document.createElement('canvas'); j.width=c.width; j.height=c.height; const y=j.getContext('2d'); y.fillStyle=KL.kleur||'#ffffff'; y.fillRect(0,0,j.width,j.height); y.drawImage(c,0,0); url=j.toDataURL('image/jpeg',0.85); }
+if(url.length<=44000) break; sc*=0.75; }
+if(url.length>44000){ if(e) e.textContent='Dit logo is te groot. Probeer een kleiner bestand.'; return; }
+KL.logo=url; klRender(); };
+img.onerror=()=>{ if(e) e.textContent='Dit bestand kan niet gelezen worden.'; }; img.src=rd.result; };
+rd.readAsDataURL(f);
+}
+async function klSave(){
+const e=$('#kl_err'); if(!String(KL.naam).trim()){ e.textContent='Vul de naam van de coffeeshop in.'; return; }
+const naam=String(KL.naam).trim(), r=await doe('klant',{naam:naam,huisstijl:KL.huisstijl,merk:KL.huisstijl?(KL.merk||naam):'',kleur:KL.huisstijl?KL.kleur:'',logo:KL.huisstijl?KL.logo:''});
+if(r){ KL=null; openPaneel('S:'+naam); }
+}
+function shopsView(){
+const n=naam=>({p:(S.paspoorten||[]).filter(v=>v.klant===naam).length,l:S.leveringen.filter(x=>x.klant===naam).length});
+return `<p class="sub" style="margin:0 0 14px">Per coffeeshop kies je hoe het productpaspoort eruitziet: neutraal (Traceability door Allora Labs) of in de eigen huisstijl van de coffeeshop. De verificatie door Allora Labs staat er altijd op. De producent staat nergens op het paspoort.</p>
+<div style="margin-bottom:14px"><button class="btn" onclick="fKlant()">${ico('plus')}Coffeeshop toevoegen</button></div>
+<div class="shops">${S.klanten.map(k=>{ const c=n(k.naam); return `<div class="kc" tabindex="0" onclick="openPaneel('S:${esc(k.naam)}')" onkeydown="if(event.key==='Enter')openPaneel('S:${esc(k.naam)}')"><div class="kc-top"><div class="kc-ic">${ico('shop')}</div><div class="kc-t"><b>${esc(k.naam)}</b><span>${k.huisstijl?'Eigen huisstijl':'Neutraal paspoort'}${c.p?' · '+c.p+(c.p===1?' product':' producten'):''}${c.l?' · '+c.l+' leveringen CBD':''}</span></div></div><div style="margin-top:10px">${merkVoorbeeld(k).split('<div class="sm muted"')[0]}</div><div class="kc-foot"><span></span><button class="kc-act" onclick="event.stopPropagation();fKlant('${esc(k.naam)}')">Huisstijl</button></div></div>`; }).join('')||'<div class="k-empty">Nog geen coffeeshops.</div>'}</div>`;
+}
 
 /* ---------- Opstarten ---------- */
 document.querySelectorAll('#nav button[data-tab]').forEach(b=>b.onclick=()=>{TAB=b.dataset.tab;PASPOORT=null;render();});
