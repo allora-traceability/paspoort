@@ -44,6 +44,7 @@ function rapUrl(P,src,k){ if(!src||!src.rapport) return ''; if(src.link) return 
 function rl(P,src,k,txt){ var u=rapUrl(P,src,k); return u?'<a class="rl" href="'+esc(u)+'" target="_blank" rel="noopener">'+txt+DOC+'</a>':txt; }
 function render(P){
   var m=P.m, cbd=P.cat==='CBD', ok=P.status==='Vrijgegeven', blok=P.status==='Geblokkeerd';
+  var M=P.merk||null;
   var ch=function(t){var c=P.checks.filter(function(c){return c.t.indexOf(t)===0;})[0];return c?c.s:'';};
   var stat= ok?'<div class="stat ok"><div class="big"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></div><div><b>'+(cbd?'CBD-product · gecontroleerd':'Gemaakt van Lijst II-cannabis')+'</b><span>'+(cbd?'CBD-gehalte en THC-limiet geverifieerd door Allora Labs':'Geverifieerd door Allora Labs')+'</span></div></div>'
     : blok?'<div class="stat bad"><div class="big"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></div><div><b>Niet vrijgegeven</b><span>Deze batch mag niet verkocht worden</span></div></div>'
@@ -55,11 +56,12 @@ function render(P){
   var keten=[['Grondstof ontvangen',P.lots.map(function(x){return dmy(x.datum);}).join(', ')],['Grondstof getest',P.lots.map(function(x){return dmy(x.oDatum);}).join(', ')],['Geproduceerd',dmy(P.datum)],['Eindproduct getest',m?dmy(m.oDatum):'–']];
   var rap=P.lots.map(function(x){return x.rapport;}).concat([m&&m.rapport]).filter(Boolean).map(esc).join(', ')||'–';
   document.getElementById('m').innerHTML=(P.demo?'<div class="demo">DEMO · VOORBEELDGEGEVENS</div>':'')+
-   '<div class="top"><img src="data:image/png;base64,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" alt="Allora Labs"><div class="kick">Productpaspoort</div></div>'+
-   '<div class="hero"><div class="kick">Traceability door Allora Labs</div><h1 class="prod">'+esc(P.product)+'</h1><div class="sub">Batch '+esc(P.id)+' · geproduceerd '+dmy(P.datum)+'</div>'+stat+'</div>'+
+   (M?'<div class="top">'+(M.logo?'<img src="'+esc(M.logo)+'" alt="'+esc(M.naam)+'">':'<b class="mn">'+esc(M.naam)+'</b>')+'<div class="kick">Productpaspoort</div></div>':'<div class="top"><img src="data:image/png;base64,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" alt="Allora Labs"><div class="kick">Productpaspoort</div></div>')+
+   '<div class="hero"'+(M?' style="background:'+esc(M.kleur||'#14233a')+';color:'+merkFg(M.kleur)+'"':'')+'><div class="kick"'+(M?' style="color:inherit;opacity:.8"':'')+'>'+(M?'Geverifieerd door Allora Labs':'Traceability door Allora Labs')+'</div><h1 class="prod">'+esc(P.product)+'</h1><div class="sub">Batch '+esc(P.id)+' · geproduceerd '+dmy(P.datum)+'</div>'+stat+'</div>'+
    '<div class="card"><h2 class="h">Bewijs</h2>'+bewijs+'</div>'+
    '<div class="card"><h2 class="h">Keten</h2>'+keten.map(function(k){return '<div class="t"><i></i><span>'+k[0]+'</span><b>'+k[1]+'</b></div>';}).join('')+'</div>'+
    docs(P)+
+   '<div class="card">'+veiligHTML(P)+'</div>'+
    '<div class="card lab"><div class="ic"><svg viewBox="0 0 24 24"><path d="M9 3h6"/><path d="M10 3v6l-5 9a2 2 0 0 0 1.8 3h10.4a2 2 0 0 0 1.8-3l-5-9V3"/><path d="M7.5 15h9"/></svg></div><div><b>Analyses door Allora Labs · ISO 9001</b>Rapporten '+rap+'</div></div>';
 }
 function docs(P){
@@ -70,6 +72,56 @@ function docs(P){
   if(!d.length) return '';
   return '<div class="card docs"><h2 class="h">Testrapporten</h2>'+d.map(function(x){return '<a href="'+esc(x[0])+'" target="_blank" rel="noopener"><span class="di">'+DOC+'</span><span><b>'+x[1]+'</b><small>'+x[2]+' · '+esc(x[3])+'</small></span></a>';}).join('')+(P.demo?'<div class="hint">Voorbeeldrapporten. In gebruik opent hier het originele PDF-rapport van Allora Labs.</div>':'')+'</div>';
 }
+/*VEILIG*/
+/* ===== Paspoort: veilig gebruik + huisstijl coffeeshop (gedeeld door app en openbare paspoortpagina) ===== */
+var VG_IC={
+  car:'<path d="M4 15l1.8-5.2A2 2 0 0 1 7.7 8.5h8.6a2 2 0 0 1 1.9 1.3L20 15v3H4z"/><circle cx="8" cy="18" r="1.6"/><circle cx="16" cy="18" r="1.6"/>',
+  preg:'<circle cx="11" cy="4.5" r="2"/><path d="M9.5 8.5h2.5a5 5 0 0 1 0 10h-1.5V21M9.5 8.5V21"/>',
+  glass:'<path d="M7 3h10l-1 7a4 4 0 0 1-8 0z"/><path d="M12 14v6M8.5 21h7"/>',
+  kid:'<rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/>',
+  clock:'<circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/>',
+  med:'<rect x="4" y="9" width="16" height="7" rx="3.5"/><path d="M12 9v7"/>'
+};
+function vgIcon(k,slash){ return '<svg viewBox="0 0 24 24" aria-hidden="true">'+VG_IC[k]+(slash?'<path class="sl" d="M4 4l16 16"/>':'')+'</svg>'; }
+function vgNum(n,d){ if(n===null||n===undefined||n===''||isNaN(n)) return '–'; return Number(n).toFixed(d===undefined?1:d).replace('.',','); }
+function vgEsc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+function veiligHTML(P){
+  var cbd=P.cat==='CBD', m=P.m, snoep=/gumm|snoep|drop|choc|bonbon/i.test(P.product||'')?'snoep':'gewoon gebak of snoep';
+  var pict = cbd
+    ? [['18+','18+',''],['preg','Niet bij zwangerschap of borstvoeding',1],['med','Medicijnen? Eerst overleggen',0],['kid','Buiten bereik van kinderen',0]]
+    : [['18+','18+',''],['car','Niet rijden of machines bedienen',1],['preg','Niet bij zwangerschap of borstvoeding',1],['glass','Niet met alcohol of andere middelen',1],['kid','Buiten bereik van kinderen',0],['clock','Werkt pas na 30 tot 90 minuten',0]];
+  var ph=pict.map(function(p){ return '<div class="vg-p"><div class="vg-i'+(p[0]==='18+'?' vg-18':'')+'">'+(p[0]==='18+'?'18+':vgIcon(p[0],p[2]===1))+'</div><span>'+p[1]+'</span></div>'; }).join('');
+  var li = cbd ? [
+      'Bevat '+vgEsc(P.label)+' mg CBD per stuk'+(m&&m.cbdmg!=null?' (gemeten: '+vgNum(m.cbdmg)+' mg)':'')+'. THC blijft onder '+vgNum(P.cbdThcMax,2)+' mg per stuk.',
+      'Niet gebruiken bij zwangerschap of borstvoeding.',
+      'Gebruik je medicijnen? Overleg eerst met je arts of apotheker: CBD kan de werking van medicijnen beïnvloeden.',
+      'CBD kan slaperig maken. Let daarop in het verkeer.',
+      'Bewaar afgesloten, koel en droog, buiten bereik van kinderen en huisdieren.'
+    ] : [
+      'Eén stuk bevat '+vgEsc(P.label)+' mg THC'+(m&&m.mg!=null?' (gemeten: '+vgNum(m.mg)+' mg)':'')+'. Begin met een klein stukje en wacht de werking af.',
+      'Eten werkt pas na 30 tot 90 minuten, het sterkst na 2 tot 3 uur, en kan 4 tot 12 uur aanhouden. Neem niet meer binnen 2 uur.',
+      'Niet gebruiken onder de 18, bij zwangerschap of borstvoeding, of bij hart- en vaatziekten, (aanleg voor) psychose of andere psychische klachten. Gebruik je medicijnen? Overleg eerst met je arts of apotheker.',
+      'Niet autorijden, fietsen of machines bedienen na gebruik, ook niet als je je weer goed voelt.',
+      'Niet combineren met alcohol of andere middelen.',
+      'Bewaar afgesloten, koel en droog, buiten bereik van kinderen en huisdieren: het lijkt op '+snoep+'.'
+    ];
+  var hulp = cbd ? '' : '<div class="vg-hulp"><b>Valt het verkeerd?</b>Zoek een rustige plek, eet of drink iets zoets en blijf niet alleen. Meestal is het ergste binnen een paar uur voorbij. Bij ernstige klachten: bel 112.</div>';
+  return '<div class="vg"><div class="vg-h">Veilig gebruik</div><div class="vg-ps">'+ph+'</div><ul class="vg-l">'+li.map(function(t){return '<li>'+t+'</li>';}).join('')+'</ul>'+hulp+
+    '<div class="vg-info">Meer informatie: <a href="https://www.drugsinfo.nl" target="_blank" rel="noopener">drugsinfo.nl</a> of de Drugs Infolijn 0900-1995.</div></div>';
+}
+var VG_CSS='.vg-ps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 8px;margin:4px 0 12px}'+
+ '.vg-p{display:flex;flex-direction:column;align-items:center;text-align:center;gap:5px;font-size:11.5px;line-height:1.25;color:#14233a}'+
+ '.vg-i{width:40px;height:40px;border-radius:50%;border:2px solid #b8402f;display:grid;place-items:center;color:#b8402f;background:#fff}'+
+ '.vg-i svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.vg-i .sl{stroke-width:2.2}'+
+ '.vg-18{font-weight:800;font-size:13px;letter-spacing:-.02em}'+
+ '.vg-l{margin:0;padding-left:18px;font-size:13.5px;line-height:1.5}.vg-l li{margin:4px 0}'+
+ '.vg-hulp{margin-top:10px;background:#fbf1dc;border-radius:12px;padding:10px 12px;font-size:13px;line-height:1.45}.vg-hulp b{display:block;margin-bottom:2px}'+
+ '.vg-info{margin-top:10px;font-size:12.5px;color:#4a5568}';
+/* huisstijl: tekstkleur bij een lichte of donkere achtergrond */
+function merkFg(hex){ var m=/^#([0-9a-f]{6})$/i.exec(hex||''); if(!m) return '#ffffff'; var n=parseInt(m[1],16), r=n>>16&255, g=n>>8&255, b=n&255; return (0.299*r+0.587*g+0.114*b)>160?'#14233a':'#ffffff'; }
+
+/*/VEILIG*/
+document.head.insertAdjacentHTML('beforeend','<style>'+VG_CSS+'.vg-h{font-family:\'Space Grotesk\',sans-serif;font-weight:600;font-size:16px;margin:0 0 8px}.top b.mn{font-family:\'Space Grotesk\',sans-serif;font-size:20px}.top img{max-width:180px;object-fit:contain}.hero[style] .sub{color:inherit;opacity:.85}.hero[style] .prod{color:inherit}</style>');
 function fout(t){document.getElementById('m').innerHTML='<div class="msg"><b>Productpaspoort niet gevonden</b>'+esc(t)+'</div>';}
 var code=(new URLSearchParams(location.search).get('p')||'').replace(/[^A-Za-z0-9]/g,'');
 var KC=(new URLSearchParams(location.search).get('k')||'').replace(/[^A-Za-z0-9-]/g,'').toLowerCase();
